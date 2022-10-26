@@ -13,6 +13,8 @@ void main() {
       child: MyApp()));
 }
 
+bool isLoggedIn = false;
+
 class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
@@ -21,37 +23,64 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    checkUserLoggedIn();
+    checkLoggedInorNot();
     super.initState();
   }
-
-  bool isLoggedIn = false;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-          scaffoldBackgroundColor: Colors.black,
-          appBarTheme: const AppBarTheme(
-            backgroundColor: Colors.black,
-          )),
-      debugShowCheckedModeBanner: false,
-      home: isLoggedIn ? MyHomePage() : LoginPage(),
-    );
+        theme: ThemeData(
+            scaffoldBackgroundColor: Colors.black,
+            appBarTheme: const AppBarTheme(
+              backgroundColor: Colors.black,
+            )),
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen());
   }
 
-  Future<void> checkUserLoggedIn() async {
-    final sharedPrefs = await SharedPreferences.getInstance();
-    bool? userLoggedIn = sharedPrefs.getBool("isLogged");
-
-    if (userLoggedIn == null || userLoggedIn == false) {
+  void checkLoggedInorNot() async {
+    final _sharedPrefs = await SharedPreferences.getInstance();
+    bool? checkData = _sharedPrefs.getBool("isLogged");
+    if (checkData == null || checkData == false) {
       setState(() {
         isLoggedIn = false;
       });
-    } else {
+    } else if (checkData == true) {
       setState(() {
         isLoggedIn = true;
       });
     }
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    gotoNextPage(context);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+    );
+  }
+
+  Future<void> gotoNextPage(context) async {
+    await Future.delayed(Duration(seconds: 1));
+    isLoggedIn
+        ? Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => MyHomePage()))
+        : Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => LoginPage()));
   }
 }

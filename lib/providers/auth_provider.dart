@@ -200,6 +200,9 @@ class AuthProvider with ChangeNotifier {
         email_error = null;
         mobile_error = null;
         setLoading(false);
+        final sharedPrefs = await SharedPreferences.getInstance();
+        await sharedPrefs.clear();
+        await sharedPrefs.setBool("isLogged", true);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green,
             content: Text("User created successfully")));
