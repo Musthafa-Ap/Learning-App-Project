@@ -12,14 +12,12 @@ import '../../widgets/course_detailes_list_tile.dart';
 
 class CourseDetailedPage extends StatelessWidget {
   CourseDetailedPage({super.key});
-  ValueNotifier _selectedValue = ValueNotifier("Medium");
-  var _items = ["Easy", "Medium", "Advanced"];
+  ValueNotifier _selectedValue = ValueNotifier("Expert");
+  var _items = ["Beginner", "Intermediate", "Expert"];
   @override
   Widget build(BuildContext context) {
-    final courseDeailedProvider = Provider.of<CourseDetailedProvider>(context)
-        .courseDetailes!
-        .data!
-        .first;
+    final courseDeailedProvider = Provider.of<CourseDetailedProvider>(context);
+
     var size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
@@ -49,11 +47,15 @@ class CourseDetailedPage extends StatelessWidget {
             decoration: BoxDecoration(
                 image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: NetworkImage(
-                        courseDeailedProvider.thumbnail!.fullSize.toString()))),
+                    image: NetworkImage(courseDeailedProvider
+                        .courseDetailes!.data!.first.thumbnail!.fullSize
+                        .toString()))),
           ),
           KHeight15,
-          BoldHeading(heading: courseDeailedProvider.courseName.toString()),
+          BoldHeading(
+              heading: courseDeailedProvider
+                  .courseDetailes!.data!.first.courseName
+                  .toString()),
           KHeight5,
           Text(
             "All-in-one Guitar Course,FingerStyle Guitar,Blues Guitar,Acoustic Guitar,Electric Guitar & Fingerpicking Guitarra",
@@ -69,7 +71,7 @@ class CourseDetailedPage extends StatelessWidget {
                   .push(MaterialPageRoute(builder: (context) => ReviewPage()));
             },
             child: Text(
-              "${courseDeailedProvider.rating} *****",
+              "${courseDeailedProvider.courseDetailes!.data!.first.rating} *****",
               style: const TextStyle(fontSize: 12, color: Colors.yellow),
             ),
           ),
@@ -91,17 +93,26 @@ class CourseDetailedPage extends StatelessWidget {
           ValueListenableBuilder(
             valueListenable: _selectedValue,
             builder: (context, value, child) {
+              // int actual_price = courseDeailedProvider.courseDetailes.data..
+              // int bgdiscount = ((35 / 100) * actual_price).toInt();
+              // int beginner_price = actual_price - bgdiscount;
+              // int interdiscount = ((courseDeailedProvider.courseDetailes!.variant![1].amountPerc! / 100) * actual_price).toInt();
+              // int inter_price = actual_price - interdiscount;
+
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
                     children: [
                       Text(
-                        (value == "Easy")
-                            ? "₹399"
-                            : (value == "Medium")
-                                ? "₹499"
-                                : "₹699",
+                        (value == "Beginner")
+                            ? " 888" //beginner_price.toString()
+                            : (value == "Intermediate")
+                                ? "6564"
+                                : //inter_price.toString()
+                                courseDeailedProvider
+                                    .courseDetailes!.data!.first.price
+                                    .toString(),
                         style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -155,7 +166,9 @@ class CourseDetailedPage extends StatelessWidget {
                     fontSize: 16),
               ),
               Text(
-                courseDeailedProvider.instructor!.name.toString(),
+                courseDeailedProvider
+                    .courseDetailes!.data!.first.instructor!.name
+                    .toString(),
                 style: TextStyle(
                     color: Colors.purple,
                     fontWeight: FontWeight.bold,
