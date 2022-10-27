@@ -8,6 +8,7 @@ import 'package:nuox_project/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../authentication/login_page.dart';
 import '../my_home_page.dart';
+import '../pages/featured/services/featured_model.dart';
 
 class AuthProvider with ChangeNotifier {
   var mobile_error;

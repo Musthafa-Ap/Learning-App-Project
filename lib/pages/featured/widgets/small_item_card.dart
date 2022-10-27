@@ -5,8 +5,18 @@ import '../../../constants/constants.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
 
 class SmallItemCard extends StatelessWidget {
+  final String courseName;
+  final String authorName;
+  final double coursePrice;
+  final String image;
+  final double rating;
   const SmallItemCard({
     Key? key,
+    required this.courseName,
+    required this.authorName,
+    required this.coursePrice,
+    required this.image,
+    required this.rating,
   }) : super(key: key);
 
   @override
@@ -29,14 +39,12 @@ class SmallItemCard extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(
-                            "https://hotmart.com/media/2018/10/BLOG_Como-funciona-palestra-online-670x4191.png"))),
+                        fit: BoxFit.fill, image: NetworkImage(image))),
               ),
               KHeight5,
               Text(
-                "Comeplete Guitar Lessons System - Beginner to Advanced",
-                maxLines: 4,
+                courseName,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     fontSize: 16,
@@ -45,17 +53,21 @@ class SmallItemCard extends StatelessWidget {
               ),
               KHeight5,
               Text(
-                "Erich Andreas",
+                authorName,
                 style: TextStyle(fontSize: 12, color: Colors.grey[300]),
               ),
               KHeight5,
-              Text(
-                "4.6 ***** (36,907)",
-                style: TextStyle(fontSize: 12, color: Colors.yellow),
+              Row(
+                children: [
+                  Text(
+                    "${rating}***** (36,907)",
+                    style: TextStyle(fontSize: 12, color: Colors.yellow),
+                  ),
+                ],
               ),
               KHeight5,
               Text(
-                "₹3,499",
+                "₹ ${coursePrice}",
                 style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

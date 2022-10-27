@@ -10,17 +10,23 @@ class Featured extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      shrinkWrap: true,
-      physics: const BouncingScrollPhysics(),
-      children: [
-        const TopImageSection(),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [TopTextSection(), FeaturedSection()],
-        )
-      ],
-    );
+    return Scaffold(
+        appBar: AppBar(
+          title: Text("Hello User,"),
+        ),
+        body: ListView(
+          padding: EdgeInsets.symmetric(
+            horizontal: 10,
+          ),
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
+          children: [
+            const TopImageSection(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [TopTextSection(), FeaturedSection()],
+            )
+          ],
+        ));
   }
 }

@@ -1,12 +1,18 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nuox_project/authentication/forgot.dart';
 import 'package:nuox_project/authentication/signup.dart';
+import 'package:nuox_project/pages/featured/services/featured_provider.dart';
+import 'package:nuox_project/pages/featured/services/featured_provider.dart';
 import 'package:nuox_project/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import '../constants/constants.dart';
+import '../pages/featured/services/featured_provider.dart';
 import 'mobile_number_verification_page.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
 class LoginPage extends StatelessWidget {
   final _globalKey = GlobalKey<FormState>();
@@ -19,6 +25,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width;
     final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
         backgroundColor: Colors.black,
         body: SafeArea(
@@ -142,7 +149,9 @@ class LoginPage extends StatelessWidget {
                 SizedBox(
                   height: 50,
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      signIn;
+                    },
                     child: const Text(
                       "Log in with Google",
                       style: TextStyle(color: Colors.white, fontSize: 20),
@@ -223,5 +232,13 @@ class LoginPage extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  Future<void> signIn() async {
+    try {
+      await _googleSignIn.signIn();
+    } catch (e) {
+      print("Error signing in $e");
+    }
   }
 }

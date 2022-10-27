@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "994658005853",
-    "project_id": "nuox-learning-app-5b11d",
-    "storage_bucket": "nuox-learning-app-5b11d.appspot.com"
+    "project_number": "398035339782",
+    "project_id": "learning-app-a59fb",
+    "storage_bucket": "learning-app-a59fb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:994658005853:android:316e419195e5cc4477eeb4",
+        "mobilesdk_app_id": "1:398035339782:android:6d32d645387763bdf81187",
         "android_client_info": {
           "package_name": "com.example.learning_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "994658005853-6dsukbc3kdv55no5phma8ntfs545fu2f.apps.googleusercontent.com",
+          "client_id": "398035339782-icf4jevgj75sacebee5m9gtmfsttip0m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.learning_app",
@@ -22,20 +22,20 @@
           }
         },
         {
-          "client_id": "994658005853-dcbkfsfv6p5tg3jeqd3nosobv6d3ue73.apps.googleusercontent.com",
+          "client_id": "398035339782-mbq7oo0abvrlj3tn7kdt1dhbil3q1ccr.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAF44QIW9oqEiSpR_qKwqX3emOXyLkULjA"
+          "current_key": "AIzaSyDIMaBdDN8Rw5_FghBHWSfKuu2pysDkhB4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "994658005853-dcbkfsfv6p5tg3jeqd3nosobv6d3ue73.apps.googleusercontent.com",
+              "client_id": "398035339782-mbq7oo0abvrlj3tn7kdt1dhbil3q1ccr.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

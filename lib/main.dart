@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/my_home_page.dart';
+import 'package:nuox_project/pages/featured/services/featured_provider.dart';
 import 'package:nuox_project/providers/auth_provider.dart';
 import 'package:nuox_project/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -8,9 +9,10 @@ import 'authentication/login_page.dart';
 import 'providers/auth_provider.dart';
 
 void main() {
-  runApp(MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => AuthProvider())],
-      child: MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => AuthProvider()),
+    ChangeNotifierProvider(create: (_) => FeaturedProvider())
+  ], child: MyApp()));
 }
 
 bool isLoggedIn = false;

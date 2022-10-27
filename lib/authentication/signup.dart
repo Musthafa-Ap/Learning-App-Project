@@ -22,6 +22,7 @@ class SignUpWidget extends StatelessWidget {
         child: Form(
           key: _formKey,
           child: ListView(
+            shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.all(20),
             children: [
@@ -45,18 +46,27 @@ class SignUpWidget extends StatelessWidget {
                     : null),
               ),
               KHeight,
+
               TextFormField(
+                style: TextStyle(color: Colors.black),
                 inputFormatters: [LengthLimitingTextInputFormatter(10)],
                 keyboardType: TextInputType.number,
                 controller: _numberController,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.only(top: 11, left: 1),
+                    child: Text(
+                      "  +91",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10)),
                   errorText: authProvider.mobile_error,
                   fillColor: Colors.white,
                   filled: true,
                   hintText: "Mobile Number",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
                 ),
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: ((value) => value == null || value.length < 10
