@@ -138,7 +138,6 @@ class AuthProvider with ChangeNotifier {
         login_email_error = null;
         login_pass_error = null;
         var data = jsonDecode(response.body);
-        print(data['result'].toString());
 
         if (data['result'] == "success") {
           final sharedPrefs = await SharedPreferences.getInstance();

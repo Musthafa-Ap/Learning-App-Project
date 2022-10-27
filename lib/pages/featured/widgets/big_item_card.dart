@@ -1,20 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/constants.dart';
 import '../../../widgets/bestseller.dart';
 import '../../../widgets/big_cart_icon_button.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
+import '../../course_detailed_page/services/course_detailed_provider.dart';
 
-class FeaturedItemCard extends StatelessWidget {
+class BigItemCard extends StatelessWidget {
+  final int id;
   final String courseName;
   final String authorName;
   final int coursePrice;
-
-  const FeaturedItemCard({
+  final double rating;
+  final String image;
+  const BigItemCard({
     Key? key,
     required this.courseName,
     required this.authorName,
     required this.coursePrice,
+    required this.rating,
+    required this.image,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -22,6 +29,8 @@ class FeaturedItemCard extends StatelessWidget {
     var size = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
+        Provider.of<CourseDetailedProvider>(context, listen: false)
+            .getAll(courseID: id);
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => CourseDetailedPage()));
       },
@@ -37,9 +46,7 @@ class FeaturedItemCard extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(
-                            "https://i.guim.co.uk/img/media/71dd7c5b208e464995de3467caf9671dc86fcfd4/1176_345_3557_2135/master/3557.jpg?width=620&quality=45&dpr=2&s=none"))),
+                        fit: BoxFit.fill, image: NetworkImage(image))),
               ),
               KHeight5,
               Text(
@@ -58,12 +65,12 @@ class FeaturedItemCard extends StatelessWidget {
               ),
               KHeight5,
               Text(
-                "4.6 ***** (36,907)",
+                "${rating} ***** (36,907)",
                 style: TextStyle(fontSize: 12, color: Colors.yellow),
               ),
               KHeight5,
               Text(
-                "₹${coursePrice}",
+                "₹ ${coursePrice}",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(

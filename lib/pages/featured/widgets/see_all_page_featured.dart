@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/pages/featured/services/featured_model.dart';
+import 'package:nuox_project/pages/featured/services/featured_provider.dart';
 import 'package:nuox_project/widgets/course_detailes_list_tile.dart';
+import 'package:provider/provider.dart';
 
 class SeeAllPageFeatured extends StatelessWidget {
   final bool fromSubCatagories;
@@ -7,6 +10,7 @@ class SeeAllPageFeatured extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final featuredProvider = Provider.of<FeaturedProvider>(context).auto;
     return Scaffold(
       appBar: AppBar(
         title: fromSubCatagories ? null : Text("Featured"),
@@ -22,11 +26,19 @@ class SeeAllPageFeatured extends StatelessWidget {
         ],
       ),
       body: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        physics: BouncingScrollPhysics(),
-        itemCount: 15,
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        physics: const BouncingScrollPhysics(),
+        itemCount: featuredProvider.length,
         itemBuilder: (context, index) {
-          return CourseDetailesListTile();
+          final data = featuredProvider[index];
+          return CourseDetailesListTile(
+            authorName: data!.instructor.toString(),
+            courseName: data.courseName.toString(),
+            image: data.thumbnail!.full_size.toString(),
+            coursePrice: data.price!,
+            id: data.id!,
+            rating: data.rating!.toDouble(),
+          );
         },
       ),
     );

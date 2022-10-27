@@ -23,9 +23,10 @@ class Cart extends StatelessWidget {
                 physics: BouncingScrollPhysics(),
                 itemCount: 8,
                 itemBuilder: (context, index) {
-                  return CourseDetailesListTile(
-                    isCartItem: true,
-                  );
+                  return SizedBox();
+                  // return CourseDetailesListTile(
+                  //   isCartItem: true,
+                  // );
                 },
               ),
             ),

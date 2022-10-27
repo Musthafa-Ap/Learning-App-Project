@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/my_home_page.dart';
+import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
+import 'package:nuox_project/pages/featured/services/catagories_section/catagories_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_provider.dart';
+import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:nuox_project/providers/auth_provider.dart';
 import 'package:nuox_project/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +14,10 @@ import 'providers/auth_provider.dart';
 void main() {
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => AuthProvider()),
-    ChangeNotifierProvider(create: (_) => FeaturedProvider())
+    ChangeNotifierProvider(create: (_) => FeaturedProvider()),
+    ChangeNotifierProvider(create: (_) => CatagoriesProvider()),
+    ChangeNotifierProvider(create: (_) => TopCoursesProvider()),
+    ChangeNotifierProvider(create: (_) => CourseDetailedProvider())
   ], child: MyApp()));
 }
 

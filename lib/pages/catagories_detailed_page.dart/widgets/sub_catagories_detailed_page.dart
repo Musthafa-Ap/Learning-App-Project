@@ -52,7 +52,8 @@ class SubCatagoriesDetailedPage extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             itemCount: 8,
             itemBuilder: (context, index) {
-              return CourseDetailesListTile();
+              return SizedBox();
+              //CourseDetailesListTile();
             },
           ),
         ],

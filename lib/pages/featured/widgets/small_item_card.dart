@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/constants.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
 
 class SmallItemCard extends StatelessWidget {
+  final int id;
   final String courseName;
   final String authorName;
   final double coursePrice;
@@ -17,6 +20,7 @@ class SmallItemCard extends StatelessWidget {
     required this.coursePrice,
     required this.image,
     required this.rating,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -24,6 +28,8 @@ class SmallItemCard extends StatelessWidget {
     var size = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
+        Provider.of<CourseDetailedProvider>(context, listen: false)
+            .getAll(courseID: id);
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => CourseDetailedPage()));
       },

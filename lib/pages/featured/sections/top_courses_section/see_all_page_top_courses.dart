@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:nuox_project/widgets/course_detailes_list_tile.dart';
+import 'package:provider/provider.dart';
 
 class SeeAllPageTopCourses extends StatelessWidget {
   SeeAllPageTopCourses({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final topCoursesProvider =
+        Provider.of<TopCoursesProvider>(context).topCoursesList;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Top courses in mobile development"),
@@ -22,9 +26,17 @@ class SeeAllPageTopCourses extends StatelessWidget {
       body: ListView.builder(
         padding: EdgeInsets.symmetric(horizontal: 15),
         physics: BouncingScrollPhysics(),
-        itemCount: 15,
+        itemCount: topCoursesProvider!.data!.length,
         itemBuilder: (context, index) {
-          return CourseDetailesListTile();
+          final datas = topCoursesProvider.data![index];
+          return CourseDetailesListTile(
+            authorName: datas.instructor.toString(),
+            courseName: datas.courseName.toString(),
+            coursePrice: datas.price!.toDouble(),
+            image: datas.thumbnail!.fullSize.toString(),
+            id: datas.id!.toInt(),
+            rating: datas.rating!.toDouble(),
+          );
         },
       ),
     );

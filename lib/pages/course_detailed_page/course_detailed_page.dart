@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nuox_project/constants/constants.dart';
+import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/review_page/review_page.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
+import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../widgets/course_detailes_list_tile.dart';
@@ -14,6 +16,10 @@ class CourseDetailedPage extends StatelessWidget {
   var _items = ["Easy", "Medium", "Advanced"];
   @override
   Widget build(BuildContext context) {
+    final courseDeailedProvider = Provider.of<CourseDetailedProvider>(context)
+        .courseDetailes!
+        .data!
+        .first;
     var size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
@@ -44,18 +50,18 @@ class CourseDetailedPage extends StatelessWidget {
                 image: DecorationImage(
                     fit: BoxFit.fill,
                     image: NetworkImage(
-                        "https://i.guim.co.uk/img/media/71dd7c5b208e464995de3467caf9671dc86fcfd4/1176_345_3557_2135/master/3557.jpg?width=620&quality=45&dpr=2&s=none"))),
+                        courseDeailedProvider.thumbnail!.fullSize.toString()))),
           ),
           KHeight15,
-          BoldHeading(
-              heading: "Complete Guitar Lessons System - Beginner to Advanced"),
+          BoldHeading(heading: courseDeailedProvider.courseName.toString()),
           KHeight5,
           Text(
             "All-in-one Guitar Course,FingerStyle Guitar,Blues Guitar,Acoustic Guitar,Electric Guitar & Fingerpicking Guitarra",
             style: TextStyle(color: Colors.white),
           ),
           KHeight,
-          Align(alignment: Alignment.centerLeft, child: BestsellerWidget()),
+          const Align(
+              alignment: Alignment.centerLeft, child: BestsellerWidget()),
           KHeight,
           GestureDetector(
             onTap: () {
@@ -63,8 +69,8 @@ class CourseDetailedPage extends StatelessWidget {
                   .push(MaterialPageRoute(builder: (context) => ReviewPage()));
             },
             child: Text(
-              "4.6 *****",
-              style: TextStyle(fontSize: 12, color: Colors.yellow),
+              "${courseDeailedProvider.rating} *****",
+              style: const TextStyle(fontSize: 12, color: Colors.yellow),
             ),
           ),
           KHeight,
@@ -149,7 +155,7 @@ class CourseDetailedPage extends StatelessWidget {
                     fontSize: 16),
               ),
               Text(
-                "Erich Andreas",
+                courseDeailedProvider.instructor!.name.toString(),
                 style: TextStyle(
                     color: Colors.purple,
                     fontWeight: FontWeight.bold,
@@ -201,7 +207,8 @@ class CourseDetailedPage extends StatelessWidget {
             physics: BouncingScrollPhysics(),
             itemCount: 8,
             itemBuilder: (context, index) {
-              return CourseDetailesListTile();
+              return SizedBox();
+              //CourseDetailesListTile();
             },
           ),
         ],

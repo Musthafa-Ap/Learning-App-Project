@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/catagories_detailed_page.dart';
 import 'package:nuox_project/pages/featured/sections/catagories_section/see_all_catagories.dart';
+import 'package:nuox_project/pages/featured/services/catagories_section/catagories_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../widgets/bold_heading.dart';
 import '../../../../widgets/see_all_widget.dart';
@@ -18,6 +20,8 @@ class CatagoriesSection extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    final catagoriesProvider =
+        Provider.of<CatagoriesProvider>(context).catagoriesList;
     return Column(
       children: [
         Row(
@@ -36,14 +40,14 @@ class CatagoriesSection extends StatelessWidget {
         SizedBox(
           height: 60,
           child: ListView.builder(
-            physics: BouncingScrollPhysics(),
-            itemCount: _catagoryButtonTitle.length,
+            physics: const BouncingScrollPhysics(),
+            itemCount: 4,
             shrinkWrap: true,
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
-              final data = _catagoryButtonTitle[index];
+              final datas = catagoriesProvider!.data![index];
               return CatagoriesButton(
-                title: data,
+                title: datas.categoryName.toString(),
                 navigatepage: CatagoriesDetailedPage(),
               );
             },

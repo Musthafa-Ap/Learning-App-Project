@@ -15,8 +15,8 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
     final size = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => CourseDetailedPage()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => SizedBox())); //CourseDetailedPage()));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -24,7 +24,7 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              height: size * .45,
+              height: size * .4,
               width: size * .83,
               decoration: BoxDecoration(
                   image: DecorationImage(

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/pages/featured/services/catagories_section/catagories_provider.dart';
 import 'package:nuox_project/widgets/catagories_list_tile.dart';
+import 'package:provider/provider.dart';
 
 class SeeAllCatagories extends StatelessWidget {
   SeeAllCatagories({super.key});
   final List<Map<String, dynamic>> _tileDetailes = [
-    {"title": "Development", "icon": Icons.developer_mode},
+    {"title": "Development", "icon": Icons.person},
     {"title": "Business", "icon": Icons.business},
     {"title": "Photography", "icon": Icons.photo_camera},
     {"title": "IT & Software", "icon": Icons.computer_outlined},
@@ -12,6 +14,9 @@ class SeeAllCatagories extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    final catagoriesProvider =
+        Provider.of<CatagoriesProvider>(context).catagoriesList!.data;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -32,11 +37,14 @@ class SeeAllCatagories extends StatelessWidget {
           ListView.builder(
             physics: const BouncingScrollPhysics(),
             shrinkWrap: true,
-            itemCount: _tileDetailes.length,
+            itemCount: 2, //catagoriesProvider!.length,
             itemBuilder: (context, index) {
-              final data = _tileDetailes[index];
+              var datas = catagoriesProvider![index];
+              var data = _tileDetailes[index];
               return CatagoriesListTile(
-                  title: data["title"], icon: data["icon"]);
+                icon: data['icon'],
+                title: datas.categoryName.toString(),
+              );
             },
           )
         ],
