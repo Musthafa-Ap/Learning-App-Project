@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/my_home_page.dart';
+import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
+import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/services/catagories_section/catagories_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_provider.dart';
@@ -17,7 +19,9 @@ void main() {
     ChangeNotifierProvider(create: (_) => FeaturedProvider()),
     ChangeNotifierProvider(create: (_) => CatagoriesProvider()),
     ChangeNotifierProvider(create: (_) => TopCoursesProvider()),
-    ChangeNotifierProvider(create: (_) => CourseDetailedProvider())
+    ChangeNotifierProvider(create: (_) => CourseDetailedProvider()),
+    ChangeNotifierProvider(create: (_) => CatagoriesDetailedProvider()),
+    ChangeNotifierProvider(create: (_) => RecomendationsProvider())
   ], child: MyApp()));
 }
 

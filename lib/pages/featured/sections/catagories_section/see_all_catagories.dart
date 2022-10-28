@@ -37,13 +37,13 @@ class SeeAllCatagories extends StatelessWidget {
           ListView.builder(
             physics: const BouncingScrollPhysics(),
             shrinkWrap: true,
-            itemCount: 2, //catagoriesProvider!.length,
+            itemCount: catagoriesProvider!.length,
             itemBuilder: (context, index) {
-              var datas = catagoriesProvider![index];
-              var data = _tileDetailes[index];
+              var datas = catagoriesProvider[index];
               return CatagoriesListTile(
-                icon: data['icon'],
+                icon: Icons.computer_outlined,
                 title: datas.categoryName.toString(),
+                id: datas.id!,
               );
             },
           )

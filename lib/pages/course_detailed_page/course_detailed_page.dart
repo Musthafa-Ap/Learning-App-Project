@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nuox_project/constants/constants.dart';
+import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/review_page/review_page.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
@@ -12,11 +13,12 @@ import '../../widgets/course_detailes_list_tile.dart';
 
 class CourseDetailedPage extends StatelessWidget {
   CourseDetailedPage({super.key});
-  ValueNotifier _selectedValue = ValueNotifier("Expert");
+  ValueNotifier _selectedValue = ValueNotifier("Beginner");
   var _items = ["Beginner", "Intermediate", "Expert"];
   @override
   Widget build(BuildContext context) {
     final courseDeailedProvider = Provider.of<CourseDetailedProvider>(context);
+    final recomendationsProvider = Provider.of<RecomendationsProvider>(context);
 
     var size = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -43,14 +45,14 @@ class CourseDetailedPage extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         children: [
           Container(
-            height: size * .5,
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(courseDeailedProvider
-                        .courseDetailes!.data!.first.thumbnail!.fullSize
-                        .toString()))),
-          ),
+              height: size * .5,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                fit: BoxFit.fill,
+                image: NetworkImage(courseDeailedProvider
+                    .courseDetailes!.data!.first.thumbnail!.fullSize
+                    .toString()),
+              ))),
           KHeight15,
           BoldHeading(
               heading: courseDeailedProvider
@@ -93,11 +95,21 @@ class CourseDetailedPage extends StatelessWidget {
           ValueListenableBuilder(
             valueListenable: _selectedValue,
             builder: (context, value, child) {
-              // int actual_price = courseDeailedProvider.courseDetailes.data..
-              // int bgdiscount = ((35 / 100) * actual_price).toInt();
-              // int beginner_price = actual_price - bgdiscount;
-              // int interdiscount = ((courseDeailedProvider.courseDetailes!.variant![1].amountPerc! / 100) * actual_price).toInt();
-              // int inter_price = actual_price - interdiscount;
+              int actual_price = courseDeailedProvider
+                  .courseDetailes!.data!.first.price!
+                  .toInt();
+              int exdiscount = ((courseDeailedProvider
+                              .courseDetailes!.variant![1].amountPerc! /
+                          100) *
+                      actual_price)
+                  .toInt();
+              int expert_price = actual_price - exdiscount;
+              int interdiscount = ((courseDeailedProvider
+                              .courseDetailes!.variant![2].amountPerc! /
+                          100) *
+                      actual_price)
+                  .toInt();
+              int inter_price = actual_price - interdiscount;
 
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -106,13 +118,12 @@ class CourseDetailedPage extends StatelessWidget {
                     children: [
                       Text(
                         (value == "Beginner")
-                            ? " 888" //beginner_price.toString()
+                            ? courseDeailedProvider
+                                .courseDetailes!.data!.first.price
+                                .toString()
                             : (value == "Intermediate")
-                                ? "6564"
-                                : //inter_price.toString()
-                                courseDeailedProvider
-                                    .courseDetailes!.data!.first.price
-                                    .toString(),
+                                ? inter_price.toString()
+                                : expert_price.toString(),
                         style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -120,7 +131,7 @@ class CourseDetailedPage extends StatelessWidget {
                       ),
                       KWidth10,
                       Text(
-                        "₹3499",
+                        "₹7499",
                         style: const TextStyle(
                             color: Colors.white,
                             decoration: TextDecoration.lineThrough),
@@ -218,10 +229,18 @@ class CourseDetailedPage extends StatelessWidget {
           ListView.builder(
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
-            itemCount: 8,
+            itemCount:
+                recomendationsProvider.recomendationsCourses!.data!.length,
             itemBuilder: (context, index) {
-              return SizedBox();
-              //CourseDetailesListTile();
+              final datas =
+                  recomendationsProvider.recomendationsCourses!.data![index];
+              return CourseDetailesListTile(
+                  courseName: datas.courseName.toString(),
+                  authorName: datas.instructor!.name.toString(),
+                  coursePrice: datas.price!.toDouble(),
+                  image: datas.thumbnail!.fullSize.toString(),
+                  rating: datas.rating!.toDouble(),
+                  id: datas.id!.toInt());
             },
           ),
         ],

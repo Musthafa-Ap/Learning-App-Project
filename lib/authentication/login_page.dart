@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nuox_project/authentication/forgot.dart';
 import 'package:nuox_project/authentication/signup.dart';
+import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_provider.dart';
 import 'package:nuox_project/providers/auth_provider.dart';

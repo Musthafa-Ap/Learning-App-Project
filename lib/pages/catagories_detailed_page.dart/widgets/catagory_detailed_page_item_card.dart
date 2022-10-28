@@ -6,8 +6,16 @@ import '../../../widgets/bestseller.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
 
 class CatagoryDetailedPageItemCard extends StatelessWidget {
+  final String courseName;
+  final int rating;
+  final int price;
+  final String image;
   const CatagoryDetailedPageItemCard({
     Key? key,
+    required this.courseName,
+    required this.rating,
+    required this.price,
+    required this.image,
   }) : super(key: key);
 
   @override
@@ -28,13 +36,11 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
               width: size * .83,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                          "https://upwisy.com/storage/file-1602-LzoD9XZfd9rw1kJt.jpg"))),
+                      fit: BoxFit.cover, image: NetworkImage(image))),
             ),
             KHeight5,
             Text(
-              "Javascript for Beginners",
+              courseName,
               maxLines: 2,
               style: const TextStyle(
                   color: Colors.white,
@@ -43,14 +49,14 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
             ),
             KHeight5,
             Text(
-              "4.6 ***** (36,907)",
+              "${rating} ***** (36,907)",
               style: TextStyle(fontSize: 12, color: Colors.yellow),
             ),
             KHeight5,
             Row(
               children: [
                 Text(
-                  "₹449",
+                  price.toString(),
                   style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -58,7 +64,7 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
                 ),
                 KWidth5,
                 Text(
-                  "3,499",
+                  "7,499",
                   style: const TextStyle(
                       decoration: TextDecoration.lineThrough,
                       color: Colors.white),

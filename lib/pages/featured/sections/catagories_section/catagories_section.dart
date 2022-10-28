@@ -48,7 +48,8 @@ class CatagoriesSection extends StatelessWidget {
               final datas = catagoriesProvider!.data![index];
               return CatagoriesButton(
                 title: datas.categoryName.toString(),
-                navigatepage: CatagoriesDetailedPage(),
+                navigatepage: "catagoriesDetailedPage",
+                id: datas.id!,
               );
             },
           ),

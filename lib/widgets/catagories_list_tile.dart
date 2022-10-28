@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/catagories_detailed_page.dart';
 
 class CatagoriesListTile extends StatelessWidget {
+  final int id;
   final String title;
   final IconData icon;
   final Widget? navigatorpage;
   CatagoriesListTile(
-      {this.navigatorpage, required this.title, required this.icon});
+      {this.navigatorpage,
+      required this.title,
+      required this.icon,
+      required this.id});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => CatagoriesDetailedPage()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => SizedBox())); //CatagoriesDetailedPage()));
       },
       leading: Icon(icon, color: Colors.white),
       title: Text(

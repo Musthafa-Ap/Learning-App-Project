@@ -40,7 +40,7 @@ class SubCatagoriesDetailedPage extends StatelessWidget {
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return CatagoryDetailedPageItemCard();
+                return SizedBox(); //CatagoryDetailedPageItemCard();
               },
             ),
           ),

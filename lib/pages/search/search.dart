@@ -59,8 +59,9 @@ class _SearchState extends State<Search> {
                 itemCount: _foundItems.length,
                 itemBuilder: (context, index) {
                   final data = _foundItems[index];
-                  return CatagoriesListTile(
-                      title: data["title"], icon: data["icon"]);
+                  return SizedBox();
+                  // return CatagoriesListTile(
+                  //     title: data["title"], icon: data["icon"]);
                 },
               ),
             )

@@ -38,6 +38,7 @@ dependencies:
   google_sign_in:
   http:
   shared_preferences:
+  carousel_slider:
   
 
 

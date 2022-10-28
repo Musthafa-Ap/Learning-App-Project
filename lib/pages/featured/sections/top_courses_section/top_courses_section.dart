@@ -11,38 +11,7 @@ import '../../widgets/small_item_card.dart';
 
 class TopCoursesSection extends StatelessWidget {
   TopCoursesSection({super.key});
-  final List courseDetailes = [
-    {
-      "name": "Complete Guitar Lessons System - Beginner to Advanced",
-      "author": "Erich Andreas",
-      "price": 3499
-    },
-    {
-      "name": "Excel Deep Dive: Pivot Tables Workshop",
-      "author": "Alex Mozes",
-      "price": 1499
-    },
-    {
-      "name": "How to create an Awesome Online Courses",
-      "author": "Miguel Hernandez",
-      "price": 2499
-    },
-    {
-      "name": "Art History Prehistory to the Renaissance",
-      "author": "Kenney Mencher",
-      "price": 499
-    },
-    {
-      "name": "Pitch Yourself! Learn to Ignite Curiosity + Inspire Action.",
-      "author": "Alex Fischer",
-      "price": 2499
-    },
-    {
-      "name": "Java Swing (GUI) Programming:From Beginner to Expert",
-      "author": "John Purcell",
-      "price": 1499
-    }
-  ];
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width;
@@ -67,7 +36,7 @@ class TopCoursesSection extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final datas = topCoursesProvider!.data![index];
                       return BigItemCard(
-                        id: datas.id!,
+                        id: datas.id!.toInt(),
                         rating: datas.rating!.toDouble(),
                         image: datas.thumbnail!.fullSize.toString(),
                         courseName: datas.courseName.toString(),

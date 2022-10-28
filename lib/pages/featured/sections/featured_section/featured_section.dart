@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
+import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/services/catagories_section/catagories_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_model.dart';
@@ -30,6 +32,11 @@ class _FeaturedSectionState extends State<FeaturedSection> {
     Provider.of<TopCoursesProvider>(context, listen: false).getAll();
     Provider.of<CourseDetailedProvider>(context, listen: false)
         .getAll(courseID: 1);
+    Provider.of<CatagoriesDetailedProvider>(context, listen: false)
+        .getAll(catagoriesID: 1);
+    Provider.of<CatagoriesDetailedProvider>(context, listen: false)
+        .getAllSub(catagoriesID: 1);
+    Provider.of<RecomendationsProvider>(context, listen: false).getAll();
     super.initState();
   }
 

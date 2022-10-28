@@ -22,7 +22,7 @@ class Featured extends StatelessWidget {
           shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
           children: [
-            const TopImageSection(),
+            TopImageSection(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [TopTextSection(), FeaturedSection()],
