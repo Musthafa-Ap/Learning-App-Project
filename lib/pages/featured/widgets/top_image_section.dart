@@ -14,7 +14,8 @@ class _TopImageSectionState extends State<TopImageSection> {
   List _images = [
     "https://www.timeshighereducation.com/sites/default/files/styles/the_breaking_news_image_style/public/istock-1213470247_0.jpg?itok=VZUWOAHL",
     "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg",
-    "http://learningapp.e8demo.com/media/thumbnail_img/4-physics.jpeg"
+    "http://learningapp.e8demo.com/media/banner_img/5-diwali.jpeg"
+    //"http://learningapp.e8demo.com/media/thumbnail_img/4-physics.jpeg"
   ];
   int _currentIndex = 0;
   @override

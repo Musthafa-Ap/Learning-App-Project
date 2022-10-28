@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:provider/provider.dart';
@@ -27,8 +28,13 @@ class _FeaturedState extends State<Featured> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+            systemOverlayStyle: SystemUiOverlayStyle(
+                statusBarColor: Colors.white,
+                statusBarBrightness: Brightness.light),
             automaticallyImplyLeading: false,
-            title: username == null ? Text("User") : Text("Hi ${username},")),
+            title: username == null
+                ? Text("Welcome,")
+                : Text("Welcome ${username},")),
         body: ListView(
           padding: EdgeInsets.symmetric(
             horizontal: 10,
