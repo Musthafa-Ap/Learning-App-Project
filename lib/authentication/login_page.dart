@@ -6,7 +6,7 @@ import 'package:nuox_project/authentication/signup.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_provider.dart';
-import 'package:nuox_project/providers/auth_provider.dart';
+import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import '../constants/constants.dart';
 import '../pages/featured/services/featured_provider.dart';
@@ -15,7 +15,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  GoogleSignInAccount? _currentUser;
+  @override
   final _globalKey = GlobalKey<FormState>();
 
   final _emailController = TextEditingController();
@@ -26,6 +33,21 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width;
     final authProvider = Provider.of<AuthProvider>(context);
+    Future<void> signIn() async {
+      try {
+        await _googleSignIn.signOut();
+        _currentUser = await _googleSignIn.signIn();
+        if (_currentUser != null) {
+          authProvider.socialLogin(
+              name: _currentUser!.displayName.toString(),
+              context: context,
+              id: _currentUser!.id.toString(),
+              email: _currentUser!.email.toString());
+        }
+      } catch (e) {
+        print("Error signing in $e");
+      }
+    }
 
     return Scaffold(
         backgroundColor: Colors.black,
@@ -151,7 +173,7 @@ class LoginPage extends StatelessWidget {
                   height: 50,
                   child: OutlinedButton(
                     onPressed: () {
-                      signIn;
+                      signIn();
                     },
                     child: const Text(
                       "Log in with Google",
@@ -233,13 +255,5 @@ class LoginPage extends StatelessWidget {
             ),
           ),
         ));
-  }
-
-  Future<void> signIn() async {
-    try {
-      await _googleSignIn.signIn();
-    } catch (e) {
-      print("Error signing in $e");
-    }
   }
 }

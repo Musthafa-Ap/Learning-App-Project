@@ -6,7 +6,7 @@ import 'package:nuox_project/pages/featured/services/catagories_section/catagori
 import 'package:nuox_project/pages/featured/services/featured_model.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:nuox_project/pages/featured/widgets/small_item_card.dart';
-import 'package:nuox_project/providers/auth_provider.dart';
+import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/widgets/see_all_widget.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants/constants.dart';

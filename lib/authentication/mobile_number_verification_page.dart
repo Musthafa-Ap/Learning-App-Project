@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:nuox_project/authentication/moblie_number_otp_submission_page.dart';
 import 'package:nuox_project/authentication/otp_verification_page.dart';
 import 'package:nuox_project/constants/constants.dart';
-import 'package:nuox_project/providers/auth_provider.dart';
+import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/widgets/oulined_text_field_widget.dart';
 import 'package:provider/provider.dart';
 

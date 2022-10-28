@@ -1,7 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:nuox_project/authentication/verification_code_submission_page.dart';
-import 'package:nuox_project/providers/auth_provider.dart';
+import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
 class ForgotPassword extends StatelessWidget {

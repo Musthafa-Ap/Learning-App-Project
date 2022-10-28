@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/pages/account/sections/profile/profile_edit_page.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../constants/constants.dart';
 
-class UserDetailesSection extends StatelessWidget {
+class UserDetailesSection extends StatefulWidget {
   UserDetailesSection({super.key});
+
+  @override
+  State<UserDetailesSection> createState() => _UserDetailesSectionState();
+}
+
+class _UserDetailesSectionState extends State<UserDetailesSection> {
+  @override
+  void initState() {
+    preffunc();
+    super.initState();
+  }
+
+  String? name;
+  String? email;
   Widget build(BuildContext context) {
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Column(
       children: [
         Container(
@@ -31,7 +49,7 @@ class UserDetailesSection extends StatelessWidget {
         KHeight20,
         Center(
           child: Text(
-            "Mohammed Musthafa AP",
+            name == null ? "Username" : name.toString(),
             style: const TextStyle(color: Colors.white, fontSize: 23),
           ),
         ),
@@ -45,12 +63,20 @@ class UserDetailesSection extends StatelessWidget {
             ),
             KWidth5,
             Text(
-              "Musthafamohammed398@gmail.com",
+              email == null ? "E-mail" : email.toString(),
               style: TextStyle(color: Colors.white),
             )
           ],
         ),
       ],
     );
+  }
+
+  void preffunc() async {
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    setState(() {
+      name = sharedPref.getString("name");
+      email = sharedPref.getString('email');
+    });
   }
 }

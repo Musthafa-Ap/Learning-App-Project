@@ -6,9 +6,9 @@ import 'package:nuox_project/authentication/moblie_number_otp_submission_page.da
 import 'package:nuox_project/authentication/otp_verification_page.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../authentication/login_page.dart';
-import '../my_home_page.dart';
-import '../pages/featured/services/featured_model.dart';
+import '../login_page.dart';
+import '../../my_home_page.dart';
+import '../../pages/featured/services/featured_model.dart';
 
 class AuthProvider with ChangeNotifier {
   var mobile_error;
@@ -23,18 +23,49 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void socialLogin(
+      {required String name,
+      required BuildContext context,
+      required String id,
+      required String email}) async {
+    try {
+      Response response = await post(
+          Uri.parse("http://learningapp.e8demo.com/api/social_login/"),
+          body: {'email': email, 'name': name, 'user_social_id': id});
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+        if (data['result'] == "success") {
+          final sharedPrefs = await SharedPreferences.getInstance();
+          notifyListeners();
+          // await sharedPrefs!.clear();
+          await sharedPrefs.setBool("isLogged", true);
+          await sharedPrefs.setString("name", name);
+          await sharedPrefs.setString("email", email);
+          notifyListeners();
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.green,
+              content: Text('Successfully logged in')));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => MyHomePage()),
+              (route) => false);
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   void numberOTPSubmission(
       {required number, required context, required OTP}) async {
     try {
-      print("1");
       Response response = await post(
           Uri.parse(
               "http://learningapp.e8demo.com/api/user-mobileotp/MobileNumberOtpVerification/"),
           body: {'mobile': number, 'otp': OTP});
-      print("2");
+
       Map<String, dynamic> data = jsonDecode(response.body);
 
-      print(data.toString());
       if (data['status'] == false) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
@@ -137,11 +168,15 @@ class AuthProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         login_email_error = null;
         login_pass_error = null;
+        notifyListeners();
         var data = jsonDecode(response.body);
 
         if (data['result'] == "success") {
           final sharedPrefs = await SharedPreferences.getInstance();
+          //  await sharedPrefs!.clear();
           await sharedPrefs.setBool("isLogged", true);
+          await sharedPrefs.setString("email", email);
+          notifyListeners();
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => MyHomePage()),
             (route) => false,
@@ -162,8 +197,9 @@ class AuthProvider with ChangeNotifier {
           } else {
             login_pass_error = null;
           }
-
+          notifyListeners();
           setLoading(false);
+          notifyListeners();
         }
       } else {
         print("failed");
@@ -199,10 +235,15 @@ class AuthProvider with ChangeNotifier {
       if (data['status_code'] == 200) {
         email_error = null;
         mobile_error = null;
+
         setLoading(false);
+        notifyListeners();
         final sharedPrefs = await SharedPreferences.getInstance();
-        await sharedPrefs.clear();
+        //   await sharedPrefs!.clear();
         await sharedPrefs.setBool("isLogged", true);
+        await sharedPrefs.setString("name", name);
+        await sharedPrefs.setString("email", email);
+        notifyListeners();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green,
             content: Text("User created successfully")));
@@ -214,17 +255,22 @@ class AuthProvider with ChangeNotifier {
 
         if (error_message.containsKey("email")) {
           email_error = "Email already exist";
+          notifyListeners();
         } else {
           email_error = null;
+          notifyListeners();
         }
 
         if (error_message.containsKey("mobile")) {
           mobile_error = "Mobile number already exist";
+          notifyListeners();
         } else {
           mobile_error = null;
+          notifyListeners();
         }
         if (error_message.containsKey('name')) {
           name_error = error_message['name'];
+          notifyListeners();
         }
         setLoading(false);
       }

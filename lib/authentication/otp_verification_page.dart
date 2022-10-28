@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/my_home_page.dart';
-import 'package:nuox_project/providers/auth_provider.dart';
+import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/oulined_text_field_widget.dart';

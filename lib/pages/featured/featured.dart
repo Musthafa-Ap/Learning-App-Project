@@ -1,20 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/constants/constants.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'sections/featured_section/featured_section.dart';
 import 'widgets/top_image_section.dart';
 import 'widgets/top_text_section.dart';
 
-class Featured extends StatelessWidget {
+class Featured extends StatefulWidget {
   Featured({super.key});
 
+  @override
+  State<Featured> createState() => _FeaturedState();
+}
+
+class _FeaturedState extends State<Featured> {
+  @override
+  void initState() {
+    preffunc();
+    super.initState();
+  }
+
+  var username;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
-          title: Text("Hello User,"),
-        ),
+            automaticallyImplyLeading: false,
+            title: username == null ? Text("User") : Text("Hi ${username},")),
         body: ListView(
           padding: EdgeInsets.symmetric(
             horizontal: 10,
@@ -29,5 +43,12 @@ class Featured extends StatelessWidget {
             )
           ],
         ));
+  }
+
+  void preffunc() async {
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    setState(() {
+      username = sharedPref.getString("name");
+    });
   }
 }

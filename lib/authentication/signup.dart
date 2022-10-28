@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nuox_project/authentication/login_page.dart';
 import 'package:nuox_project/authentication/mobile_number_verification_page.dart';
-import '../providers/auth_provider.dart';
+import 'providers/auth_provider.dart';
 import '../constants/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +30,7 @@ class SignUpWidget extends StatelessWidget {
                 height: 15,
               ),
               TextFormField(
+                keyboardType: TextInputType.name,
                 controller: _nameController,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(

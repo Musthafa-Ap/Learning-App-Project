@@ -29,7 +29,7 @@ class TopCoursesSection extends StatelessWidget {
             child: Row(
               children: [
                 ListView.builder(
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     itemCount: 3,
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,

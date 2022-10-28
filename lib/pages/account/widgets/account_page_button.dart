@@ -18,6 +18,7 @@ class AccountPageButton extends StatelessWidget {
         onPressed: () async {
           final sharedPrefs = await SharedPreferences.getInstance();
           sharedPrefs.clear();
+          selectedIndex.value = 0;
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
                 builder: (context) => LoginPage(),
