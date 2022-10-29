@@ -21,6 +21,15 @@ class ProfileEditPage extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(15),
         children: [
+          KHeight,
+          CircleAvatar(
+            backgroundColor: Colors.transparent,
+            radius: 100,
+            backgroundImage: NetworkImage(
+              "https://www.pngitem.com/pimgs/m/421-4213036_avatar-hd-png-download.png",
+            ),
+          ),
+          KHeight20,
           OutlinedTextFieldWidget(
             hintText: "Name",
           ),
