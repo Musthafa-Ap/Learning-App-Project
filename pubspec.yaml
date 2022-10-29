@@ -38,6 +38,7 @@ dependencies:
   http:
   shared_preferences:
   carousel_slider:
+  flutter_pw_validator:
 
   
 

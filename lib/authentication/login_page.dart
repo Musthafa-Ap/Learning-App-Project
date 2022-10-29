@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nuox_project/authentication/forgot.dart';
 import 'package:nuox_project/authentication/signup.dart';
+import 'package:nuox_project/my_home_page.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_provider.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/constants.dart';
 import '../pages/featured/services/featured_provider.dart';
 import 'mobile_number_verification_page.dart';
@@ -43,6 +45,10 @@ class _LoginPageState extends State<LoginPage> {
               context: context,
               id: _currentUser!.id.toString(),
               email: _currentUser!.email.toString());
+        }
+        if (_currentUser == null) {
+          print("Current user is null");
+          return;
         }
       } catch (e) {
         print("Error signing in $e");
@@ -251,6 +257,34 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 ),
+                KHeight,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 60),
+                  child: ElevatedButton(
+                    child: Text("Join as a Guest"),
+                    onPressed: () async {
+                      SharedPreferences sharedPref =
+                          await SharedPreferences.getInstance();
+                      sharedPref.setBool("isLogged", true);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Colors.green,
+                          content: Text('Joined as a guest')));
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                          (route) => false);
+                    },
+                    style: ButtonStyle(
+                        padding: MaterialStateProperty.all(
+                            const EdgeInsets.symmetric(vertical: 10)),
+                        backgroundColor: const MaterialStatePropertyAll(
+                          Colors.purple,
+                        ),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                        )),
+                  ),
+                )
               ],
             ),
           ),

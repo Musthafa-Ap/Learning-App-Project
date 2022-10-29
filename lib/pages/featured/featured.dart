@@ -28,13 +28,16 @@ class _FeaturedState extends State<Featured> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Colors.white,
-                statusBarBrightness: Brightness.light),
-            automaticallyImplyLeading: false,
-            title: username == null
-                ? Text("Welcome,")
-                : Text("Welcome ${username},")),
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: Colors.grey,
+              statusBarBrightness: Brightness.light),
+          automaticallyImplyLeading: false,
+          title: Text(
+            "NUOX Learning App",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.purple),
+          ),
+          centerTitle: true,
+        ),
         body: ListView(
           padding: EdgeInsets.symmetric(
             horizontal: 10,
@@ -42,6 +45,15 @@ class _FeaturedState extends State<Featured> {
           shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
           children: [
+            username == null
+                ? const Text(
+                    "Welcome, ",
+                    style: TextStyle(color: Colors.white, fontSize: 17),
+                  )
+                : Text(
+                    "Welcome $username,",
+                    style: const TextStyle(color: Colors.white, fontSize: 17),
+                  ),
             TopImageSection(),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -3,13 +3,13 @@ import 'package:nuox_project/constants/constants.dart';
 
 import '../../../../widgets/oulined_text_field_widget.dart';
 
-ValueNotifier<String> selectedGender = ValueNotifier("");
-
 class ProfileEditPage extends StatelessWidget {
   ProfileEditPage({super.key});
 
-  ValueNotifier<String> _selectedDate = ValueNotifier("Select Date of Birth");
-
+  ValueNotifier<String> selectedDateNotifier =
+      ValueNotifier("Select Date of Birth");
+  ValueNotifier<String> selectedGenderNotifier = ValueNotifier("Male");
+  var _genders = ["Male", "Female", "Others"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,54 +29,93 @@ class ProfileEditPage extends StatelessWidget {
             hintText: "Adress",
           ),
           KHeight15,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              GenderSection(text: "Male"),
-              GenderSection(text: "Female"),
-              GenderSection(text: "Others"),
-            ],
+          Container(
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.black,
+                border: Border.all(color: Colors.white)),
+            child: Padding(
+                padding: const EdgeInsets.all(7.0),
+                child: ValueListenableBuilder(
+                  valueListenable: selectedGenderNotifier,
+                  builder: (context, value, child) {
+                    return DropdownButton(
+                        borderRadius: BorderRadius.circular(10),
+                        underline: const SizedBox(),
+                        iconEnabledColor: Colors.white,
+                        dropdownColor: Colors.purple,
+                        value: value,
+                        items: _genders
+                            .map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 16))))
+                            .toList(),
+                        onChanged: (newValue) {
+                          selectedGenderNotifier.value = newValue!;
+                        });
+                  },
+                )),
           ),
 
           KHeight15, //Dataofbirth
-          ValueListenableBuilder(
-            valueListenable: _selectedDate,
-            builder: (context, value, child) {
-              return TextButton.icon(
-                onPressed: () async {
-                  final selectedDateTemp = await showDatePicker(
-                      context: context,
-                      initialDate:
-                          DateTime.now().subtract(Duration(days: 10000)),
-                      firstDate: DateTime.now().subtract(Duration(days: 30000)),
-                      lastDate: DateTime.now());
-                  if (selectedDateTemp == null) {
-                    return;
-                  } else {
-                    var dateTime = DateTime.parse(selectedDateTemp.toString());
+          GestureDetector(
+            onTap: () async {
+              final selectedDateTemp = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now().subtract(Duration(days: 10000)),
+                  firstDate: DateTime.now().subtract(Duration(days: 30000)),
+                  lastDate: DateTime.now());
+              if (selectedDateTemp == null) {
+                return;
+              } else {
+                var dateTime = DateTime.parse(selectedDateTemp.toString());
 
-                    var formate1 =
-                        "${dateTime.day}-${dateTime.month}-${dateTime.year}";
-                    _selectedDate.value = formate1;
-                  }
-                },
-                icon: const Icon(
-                  Icons.calendar_month,
-                  color: Colors.green,
-                  size: 28,
-                ),
-                label: Text(
-                  value,
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                ),
-              );
+                var formate1 =
+                    "${dateTime.day}-${dateTime.month}-${dateTime.year}";
+                selectedDateNotifier.value = formate1;
+              }
             },
+            child: Container(
+                height: 50,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.black,
+                    border: Border.all(color: Colors.white)),
+                child: Padding(
+                  padding: const EdgeInsets.all(7.0),
+                  child: Row(
+                    children: [
+                      ValueListenableBuilder(
+                        valueListenable: selectedDateNotifier,
+                        builder: (context, value, child) {
+                          return Text(
+                            value,
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          );
+                        },
+                      ),
+                      KWidth5,
+                      Icon(
+                        Icons.calendar_month,
+                        color: Colors.white,
+                        size: 18,
+                      )
+                    ],
+                  ),
+                )),
           ),
           KHeight20, KHeight,
           SizedBox(
             height: 50,
             child: ElevatedButton(
               onPressed: () {
+                print(selectedDateNotifier.value);
+                print(selectedGenderNotifier.value);
                 Navigator.of(context).pop();
               },
               child: Text("Submit"),
@@ -87,34 +126,5 @@ class ProfileEditPage extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class GenderSection extends StatelessWidget {
-  final String text;
-  GenderSection({super.key, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-        valueListenable: selectedGender,
-        builder: (context, newGender, _) {
-          return Row(
-            children: [
-              Radio(
-                  fillColor:
-                      MaterialStateColor.resolveWith((states) => Colors.white),
-                  value: text,
-                  groupValue: newGender,
-                  onChanged: (newValue) {
-                    selectedGender.value = newValue!;
-                  }),
-              Text(
-                text,
-                style: const TextStyle(color: Colors.white),
-              ),
-            ],
-          );
-        });
   }
 }

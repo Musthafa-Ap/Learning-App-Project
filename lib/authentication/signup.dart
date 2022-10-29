@@ -1,11 +1,16 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nuox_project/authentication/login_page.dart';
 import 'package:nuox_project/authentication/mobile_number_verification_page.dart';
 import 'providers/auth_provider.dart';
 import '../constants/constants.dart';
 import 'package:provider/provider.dart';
+
+ValueNotifier<bool> instructorOptionNotifier = ValueNotifier(false);
+final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
 class SignUpWidget extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -13,9 +18,26 @@ class SignUpWidget extends StatelessWidget {
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
   final _numberController = TextEditingController();
+  GoogleSignInAccount? _currentUser;
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
+    Future<void> signIn() async {
+      try {
+        await _googleSignIn.signOut();
+        _currentUser = await _googleSignIn.signIn();
+        if (_currentUser != null) {
+          authProvider.socialLogin(
+              name: _currentUser!.displayName.toString(),
+              context: context,
+              id: _currentUser!.id.toString(),
+              email: _currentUser!.email.toString());
+        }
+      } catch (e) {
+        print("Error signing in $e");
+      }
+    }
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
@@ -30,6 +52,9 @@ class SignUpWidget extends StatelessWidget {
                 height: 15,
               ),
               TextFormField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]"))
+                ],
                 keyboardType: TextInputType.name,
                 controller: _nameController,
                 cursorColor: Colors.black,
@@ -107,6 +132,89 @@ class SignUpWidget extends StatelessWidget {
                     ? "Enter min. 8 characters"
                     : null,
               ),
+              KHeight,
+              FlutterPwValidator(
+                controller: _passwordController,
+                minLength: 8,
+                uppercaseCharCount: 1,
+                numericCharCount: 1,
+                specialCharCount: 1,
+                width: 400,
+                height: 150,
+                onSuccess: () {
+                  print("matched");
+                },
+                // onFail: yourCallbackFunction),
+              ),
+              KHeight15,
+              ValueListenableBuilder(
+                valueListenable: instructorOptionNotifier,
+                builder: (context, newvValue, child) {
+                  return Row(
+                    children: [
+                      const Text(
+                        "Are you an instructor ?",
+                        style: TextStyle(
+                            color: Colors.purple,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      ),
+                      KWidth10,
+                      const Text(
+                        "Yes",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Radio(
+                          fillColor: MaterialStateColor.resolveWith(
+                              (states) => Colors.white),
+                          value: true,
+                          groupValue: newvValue,
+                          onChanged: (value) {
+                            instructorOptionNotifier.value = value!;
+                          }),
+                      const Text(
+                        "No",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      Radio(
+                        fillColor: MaterialStateColor.resolveWith(
+                            (states) => Colors.white),
+                        value: false,
+                        groupValue: newvValue,
+                        onChanged: (value) {
+                          instructorOptionNotifier.value = value!;
+                        },
+                      )
+                    ],
+                  );
+                },
+              ),
+              ValueListenableBuilder(
+                valueListenable: instructorOptionNotifier,
+                builder: (context, value, child) {
+                  return value == true
+                      ? GestureDetector(
+                          onTap: () {
+                            print("Upload a document");
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 45),
+                            height: 40,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                            ),
+                            child: const Center(
+                                child: Text(
+                              "Upload a document",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            )),
+                          ),
+                        )
+                      : const SizedBox();
+                },
+              ),
               const SizedBox(
                 height: 25,
               ),
@@ -133,25 +241,25 @@ class SignUpWidget extends StatelessWidget {
                     }
                   },
                   child: authProvider.isLoading
-                      ? Center(
+                      ? const Center(
                           child: CircularProgressIndicator(
                             color: Colors.black,
                           ),
                         )
-                      : Text("Sign up",
+                      : const Text("Sign up",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold))),
 
               KHeight20,
               Row(
-                children: [
+                children: const [
                   Expanded(
                       child: Divider(
                     thickness: 1,
                     color: Colors.white,
                   )),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: Text("OR",
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold)),
@@ -167,7 +275,9 @@ class SignUpWidget extends StatelessWidget {
               SizedBox(
                 height: 50,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    signIn();
+                  },
                   child: const Text(
                     "Log in with Google",
                     style: TextStyle(color: Colors.white, fontSize: 20),

@@ -37,7 +37,7 @@ class CourseDetailesListTile extends StatelessWidget {
             MaterialPageRoute(builder: (context) => CourseDetailedPage()));
       },
       child: Container(
-          padding: EdgeInsets.symmetric(vertical: 5),
+          padding: const EdgeInsets.symmetric(vertical: 5),
           height: size * .425,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -62,7 +62,7 @@ class CourseDetailesListTile extends StatelessWidget {
                           courseName,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.white),
@@ -80,10 +80,10 @@ class CourseDetailesListTile extends StatelessWidget {
                         ),
                         KHeight5,
                         Text(
-                          coursePrice.toString(),
+                          "₹$coursePrice",
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Colors.white),
@@ -92,7 +92,7 @@ class CourseDetailesListTile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            BestsellerWidget(),
+                            const BestsellerWidget(),
                             isCartItem
                                 ? Container(
                                     decoration: BoxDecoration(

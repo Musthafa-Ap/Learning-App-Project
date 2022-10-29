@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nuox_project/authentication/moblie_number_otp_submission_page.dart';
@@ -31,6 +32,10 @@ class MobileNumberverificationPage extends StatelessWidget {
               height: size * .4,
             ),
             TextFormField(
+              inputFormatters: [
+                LengthLimitingTextInputFormatter(10),
+                FilteringTextInputFormatter.digitsOnly
+              ],
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: ((value) => value == null || value.length < 10
                   ? "Enter a valid mobile number"
@@ -39,6 +44,13 @@ class MobileNumberverificationPage extends StatelessWidget {
               style: const TextStyle(color: Colors.black),
               controller: _numberController,
               decoration: InputDecoration(
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.only(top: 11, left: 1),
+                    child: Text(
+                      "  +91",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(

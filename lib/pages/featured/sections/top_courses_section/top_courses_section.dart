@@ -34,9 +34,9 @@ class TopCoursesSection extends StatelessWidget {
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
-                      final datas = topCoursesProvider!.data![index];
+                      final datas = topCoursesProvider?.data![index];
                       return BigItemCard(
-                        id: datas.id!.toInt(),
+                        id: datas!.id!.toInt(),
                         rating: datas.rating!.toDouble(),
                         image: datas.thumbnail!.fullSize.toString(),
                         courseName: datas.courseName.toString(),

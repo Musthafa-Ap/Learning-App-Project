@@ -54,10 +54,45 @@ class CourseDetailedPage extends StatelessWidget {
                     .toString()),
               ))),
           KHeight15,
-          BoldHeading(
-              heading: courseDeailedProvider
-                  .courseDetailes!.data!.first.courseName
-                  .toString()),
+          ValueListenableBuilder(
+            valueListenable: _selectedValue,
+            builder: (context, value, child) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  BoldHeading(
+                      heading: courseDeailedProvider
+                          .courseDetailes!.data!.first.courseName
+                          .toString()),
+                  Container(
+                    height: 25,
+                    padding: const EdgeInsets.only(
+                      left: 10,
+                    ),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10)),
+                    child: DropdownButton(
+                        underline: const SizedBox(),
+                        borderRadius: BorderRadius.circular(10),
+                        dropdownColor: Colors.purple,
+                        iconEnabledColor: Colors.black,
+                        value: value,
+                        items: _items
+                            .map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e,
+                                    style: const TextStyle(
+                                        color: Colors.black, fontSize: 14))))
+                            .toList(),
+                        onChanged: (newValue) {
+                          _selectedValue.value = newValue;
+                        }),
+                  )
+                ],
+              );
+            },
+          ),
           KHeight5,
           Text(
             "All-in-one Guitar Course,FingerStyle Guitar,Blues Guitar,Acoustic Guitar,Electric Guitar & Fingerpicking Guitarra",
@@ -118,50 +153,48 @@ class CourseDetailedPage extends StatelessWidget {
                     children: [
                       Text(
                         (value == "Beginner")
-                            ? courseDeailedProvider
-                                .courseDetailes!.data!.first.price
-                                .toString()
+                            ? "₹${courseDeailedProvider.courseDetailes!.data!.first.price}"
                             : (value == "Intermediate")
-                                ? inter_price.toString()
-                                : expert_price.toString(),
+                                ? "₹$inter_price"
+                                : "₹$expert_price",
                         style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 27),
                       ),
                       KWidth10,
-                      Text(
+                      const Text(
                         "₹7499",
-                        style: const TextStyle(
+                        style: TextStyle(
                             color: Colors.white,
                             decoration: TextDecoration.lineThrough),
                       ),
                     ],
                   ),
-                  Container(
-                    height: 30,
-                    padding: EdgeInsets.only(
-                      left: 10,
-                    ),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10)),
-                    child: DropdownButton(
-                        underline: const SizedBox(),
-                        borderRadius: BorderRadius.circular(10),
-                        dropdownColor: Colors.purple,
-                        iconEnabledColor: Colors.black,
-                        value: value,
-                        items: _items
-                            .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e,
-                                    style: TextStyle(color: Colors.black))))
-                            .toList(),
-                        onChanged: (newValue) {
-                          _selectedValue.value = newValue;
-                        }),
-                  )
+                  // Container(
+                  //   height: 30,
+                  //   padding: EdgeInsets.only(
+                  //     left: 10,
+                  //   ),
+                  //   decoration: BoxDecoration(
+                  //       color: Colors.white,
+                  //       borderRadius: BorderRadius.circular(10)),
+                  //   child: DropdownButton(
+                  //       underline: const SizedBox(),
+                  //       borderRadius: BorderRadius.circular(10),
+                  //       dropdownColor: Colors.purple,
+                  //       iconEnabledColor: Colors.black,
+                  //       value: value,
+                  //       items: _items
+                  //           .map((e) => DropdownMenuItem(
+                  //               value: e,
+                  //               child: Text(e,
+                  //                   style: TextStyle(color: Colors.black))))
+                  //           .toList(),
+                  //       onChanged: (newValue) {
+                  //         _selectedValue.value = newValue;
+                  //       }),
+                  // )
                 ],
               );
             },
@@ -180,7 +213,7 @@ class CourseDetailedPage extends StatelessWidget {
                 courseDeailedProvider
                     .courseDetailes!.data!.first.instructor!.name
                     .toString(),
-                style: TextStyle(
+                style: const TextStyle(
                     color: Colors.purple,
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
@@ -211,7 +244,7 @@ class CourseDetailedPage extends StatelessWidget {
               child: OutlinedButton(
                 onPressed: () {},
                 child: const Text(
-                  "Add to Cart",
+                  "Bag it",
                   style: TextStyle(color: Colors.white),
                 ),
                 style: ButtonStyle(
@@ -225,10 +258,25 @@ class CourseDetailedPage extends StatelessWidget {
             ),
           ),
           KHeight15,
+          const BoldHeading(heading: "Recently viewed"),
+          //ivide thalkaalam oru cardundaakki vechathaanh.api kittiyaal small item card thanne call cheythaal mathi
+          SizedBox(
+            height: size * .6,
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return RecentlyViewedCard();
+              },
+            ),
+          ),
+          KHeight15,
           const BoldHeading(heading: "Recommendations"),
           ListView.builder(
             shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemCount:
                 recomendationsProvider.recomendationsCourses!.data!.length,
             itemBuilder: (context, index) {
@@ -244,6 +292,89 @@ class CourseDetailedPage extends StatelessWidget {
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class RecentlyViewedCard extends StatelessWidget {
+  const RecentlyViewedCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.width;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SizedBox(
+        width: size * .365,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: size * .185,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image: NetworkImage(
+                          "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg"))),
+            ),
+            KHeight5,
+            Text(
+              "Python",
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            KHeight5,
+            Text(
+              "Marko",
+              style: TextStyle(fontSize: 12, color: Colors.grey[300]),
+            ),
+            KHeight5,
+            Row(
+              children: [
+                Text(
+                  "2.6 ***** (36,907)",
+                  style: TextStyle(fontSize: 12, color: Colors.yellow),
+                ),
+              ],
+            ),
+            KHeight5,
+            Text(
+              "₹6000",
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            KHeight5,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                BestsellerWidget(),
+                Container(
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(5)),
+                    margin: const EdgeInsets.only(right: 20),
+                    height: 30,
+                    width: 50,
+                    child: IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.shopping_bag,
+                          color: Colors.white,
+                          size: 28,
+                        )))
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

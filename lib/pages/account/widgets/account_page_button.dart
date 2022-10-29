@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nuox_project/authentication/login_page.dart';
 import 'package:nuox_project/my_home_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountPageButton extends StatelessWidget {
   final buttontitle;
-  const AccountPageButton({required this.buttontitle});
-
+  AccountPageButton({required this.buttontitle});
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -18,6 +19,7 @@ class AccountPageButton extends StatelessWidget {
         onPressed: () async {
           final sharedPrefs = await SharedPreferences.getInstance();
           sharedPrefs.clear();
+          await _googleSignIn.signOut();
           selectedIndex.value = 0;
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
