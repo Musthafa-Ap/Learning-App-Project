@@ -39,12 +39,10 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
               )),
         ),
         CircleAvatar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           radius: 50,
-          child: Text(
-            "MA",
-            style: const TextStyle(fontSize: 38, color: Colors.black),
-          ),
+          backgroundImage: NetworkImage(
+              "https://www.pngitem.com/pimgs/m/421-4213036_avatar-hd-png-download.png"),
         ),
         KHeight20,
         Center(

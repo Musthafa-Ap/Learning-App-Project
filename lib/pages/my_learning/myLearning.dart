@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import '../../constants/constants.dart';
 import 'widgets/my_learning_card.dart';
 
 class MyLearning extends StatelessWidget {

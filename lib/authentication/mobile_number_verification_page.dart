@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nuox_project/authentication/moblie_number_otp_submission_page.dart';
 import 'package:nuox_project/authentication/otp_verification_page.dart';
+import 'package:nuox_project/authentication/signup.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/widgets/oulined_text_field_widget.dart';
@@ -84,6 +85,33 @@ class MobileNumberverificationPage extends StatelessWidget {
                   "Submit",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 )),
+            KHeight20,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "No account?",
+                  style: const TextStyle(color: Colors.white, fontSize: 17),
+                ),
+                KWidth5,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => SignUpWidget()),
+                      (route) => false,
+                    );
+                  },
+                  child: const Text(
+                    "Sign up",
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  ),
+                )
+              ],
+            ),
           ],
         ),
       ),

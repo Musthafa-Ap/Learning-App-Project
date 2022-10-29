@@ -1,4 +1,5 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
@@ -9,16 +10,28 @@ import 'providers/auth_provider.dart';
 import '../constants/constants.dart';
 import 'package:provider/provider.dart';
 
+ValueNotifier<bool> isdocumentUploadedNotifier = ValueNotifier(false);
 ValueNotifier<bool> instructorOptionNotifier = ValueNotifier(false);
 final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
-class SignUpWidget extends StatelessWidget {
+class SignUpWidget extends StatefulWidget {
+  @override
+  State<SignUpWidget> createState() => _SignUpWidgetState();
+}
+
+class _SignUpWidgetState extends State<SignUpWidget> {
   final _formKey = GlobalKey<FormState>();
+  bool _obscureText = true;
   final _emailController = TextEditingController();
+
   final _passwordController = TextEditingController();
+
   final _nameController = TextEditingController();
+
   final _numberController = TextEditingController();
+
   GoogleSignInAccount? _currentUser;
+
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -118,10 +131,20 @@ class SignUpWidget extends StatelessWidget {
                           : null),
               KHeight,
               TextFormField(
-                obscureText: true,
+                obscureText: _obscureText,
                 controller: _passwordController,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                        icon: Icon(
+                          Icons.remove_red_eye,
+                          color: _obscureText ? Colors.grey : Colors.black,
+                        )),
                     fillColor: Colors.white,
                     filled: true,
                     border: OutlineInputBorder(
@@ -194,8 +217,25 @@ class SignUpWidget extends StatelessWidget {
                 builder: (context, value, child) {
                   return value == true
                       ? GestureDetector(
-                          onTap: () {
-                            print("Upload a document");
+                          onTap: () async {
+                            FilePickerResult? resultFile =
+                                await FilePicker.platform.pickFiles();
+                            if (resultFile != null) {
+                              PlatformFile file = resultFile.files.first;
+                              isdocumentUploadedNotifier.value = true;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      backgroundColor: Colors.green,
+                                      content: Text(
+                                          'Document updoaded successfully')));
+                            } else {
+                              isdocumentUploadedNotifier.value = false;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      backgroundColor: Colors.red,
+                                      content:
+                                          Text('Please upload a document')));
+                            }
                           },
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 45),
@@ -204,11 +244,25 @@ class SignUpWidget extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white,
                             ),
-                            child: const Center(
-                                child: Text(
-                              "Upload a document",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
+                            child: Center(
+                                child: ValueListenableBuilder(
+                              valueListenable: isdocumentUploadedNotifier,
+                              builder: (context, value, child) {
+                                return value == false
+                                    ? const Text(
+                                        "Upload a document",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      )
+                                    : const Text(
+                                        "Document uploaded",
+                                        style: TextStyle(
+                                            color: Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      );
+                              },
                             )),
                           ),
                         )

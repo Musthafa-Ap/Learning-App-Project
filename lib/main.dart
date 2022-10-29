@@ -85,11 +85,20 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      body: Center(
+        child: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          radius: 100,
+          backgroundImage: NetworkImage(
+            "https://anazonya.com/wp-content/uploads/2022/03/nuox-2.jpg",
+          ),
+        ),
+      ),
     );
   }
 
   Future<void> gotoNextPage(context) async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(seconds: 2));
     isLoggedIn
         ? Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => MyHomePage()))

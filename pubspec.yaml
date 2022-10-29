@@ -39,6 +39,8 @@ dependencies:
   shared_preferences:
   carousel_slider:
   flutter_pw_validator:
+  file_picker:
+  video_player:
 
   
 

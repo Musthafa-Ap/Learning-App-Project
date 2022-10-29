@@ -1,8 +1,11 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:nuox_project/authentication/signup.dart';
 import 'package:nuox_project/authentication/verification_code_submission_page.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../constants/constants.dart';
 
 class ForgotPassword extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -81,7 +84,34 @@ class ForgotPassword extends StatelessWidget {
                 ),
                 label: const Text("Reset Password",
                     style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)))
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
+            KHeight20,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "No account?",
+                  style: const TextStyle(color: Colors.white, fontSize: 17),
+                ),
+                KWidth5,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => SignUpWidget()),
+                      (route) => false,
+                    );
+                  },
+                  child: const Text(
+                    "Sign up",
+                    style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17),
+                  ),
+                )
+              ],
+            ),
           ],
         ),
       )),

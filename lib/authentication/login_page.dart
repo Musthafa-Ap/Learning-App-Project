@@ -24,7 +24,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   GoogleSignInAccount? _currentUser;
-  @override
+  bool _obscureText = true;
   final _globalKey = GlobalKey<FormState>();
 
   final _emailController = TextEditingController();
@@ -83,9 +83,19 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 KHeight,
                 TextFormField(
-                  obscureText: true,
+                  obscureText: _obscureText,
                   controller: _passwordController,
                   decoration: InputDecoration(
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                          icon: Icon(
+                            Icons.remove_red_eye,
+                            color: _obscureText ? Colors.grey : Colors.black,
+                          )),
                       errorText: authProvider.login_pass_error,
                       fillColor: Colors.white,
                       filled: true,
