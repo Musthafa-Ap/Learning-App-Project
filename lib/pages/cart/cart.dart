@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/pages/cart/buy_all_page/buy_all_page.dart';
+import 'package:nuox_project/pages/featured/sections/catagories_section/see_all_catagories.dart';
 
 import '../../constants/constants.dart';
 import '../../widgets/course_detailes_list_tile.dart';
@@ -34,7 +36,10 @@ class Cart extends StatelessWidget {
               height: 50,
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => BuyAllPage()));
+                },
                 child: Text(
                   "Buy All",
                   style: TextStyle(fontSize: 20),

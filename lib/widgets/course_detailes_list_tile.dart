@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/pages/course_detailed_page/course_detailed_page.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/widgets/big_item_card.dart';
@@ -74,9 +75,30 @@ class CourseDetailesListTile extends StatelessWidget {
                               TextStyle(fontSize: 12, color: Colors.grey[300]),
                         ),
                         KHeight5,
-                        Text(
-                          "${rating} ***** (36,907)",
-                          style: TextStyle(fontSize: 12, color: Colors.yellow),
+                        Row(
+                          children: [
+                            Text(
+                              "${rating} ",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.yellow),
+                            ),
+                            RatingBarIndicator(
+                              unratedColor: Colors.grey,
+                              rating: rating,
+                              itemBuilder: (context, index) => Icon(
+                                Icons.star,
+                                color: Colors.yellow,
+                              ),
+                              itemCount: 5,
+                              itemSize: 10.0,
+                              direction: Axis.horizontal,
+                            ),
+                            Text(
+                              " (36,907)",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.yellow),
+                            ),
+                          ],
                         ),
                         KHeight5,
                         Text(

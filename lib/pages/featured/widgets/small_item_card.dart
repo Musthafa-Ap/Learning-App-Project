@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +67,22 @@ class SmallItemCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "${rating}***** (36,907)",
+                    "${rating} ",
+                    style: TextStyle(fontSize: 12, color: Colors.yellow),
+                  ),
+                  RatingBarIndicator(
+                    unratedColor: Colors.grey,
+                    rating: rating,
+                    itemBuilder: (context, index) => Icon(
+                      Icons.star,
+                      color: Colors.yellow,
+                    ),
+                    itemCount: 5,
+                    itemSize: 10.0,
+                    direction: Axis.horizontal,
+                  ),
+                  Text(
+                    " (36,907)",
                     style: TextStyle(fontSize: 12, color: Colors.yellow),
                   ),
                 ],

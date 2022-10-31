@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -16,6 +18,7 @@ class AuthProvider with ChangeNotifier {
   var name_error;
   var login_email_error;
   var login_pass_error;
+  var number_error;
 
   bool isLoading = false;
   setLoading(bool value) {
@@ -71,6 +74,9 @@ class AuthProvider with ChangeNotifier {
             backgroundColor: Colors.red,
             content: Text(data['message'].toString())));
       } else if (data.containsKey("token")) {
+        final sharedPrefs = await SharedPreferences.getInstance();
+        //  await sharedPrefs!.clear();
+        await sharedPrefs.setBool("isLogged", true);
         //   Map<String, dynamic> checking = data['token'];
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green,
@@ -101,8 +107,10 @@ class AuthProvider with ChangeNotifier {
             builder: (context) => MobileNumberOTPSubmissionPage(
                   number: num,
                 )));
-      } else if (data['status_code' == 400]) {
+      } else {
         print(data['message']);
+        number_error = data['message'];
+        notifyListeners();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red, content: Text(data['message'])));
       }
@@ -216,22 +224,35 @@ class AuthProvider with ChangeNotifier {
       required String email,
       required String number,
       required String name,
-      required String password}) async {
+      required String password,
+      bool isInstructor = false,
+      File? document}) async {
     String num = countryCode + number;
 
     setLoading(true);
     try {
-      Response response = await post(
-          Uri.parse("http://learningapp.e8demo.com/api/user-register/"),
-          body: {
-            'email': email,
-            'mobile': num,
-            'password': password,
-            'name': name,
-          });
+      Response response = isInstructor
+          ? await post(
+              Uri.parse("http://learningapp.e8demo.com/api/user-register/"),
+              body: {
+                  'email': email,
+                  'mobile': num,
+                  'password': password,
+                  'name': name,
+                  'is_instructor': "true",
+                  'instructor_docs': document
+                })
+          : await post(
+              Uri.parse("http://learningapp.e8demo.com/api/user-register/"),
+              body: {
+                  'email': email,
+                  'mobile': num,
+                  'password': password,
+                  'name': name,
+                });
 
       var data = jsonDecode(response.body);
-
+      print(data);
       if (data['status_code'] == 200) {
         email_error = null;
         mobile_error = null;
@@ -276,6 +297,7 @@ class AuthProvider with ChangeNotifier {
       }
     } catch (e) {
       setLoading(false);
+      print("Some error");
       print(e.toString());
     }
   }

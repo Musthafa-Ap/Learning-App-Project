@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
@@ -107,9 +108,30 @@ class CourseDetailedPage extends StatelessWidget {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => ReviewPage()));
             },
-            child: Text(
-              "${courseDeailedProvider.courseDetailes!.data!.first.rating} *****",
-              style: const TextStyle(fontSize: 12, color: Colors.yellow),
+            child: Row(
+              children: [
+                Text(
+                  "${courseDeailedProvider.courseDetailes!.data!.first.rating} ",
+                  style: const TextStyle(fontSize: 12, color: Colors.yellow),
+                ),
+                RatingBarIndicator(
+                  unratedColor: Colors.grey,
+                  rating: courseDeailedProvider
+                      .courseDetailes!.data!.first.rating!
+                      .toDouble(),
+                  itemBuilder: (context, index) => Icon(
+                    Icons.star,
+                    color: Colors.yellow,
+                  ),
+                  itemCount: 5,
+                  itemSize: 10.0,
+                  direction: Axis.horizontal,
+                ),
+                Text(
+                  " (36,500)",
+                  style: const TextStyle(fontSize: 12, color: Colors.yellow),
+                ),
+              ],
             ),
           ),
           KHeight,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/constants.dart';
@@ -64,9 +65,28 @@ class BigItemCard extends StatelessWidget {
                 style: TextStyle(fontSize: 12, color: Colors.grey[300]),
               ),
               KHeight5,
-              Text(
-                "${rating} ***** (36,907)",
-                style: TextStyle(fontSize: 12, color: Colors.yellow),
+              Row(
+                children: [
+                  Text(
+                    "${rating} ",
+                    style: TextStyle(fontSize: 12, color: Colors.yellow),
+                  ),
+                  RatingBarIndicator(
+                    unratedColor: Colors.grey,
+                    rating: rating,
+                    itemBuilder: (context, index) => Icon(
+                      Icons.star,
+                      color: Colors.yellow,
+                    ),
+                    itemCount: 5,
+                    itemSize: 10.0,
+                    direction: Axis.horizontal,
+                  ),
+                  Text(
+                    " (36,907)",
+                    style: TextStyle(fontSize: 12, color: Colors.yellow),
+                  ),
+                ],
               ),
               KHeight5,
               Text(

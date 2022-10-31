@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:email_validator/email_validator.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   final _numberController = TextEditingController();
 
   GoogleSignInAccount? _currentUser;
-
+  File? documentFile;
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
@@ -222,6 +223,12 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                 await FilePicker.platform.pickFiles();
                             if (resultFile != null) {
                               PlatformFile file = resultFile.files.first;
+                              print(file.path);
+                              setState(() {
+                                documentFile = File(file.path.toString());
+                                print("document name :${documentFile}");
+                              });
+
                               isdocumentUploadedNotifier.value = true;
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -286,12 +293,41 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   onPressed: () {
                     final istrue = _formKey.currentState!.validate();
                     if (istrue) {
-                      authProvider.registration(
-                          context: context,
-                          email: _emailController.text.toString().toLowerCase(),
-                          number: _numberController.text.toString(),
-                          name: _nameController.text.toString(),
-                          password: _passwordController.text.toString());
+                      if (instructorOptionNotifier.value == false) {
+                        authProvider.registration(
+                            context: context,
+                            email:
+                                _emailController.text.toString().toLowerCase(),
+                            number: _numberController.text.toString(),
+                            name: _nameController.text.toString(),
+                            password: _passwordController.text.toString());
+                      } else {
+                        if (isdocumentUploadedNotifier.value == false) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text('Please upload a document')));
+                        } else {
+                          if (documentFile == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text('Please upload a document')));
+                            print("document is null");
+                          } else {
+                            print("File is not null");
+                            authProvider.registration(
+                                isInstructor: true,
+                                document: documentFile,
+                                context: context,
+                                email: _emailController.text
+                                    .toString()
+                                    .toLowerCase(),
+                                number: _numberController.text.toString(),
+                                name: _nameController.text.toString(),
+                                password: _passwordController.text.toString());
+                          }
+                          print("Logined with document");
+                        }
+                      }
                     }
                   },
                   child: authProvider.isLoading

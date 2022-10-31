@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/widgets/big_cart_icon_button.dart';
-
 import '../../../constants/constants.dart';
 import '../../../widgets/bestseller.dart';
-import '../../course_detailed_page/course_detailed_page.dart';
 
 class CatagoryDetailedPageItemCard extends StatelessWidget {
   final String courseName;

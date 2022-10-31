@@ -52,6 +52,7 @@ class MobileNumberverificationPage extends StatelessWidget {
                       style: TextStyle(fontSize: 18),
                     ),
                   ),
+                  errorText: authProvider.number_error,
                   filled: true,
                   fillColor: Colors.white,
                   border: OutlineInputBorder(
@@ -85,7 +86,9 @@ class MobileNumberverificationPage extends StatelessWidget {
                   "Submit",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 )),
-            KHeight20,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .4,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

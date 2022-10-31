@@ -41,6 +41,7 @@ dependencies:
   flutter_pw_validator:
   file_picker:
   video_player:
+  flutter_rating_bar:
 
   
 

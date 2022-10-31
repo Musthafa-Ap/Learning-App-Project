@@ -1,7 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:nuox_project/authentication/signup.dart';
-import 'package:nuox_project/authentication/verification_code_submission_page.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -85,7 +84,9 @@ class ForgotPassword extends StatelessWidget {
                 label: const Text("Reset Password",
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
-            KHeight20,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * .4,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
