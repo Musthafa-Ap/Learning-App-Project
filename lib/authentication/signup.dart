@@ -314,7 +314,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             print("document is null");
                           } else {
                             print("File is not null");
-                            authProvider.registration(
+                            authProvider.instructorRegistration(
                                 isInstructor: true,
                                 document: documentFile,
                                 context: context,
