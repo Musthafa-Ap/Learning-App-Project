@@ -448,6 +448,4 @@ class _SignUpWidgetState extends State<SignUpWidget> {
       ),
     );
   }
-
-  void onsingupButtonPressed() {}
 }

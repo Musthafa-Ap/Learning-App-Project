@@ -36,8 +36,8 @@ class BigCartIconButton extends StatelessWidget {
                     token: token);
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Colors.green,
-                    content: Text("Access token missing")));
+                    backgroundColor: Colors.red,
+                    content: Text("Please register")));
               }
             },
             icon: Icon(

@@ -42,6 +42,7 @@ class TopCoursesSection extends StatelessWidget {
                         courseName: datas.courseName.toString(),
                         coursePrice: datas.price!.toInt(),
                         authorName: datas.instructor!.name.toString(),
+                        isRecomended: datas.recommendedCourse!,
                       );
                     }),
                 KWidth30,

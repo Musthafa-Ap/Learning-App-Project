@@ -12,7 +12,7 @@ import '../../widgets/course_detailes_list_tile.dart';
 import 'widgets/catagory_detailed_page_item_card.dart';
 
 class CatagoriesDetailedPage extends StatelessWidget {
-  CatagoriesDetailedPage({
+  const CatagoriesDetailedPage({
     super.key,
   });
   @override
@@ -97,6 +97,21 @@ class CatagoriesDetailedPage extends StatelessWidget {
             ),
           ),
           KHeight15,
+          const BoldHeading(heading: "Recently viewed"),
+          //ivide thalkaalam oru cardundaakki vechathaanh.api kittiyaal small item card thanne call cheythaal mathi
+          SizedBox(
+            height: size * .6,
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                return RecentlyViewedCard();
+              },
+            ),
+          ),
+          KHeight15,
           const BoldHeading(heading: "Recommendations"),
           ListView.builder(
             shrinkWrap: true,
@@ -107,12 +122,14 @@ class CatagoriesDetailedPage extends StatelessWidget {
               final datas =
                   recomendationProvider.recomendationsCourses!.data![index];
               return CourseDetailesListTile(
-                  courseName: datas.courseName.toString(),
-                  authorName: datas.instructor!.name.toString(),
-                  coursePrice: datas.price!.toDouble(),
-                  image: datas.thumbnail!.fullSize.toString(),
-                  rating: datas.rating!.toDouble(),
-                  id: datas.id!.toInt());
+                courseName: datas.courseName.toString(),
+                authorName: datas.instructor!.name.toString(),
+                coursePrice: datas.price!.toDouble(),
+                image: datas.thumbnail!.fullSize.toString(),
+                rating: datas.rating!.toDouble(),
+                id: datas.id!.toInt(),
+                isRecomended: datas.recommendedCourse!,
+              );
             },
           ),
         ],

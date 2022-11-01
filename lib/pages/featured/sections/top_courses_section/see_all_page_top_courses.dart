@@ -36,6 +36,7 @@ class SeeAllPageTopCourses extends StatelessWidget {
             image: datas.thumbnail!.fullSize.toString(),
             id: datas.id!.toInt(),
             rating: datas.rating!.toDouble(),
+            isRecomended: datas.recommendedCourse!,
           );
         },
       ),

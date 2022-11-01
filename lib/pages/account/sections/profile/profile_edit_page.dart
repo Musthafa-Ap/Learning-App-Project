@@ -1,15 +1,42 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:nuox_project/constants/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../../widgets/oulined_text_field_widget.dart';
-
-class ProfileEditPage extends StatelessWidget {
+class ProfileEditPage extends StatefulWidget {
   ProfileEditPage({super.key});
 
+  @override
+  State<ProfileEditPage> createState() => _ProfileEditPageState();
+}
+
+class _ProfileEditPageState extends State<ProfileEditPage> {
   ValueNotifier<String> selectedDateNotifier =
       ValueNotifier("Select Date of Birth");
+
   ValueNotifier<String> selectedGenderNotifier = ValueNotifier("Male");
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
   var _genders = ["Male", "Female", "Others"];
+  String? name;
+  File? _image;
+  @override
+  void initState() {
+    getdata();
+    super.initState();
+  }
+
+  void getdata() async {
+    SharedPreferences _sharedPref = await SharedPreferences.getInstance();
+    name = _sharedPref.getString("name");
+    if (name != null) {
+      setState(() {
+        _nameController.text = name!;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,20 +49,62 @@ class ProfileEditPage extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         children: [
           KHeight,
-          CircleAvatar(
-            backgroundColor: Colors.transparent,
-            radius: 100,
-            backgroundImage: NetworkImage(
-              "https://www.pngitem.com/pimgs/m/421-4213036_avatar-hd-png-download.png",
-            ),
+          GestureDetector(
+            onTap: () {
+              _pickImage();
+            },
+            child: _image == null
+                ? const CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: 90,
+                    backgroundImage: NetworkImage(
+                        "https://www.pngitem.com/pimgs/m/421-4213036_avatar-hd-png-download.png"),
+                  )
+                : CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    radius: 90,
+                    backgroundImage: FileImage(_image!),
+                  ),
           ),
           KHeight20,
-          OutlinedTextFieldWidget(
-            hintText: "Name",
+          Container(
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.black,
+                border: Border.all(color: Colors.white)),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: TextField(
+                controller: _nameController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Name",
+                    hintStyle: TextStyle(color: Colors.white)),
+              ),
+            ),
           ),
           KHeight15,
-          OutlinedTextFieldWidget(
-            hintText: "Adress",
+          Container(
+            height: 50,
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
+                color: Colors.black,
+                border: Border.all(color: Colors.white)),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: TextField(
+                controller: _addressController,
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Adress",
+                    hintStyle: TextStyle(color: Colors.white)),
+              ),
+            ),
           ),
           KHeight15,
           Container(
@@ -135,5 +204,28 @@ class ProfileEditPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future _pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      String path = image.path;
+      File? img = File(image.path);
+      setState(() {
+        _image = img;
+        // SharedPreferences _sharedpref = await SharedPreferences.getInstance();
+        // _sharedpref.setString("image", path);
+        // print(_image);
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.green,
+            content: Text('Image updoaded successfully')));
+
+        //  Navigator.pop(context);
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

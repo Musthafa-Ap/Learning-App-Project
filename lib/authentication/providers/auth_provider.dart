@@ -41,10 +41,11 @@ class AuthProvider with ChangeNotifier {
         if (data['result'] == "success") {
           final sharedPrefs = await SharedPreferences.getInstance();
           notifyListeners();
-          // await sharedPrefs!.clear();
+          var token = data['token']['access_token'];
           await sharedPrefs.setBool("isLogged", true);
           await sharedPrefs.setString("name", name);
           await sharedPrefs.setString("email", email);
+          await sharedPrefs.setString("access_token", token);
           notifyListeners();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.green,
@@ -68,16 +69,20 @@ class AuthProvider with ChangeNotifier {
           body: {'mobile': number, 'otp': OTP});
 
       Map<String, dynamic> data = jsonDecode(response.body);
-
+      print("datas=$data");
       if (data['status'] == false) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
             content: Text(data['message'].toString())));
       } else if (data.containsKey("token")) {
+        String token = data['token']['access_token'];
         final sharedPrefs = await SharedPreferences.getInstance();
         //  await sharedPrefs!.clear();
         await sharedPrefs.setBool("isLogged", true);
-        //   Map<String, dynamic> checking = data['token'];
+        await sharedPrefs.setString("access_token", token);
+        print("token=$token");
+        //  <String, dynamic> checking = data['token'];
+
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green,
             content: Text('OTP submitted successfully')));
@@ -99,8 +104,9 @@ class AuthProvider with ChangeNotifier {
               "http://learningapp.e8demo.com/api/user-mobileotp/MobileNumberOtp/"),
           body: {'mobile': num});
       Map<String, dynamic> data = jsonDecode(response.body);
-      print(data.toString());
+      //  print(data.toString());
       if (data['status'] == 200) {
+        //  print("datas = $data");
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green, content: Text(data['message'])));
         Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -108,7 +114,7 @@ class AuthProvider with ChangeNotifier {
                   number: num,
                 )));
       } else {
-        print(data['message']);
+        //  print(data['message']);
         number_error = data['message'];
         notifyListeners();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -194,7 +200,8 @@ class AuthProvider with ChangeNotifier {
             (route) => false,
           );
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Colors.green, content: Text(data['result'])));
+              backgroundColor: Colors.green,
+              content: Text("Successfully logged in")));
           setLoading(false);
         } else if (data['result'] == "failure") {
           print(data.toString());
@@ -243,7 +250,6 @@ class AuthProvider with ChangeNotifier {
             'name': name,
           });
       var data = jsonDecode(response.body);
-      print(data);
       if (data['status_code'] == 200) {
         email_error = null;
         mobile_error = null;
@@ -253,8 +259,12 @@ class AuthProvider with ChangeNotifier {
         final sharedPrefs = await SharedPreferences.getInstance();
         //   await sharedPrefs!.clear();
         await sharedPrefs.setBool("isLogged", true);
+        //  print("data=$data");
+        var accessToken = data["token"]["access_token"];
+        // print("access token = $accessToken");
         await sharedPrefs.setString("name", name);
         await sharedPrefs.setString("email", email);
+        await sharedPrefs.setString("access_token", accessToken);
         notifyListeners();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green,
@@ -263,6 +273,7 @@ class AuthProvider with ChangeNotifier {
             MaterialPageRoute(builder: (context) => MyHomePage()),
             (route) => false);
       } else if (data['status_code'] == 400) {
+        setLoading(false);
         Map<String, dynamic> error_message = data['message'];
 
         if (error_message.containsKey("email")) {
@@ -324,7 +335,7 @@ class AuthProvider with ChangeNotifier {
         var data = await value.stream.toBytes();
         var body = String.fromCharCodes(data);
         var msg = jsonDecode(body);
-        print(msg);
+        var token = msg['token']['access_token'];
         if (msg["status_code"] == 200) {
           email_error = null;
           mobile_error = null;
@@ -336,6 +347,7 @@ class AuthProvider with ChangeNotifier {
           await sharedPrefs.setBool("isLogged", true);
           await sharedPrefs.setString("name", name);
           await sharedPrefs.setString("email", email);
+          await sharedPrefs.setString("access_token", token);
           notifyListeners();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.green,
@@ -343,7 +355,6 @@ class AuthProvider with ChangeNotifier {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => MyHomePage()),
               (route) => false);
-          print("successfully added");
         } else if (msg["status_code"] == 400) {
           Map<String, dynamic> error_message = msg['message'];
           if (error_message.containsKey("email")) {

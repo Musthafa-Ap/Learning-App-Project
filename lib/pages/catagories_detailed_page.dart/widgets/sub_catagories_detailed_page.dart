@@ -64,6 +64,7 @@ class SubCatagoriesDetailedPage extends StatelessWidget {
                 id: datas.id!.toInt(),
                 image: datas.thumbnail!.fullSize.toString(),
                 rating: datas.rating!.toDouble(),
+                isRecomended: datas.recommendedCourse!,
               );
             },
           ),

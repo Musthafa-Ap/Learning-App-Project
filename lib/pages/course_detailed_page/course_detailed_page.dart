@@ -340,8 +340,8 @@ class CourseDetailedPage extends StatelessWidget {
                     }
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        backgroundColor: Colors.green,
-                        content: Text("Access token missing")));
+                        backgroundColor: Colors.red,
+                        content: Text("Please register")));
                   }
                 },
                 style: ButtonStyle(
@@ -384,12 +384,14 @@ class CourseDetailedPage extends StatelessWidget {
               final datas =
                   recomendationsProvider.recomendationsCourses!.data![index];
               return CourseDetailesListTile(
-                  courseName: datas.courseName.toString(),
-                  authorName: datas.instructor!.name.toString(),
-                  coursePrice: datas.price!.toDouble(),
-                  image: datas.thumbnail!.fullSize.toString(),
-                  rating: datas.rating!.toDouble(),
-                  id: datas.id!.toInt());
+                courseName: datas.courseName.toString(),
+                authorName: datas.instructor!.name.toString(),
+                coursePrice: datas.price!.toDouble(),
+                image: datas.thumbnail!.fullSize.toString(),
+                rating: datas.rating!.toDouble(),
+                id: datas.id!.toInt(),
+                isRecomended: datas.recommendedCourse!,
+              );
             },
           ),
         ],

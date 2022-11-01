@@ -26,18 +26,18 @@ class CatagoriesButton extends StatelessWidget {
               shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                   side: BorderSide(color: Colors.white)))),
-          onPressed: () {
+          onPressed: () async {
             if (navigatepage == "sub_catagories_detailed") {
-              catagoiresdetailesProvider.getSubCatagoriesDetailes(
+              await catagoiresdetailesProvider.getSubCatagoriesDetailes(
                   subCatagoriesID: id);
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => SubCatagoriesDetailedPage()));
             }
             if (navigatepage == "catagoriesDetailedPage") {
-              catagoiresdetailesProvider.getAll(
+              await catagoiresdetailesProvider.getAll(
                 catagoriesID: id,
               );
-              catagoiresdetailesProvider.getAllSub(catagoriesID: id);
+              await catagoiresdetailesProvider.getAllSub(catagoriesID: id);
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => CatagoriesDetailedPage()));
             }

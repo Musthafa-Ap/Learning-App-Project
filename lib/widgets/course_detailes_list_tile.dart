@@ -11,6 +11,7 @@ import '../constants/constants.dart';
 import 'big_cart_icon_button.dart';
 
 class CourseDetailesListTile extends StatelessWidget {
+  bool? isRecomended;
   final int id;
   final String courseName;
   final String authorName;
@@ -28,6 +29,7 @@ class CourseDetailesListTile extends StatelessWidget {
     required this.rating,
     required this.id,
     this.variantID,
+    this.isRecomended = false,
   }) : super(key: key);
   final bool isCartItem;
   @override
@@ -118,7 +120,7 @@ class CourseDetailesListTile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            const BestsellerWidget(),
+                            isRecomended! ? BestsellerWidget() : SizedBox(),
                             isCartItem
                                 ? Container(
                                     decoration: BoxDecoration(
@@ -129,9 +131,6 @@ class CourseDetailesListTile extends StatelessWidget {
                                     width: 45,
                                     child: IconButton(
                                         onPressed: () {
-                                          print("id = $id");
-                                          print("variant id = $variantID");
-
                                           cartProvider.deleteCartItem(
                                               courseID: id,
                                               variantID: variantID,

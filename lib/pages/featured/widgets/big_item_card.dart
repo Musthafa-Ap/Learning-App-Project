@@ -9,6 +9,7 @@ import '../../course_detailed_page/course_detailed_page.dart';
 import '../../course_detailed_page/services/course_detailed_provider.dart';
 
 class BigItemCard extends StatelessWidget {
+  final bool isRecomended;
   final int id;
   final String courseName;
   final String authorName;
@@ -23,6 +24,7 @@ class BigItemCard extends StatelessWidget {
     required this.rating,
     required this.image,
     required this.id,
+    required this.isRecomended,
   }) : super(key: key);
 
   @override
@@ -103,7 +105,7 @@ class BigItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  BestsellerWidget(),
+                  isRecomended ? BestsellerWidget() : SizedBox(),
                   BigCartIconButton(
                     id: id.toInt(),
                     price: coursePrice.toInt(),

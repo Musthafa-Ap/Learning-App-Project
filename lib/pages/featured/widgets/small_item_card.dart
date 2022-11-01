@@ -10,6 +10,7 @@ import '../../../constants/constants.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
 
 class SmallItemCard extends StatelessWidget {
+  final bool isRecomended;
   final int id;
   final String courseName;
   final String authorName;
@@ -24,6 +25,7 @@ class SmallItemCard extends StatelessWidget {
     required this.image,
     required this.rating,
     required this.id,
+    required this.isRecomended,
   }) : super(key: key);
 
   @override
@@ -103,7 +105,7 @@ class SmallItemCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  BestsellerWidget(),
+                  isRecomended ? BestsellerWidget() : SizedBox(),
                   Container(
                       decoration: BoxDecoration(
                           color: Colors.transparent,
@@ -126,8 +128,8 @@ class SmallItemCard extends StatelessWidget {
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                      backgroundColor: Colors.green,
-                                      content: Text("Access token missing")));
+                                      backgroundColor: Colors.red,
+                                      content: Text("Please register")));
                             }
                           },
                           icon: Icon(
