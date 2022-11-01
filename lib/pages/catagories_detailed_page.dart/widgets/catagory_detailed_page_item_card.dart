@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/widgets/big_cart_icon_button.dart';
+import 'package:provider/provider.dart';
 import '../../../constants/constants.dart';
 import '../../../widgets/bestseller.dart';
+import '../../course_detailed_page/course_detailed_page.dart';
+import '../../course_detailed_page/services/course_detailed_provider.dart';
 
 class CatagoryDetailedPageItemCard extends StatelessWidget {
+  final int id;
   final String courseName;
   final int rating;
   final int price;
@@ -14,6 +18,7 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
     required this.rating,
     required this.price,
     required this.image,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -21,8 +26,10 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
     final size = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => SizedBox())); //CourseDetailedPage()));
+        Provider.of<CourseDetailedProvider>(context, listen: false)
+            .getAll(courseID: id);
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => CourseDetailedPage()));
       },
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -34,7 +41,7 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
               width: size * .83,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      fit: BoxFit.cover, image: NetworkImage(image))),
+                      fit: BoxFit.fill, image: NetworkImage(image))),
             ),
             KHeight5,
             Text(
@@ -78,7 +85,10 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
                 SizedBox(
                   width: size * .436,
                 ),
-                BigCartIconButton()
+                BigCartIconButton(
+                  id: id,
+                  price: price,
+                )
               ],
             )
           ],

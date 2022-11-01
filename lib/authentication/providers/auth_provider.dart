@@ -184,6 +184,10 @@ class AuthProvider with ChangeNotifier {
           //  await sharedPrefs!.clear();
           await sharedPrefs.setBool("isLogged", true);
           await sharedPrefs.setString("email", email);
+          var accessToken = data['token']['access_token'].toString();
+          await sharedPrefs.setString("access_token", accessToken);
+          print("Acess_token");
+          // print(accessToken);
           notifyListeners();
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => MyHomePage()),

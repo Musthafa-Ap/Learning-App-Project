@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constants/constants.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
@@ -26,6 +28,7 @@ class SmallItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final courseDetailedProvider = Provider.of<CourseDetailedProvider>(context);
     var size = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
@@ -109,7 +112,24 @@ class SmallItemCard extends StatelessWidget {
                       height: 30,
                       width: 50,
                       child: IconButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            SharedPreferences _Sharedpref =
+                                await SharedPreferences.getInstance();
+                            var token = _Sharedpref.getString("access_token");
+                            if (token != null) {
+                              courseDetailedProvider.addToCart(
+                                  courseID: id,
+                                  context: context,
+                                  variantID: 1,
+                                  price: coursePrice.toInt(),
+                                  token: token);
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      backgroundColor: Colors.green,
+                                      content: Text("Access token missing")));
+                            }
+                          },
                           icon: Icon(
                             Icons.shopping_bag,
                             color: Colors.white,

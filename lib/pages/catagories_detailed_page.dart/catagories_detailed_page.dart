@@ -66,6 +66,7 @@ class CatagoriesDetailedPage extends StatelessWidget {
                   courseName: datas.courseName.toString(),
                   price: datas.price!.toInt(),
                   rating: datas.rating!.toInt(),
+                  id: datas.id!,
                 );
               },
             ),
@@ -84,7 +85,7 @@ class CatagoriesDetailedPage extends StatelessWidget {
                 final datas =
                     catagoriesDetailedProvider.subCatagories!.data![index];
                 return CatagoriesButton(
-                    navigatepage: null,
+                    navigatepage: "sub_catagories_detailed",
                     title: datas.subCatehoryName.toString(),
                     id: datas.id!.toInt());
                 // return CatagoriesButton(

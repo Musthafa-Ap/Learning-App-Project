@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/course_detailed_page/course_detailed_page.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/widgets/big_item_card.dart';
@@ -16,6 +17,7 @@ class CourseDetailesListTile extends StatelessWidget {
   final double coursePrice;
   final String image;
   final double rating;
+  final int? variantID;
   CourseDetailesListTile({
     this.isCartItem = false,
     Key? key,
@@ -25,10 +27,12 @@ class CourseDetailesListTile extends StatelessWidget {
     required this.image,
     required this.rating,
     required this.id,
+    this.variantID,
   }) : super(key: key);
   final bool isCartItem;
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
     final size = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () {
@@ -124,9 +128,20 @@ class CourseDetailesListTile extends StatelessWidget {
                                     height: 35,
                                     width: 45,
                                     child: IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          print("id = $id");
+                                          print("variant id = $variantID");
+
+                                          cartProvider.deleteCartItem(
+                                              courseID: id,
+                                              variantID: variantID,
+                                              context: context);
+                                        },
                                         icon: Icon(Icons.delete)))
-                                : BigCartIconButton()
+                                : BigCartIconButton(
+                                    id: id,
+                                    price: coursePrice.toInt(),
+                                  )
                           ],
                         )
                       ],

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/constants/constants.dart';
+import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/review_page/review_page.dart';
@@ -9,19 +10,26 @@ import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../widgets/course_detailes_list_tile.dart';
 
 class CourseDetailedPage extends StatelessWidget {
   CourseDetailedPage({super.key});
+
   ValueNotifier _selectedValue = ValueNotifier("Beginner");
+
   var _items = ["Beginner", "Intermediate", "Expert"];
+
   @override
   Widget build(BuildContext context) {
     final courseDeailedProvider = Provider.of<CourseDetailedProvider>(context);
     final recomendationsProvider = Provider.of<RecomendationsProvider>(context);
-
+    // final cartProvider = Provider.of<CartProvider>(context);
+    //  bool alreadyAdded = false;
     var size = MediaQuery.of(context).size.width;
+    int variant = 1;
+    int? expert_price;
+    int? inter_price;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -156,17 +164,17 @@ class CourseDetailedPage extends StatelessWidget {
                   .courseDetailes!.data!.first.price!
                   .toInt();
               int exdiscount = ((courseDeailedProvider
+                              .courseDetailes!.variant![0].amountPerc! /
+                          100) *
+                      actual_price)
+                  .toInt();
+              expert_price = actual_price - exdiscount;
+              int interdiscount = ((courseDeailedProvider
                               .courseDetailes!.variant![1].amountPerc! /
                           100) *
                       actual_price)
                   .toInt();
-              int expert_price = actual_price - exdiscount;
-              int interdiscount = ((courseDeailedProvider
-                              .courseDetailes!.variant![2].amountPerc! /
-                          100) *
-                      actual_price)
-                  .toInt();
-              int inter_price = actual_price - interdiscount;
+              inter_price = actual_price - interdiscount;
 
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -242,33 +250,100 @@ class CourseDetailedPage extends StatelessWidget {
               )
             ],
           ),
-          KHeight,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 75),
-            child: SizedBox(
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text("Buy now"),
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(22))),
-                    backgroundColor: MaterialStateProperty.all(Colors.purple)),
-              ),
-            ),
-          ),
+          // KHeight,
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 75),
+          //   child: SizedBox(
+          //     height: 50,
+          //     child: ElevatedButton(
+          //       onPressed: () {},
+          //       child: Text("Buy now"),
+          //       style: ButtonStyle(
+          //           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          //               RoundedRectangleBorder(
+          //                   borderRadius: BorderRadius.circular(22))),
+          //           backgroundColor: MaterialStateProperty.all(Colors.purple)),
+          //     ),
+          //   ),
+          // ),
           KHeight,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 75),
             child: SizedBox(
               height: 50,
               child: OutlinedButton(
-                onPressed: () {},
-                child: const Text(
-                  "Bag it",
-                  style: TextStyle(color: Colors.white),
-                ),
+                onPressed: () async {
+                  // for (int i = 0;
+                  //     i < cartProvider.cartItems!.data!.cartItem!.length;
+                  //     i++) {
+                  //   // print(
+                  //   //     "${cartProvider.cartItems!.data!.cartItem![i].courseId}");
+                  //   if (cartProvider.cartItems!.data!.cartItem![i].courseId ==
+                  //       courseDeailedProvider.courseDetailes!.data!.first.id!
+                  //           .toInt()) {
+                  //     setState(() {
+                  //       alreadyAdded = true;
+                  //     });
+                  //     print("found");
+                  // print(cartProvider.cartItems!.data!.cartItem![i].courseId
+                  //     .toString());
+                  // print(courseDeailedProvider
+                  //     .courseDetailes!.data!.first.id!
+                  //     .toString());
+
+                  //  }
+                  // print("again");
+                  // print(alreadyAdded);
+                  // }
+                  SharedPreferences _Sharedpref =
+                      await SharedPreferences.getInstance();
+                  var token = _Sharedpref.getString("access_token");
+                  print(token);
+                  if (_selectedValue.value == "Beginner") {
+                    variant = 1;
+                  } else if (_selectedValue.value == "Intermediate") {
+                    variant = 2;
+                  } else {
+                    variant = 3;
+                  }
+
+                  if (token != null) {
+                    if (variant == 1) {
+                      courseDeailedProvider.addToCart(
+                          context: context,
+                          courseID: courseDeailedProvider
+                              .courseDetailes!.data!.first.id!
+                              .toInt(),
+                          variantID: variant,
+                          price: courseDeailedProvider
+                              .courseDetailes!.data!.first.price!
+                              .toInt(),
+                          token: token);
+                    } else if (variant == 2) {
+                      courseDeailedProvider.addToCart(
+                          context: context,
+                          courseID: courseDeailedProvider
+                              .courseDetailes!.data!.first.id!
+                              .toInt(),
+                          variantID: variant,
+                          price: inter_price!.toInt(),
+                          token: token);
+                    } else {
+                      courseDeailedProvider.addToCart(
+                          context: context,
+                          courseID: courseDeailedProvider
+                              .courseDetailes!.data!.first.id!
+                              .toInt(),
+                          variantID: variant,
+                          price: expert_price!.toInt(),
+                          token: token);
+                    }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        backgroundColor: Colors.green,
+                        content: Text("Access token missing")));
+                  }
+                },
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
@@ -276,6 +351,10 @@ class CourseDetailedPage extends StatelessWidget {
                     side: MaterialStateProperty.all(const BorderSide(
                       color: Colors.white,
                     ))),
+                child: Text(
+                  "Bag it",
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
             ),
           ),

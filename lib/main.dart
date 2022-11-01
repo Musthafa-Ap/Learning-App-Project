@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/my_home_page.dart';
+import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
@@ -22,7 +23,8 @@ void main() async {
     ChangeNotifierProvider(create: (_) => TopCoursesProvider()),
     ChangeNotifierProvider(create: (_) => CourseDetailedProvider()),
     ChangeNotifierProvider(create: (_) => CatagoriesDetailedProvider()),
-    ChangeNotifierProvider(create: (_) => RecomendationsProvider())
+    ChangeNotifierProvider(create: (_) => RecomendationsProvider()),
+    ChangeNotifierProvider(create: (_) => CartProvider())
   ], child: MyApp()));
 }
 
@@ -100,9 +102,9 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> gotoNextPage(context) async {
     await Future.delayed(Duration(seconds: 2));
     isLoggedIn
-        ? Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => MyHomePage()))
-        : Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => LoginPage()));
+        ? Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => MyHomePage()))
+        : Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => LoginPage()));
   }
 }

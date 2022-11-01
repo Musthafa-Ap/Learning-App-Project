@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/catagories_detailed_page.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_model.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
+import 'package:nuox_project/pages/catagories_detailed_page.dart/widgets/sub_catagories_detailed_page.dart';
 import 'package:provider/provider.dart';
 
 class CatagoriesButton extends StatelessWidget {
@@ -26,8 +27,11 @@ class CatagoriesButton extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                   side: BorderSide(color: Colors.white)))),
           onPressed: () {
-            if (navigatepage == null) {
-              return;
+            if (navigatepage == "sub_catagories_detailed") {
+              catagoiresdetailesProvider.getSubCatagoriesDetailes(
+                  subCatagoriesID: id);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => SubCatagoriesDetailedPage()));
             }
             if (navigatepage == "catagoriesDetailedPage") {
               catagoiresdetailesProvider.getAll(

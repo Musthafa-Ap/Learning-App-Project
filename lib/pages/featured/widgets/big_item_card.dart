@@ -102,7 +102,13 @@ class BigItemCard extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [BestsellerWidget(), BigCartIconButton()],
+                children: [
+                  BestsellerWidget(),
+                  BigCartIconButton(
+                    id: id.toInt(),
+                    price: coursePrice.toInt(),
+                  )
+                ],
               ),
             ],
           ),

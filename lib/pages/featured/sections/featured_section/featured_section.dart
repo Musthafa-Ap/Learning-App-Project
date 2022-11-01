@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
@@ -37,7 +38,10 @@ class _FeaturedSectionState extends State<FeaturedSection> {
     Provider.of<CatagoriesDetailedProvider>(context, listen: false)
         .getAllSub(catagoriesID: 1);
     Provider.of<RecomendationsProvider>(context, listen: false).getAll();
+    Provider.of<CatagoriesDetailedProvider>(context, listen: false)
+        .getSubCatagoriesDetailes(subCatagoriesID: 1);
     super.initState();
+    Provider.of<CartProvider>(context, listen: false).getAllCartItems();
   }
 
   @override

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
+import 'package:provider/provider.dart';
 import '../../../constants/constants.dart';
 import '../../../widgets/bold_heading.dart';
 import '../../../widgets/course_detailes_list_tile.dart';
@@ -9,6 +11,7 @@ class SubCatagoriesDetailedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final catagoriesProvider = Provider.of<CatagoriesDetailedProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text("Subcategories"),
@@ -32,28 +35,36 @@ class SubCatagoriesDetailedPage extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          SizedBox(
-            height: 320,
-            child: ListView.builder(
-              itemCount: 3,
-              physics: const BouncingScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return SizedBox(); //CatagoryDetailedPageItemCard();
-              },
-            ),
-          ),
+          // SizedBox(
+          //   height: 320,
+          //   child: ListView.builder(
+          //     itemCount: 3,
+          //     physics: const BouncingScrollPhysics(),
+          //     shrinkWrap: true,
+          //     scrollDirection: Axis.horizontal,
+          //     itemBuilder: (context, index) {
+          //       return SizedBox(); //CatagoryDetailedPageItemCard();
+          //     },
+          //   ),
+          // ),
           KHeight15,
-          KHeight15,
-          const BoldHeading(heading: "Recommendations"),
+          // KHeight15,
+          // const BoldHeading(heading: "Recommendations"),
           ListView.builder(
             shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
-            itemCount: 8,
+            physics: const BouncingScrollPhysics(),
+            itemCount: catagoriesProvider.subCatagoriesDetailes!.data!.length,
             itemBuilder: (context, index) {
-              return SizedBox();
-              //CourseDetailesListTile();
+              final datas =
+                  catagoriesProvider.subCatagoriesDetailes!.data![index];
+              return CourseDetailesListTile(
+                authorName: datas.instructor!.name.toString(),
+                courseName: datas.courseName.toString(),
+                coursePrice: datas.price!.toDouble(),
+                id: datas.id!.toInt(),
+                image: datas.thumbnail!.fullSize.toString(),
+                rating: datas.rating!.toDouble(),
+              );
             },
           ),
         ],
