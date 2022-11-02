@@ -1,5 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
+import 'package:nuox_project/authentication/providers/widgets/top_image.dart';
 import 'package:nuox_project/authentication/signup.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,7 @@ class ForgotPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.width;
     final authProvider = Provider.of<AuthProvider>(context);
     return Scaffold(
       backgroundColor: Colors.black,
@@ -24,42 +26,45 @@ class ForgotPassword extends StatelessWidget {
           child: Form(
         key: _formKey,
         child: ListView(
+          physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(20),
           children: [
-            const SizedBox(
-              height: 50,
+            SizedBox(height: size * .15),
+            TopImage(),
+            // SizedBox(height: size * .1),
+            // const Text(
+            //   "Recieve an email to reset your password",
+            //   textAlign: TextAlign.center,
+            //   style: TextStyle(
+            //       fontSize: 25,
+            //       color: Colors.white,
+            //       fontWeight: FontWeight.bold),
+            // ),
+            SizedBox(
+              height: size * .2,
             ),
-            const Text(
-              "Recieve an email to reset your password",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 25,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              height: 70,
-            ),
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              controller: _emailController,
-              decoration: InputDecoration(
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: "Email",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10))),
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (email) => email == null ||
-                      email.isEmpty ||
-                      !EmailValidator.validate(email)
-                  ? "Enter a valid Email"
-                  : null,
+            Center(
+              child: TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                controller: _emailController,
+                decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    hintText: "Enter your email",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10))),
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (email) => email == null ||
+                        email.isEmpty ||
+                        !EmailValidator.validate(email)
+                    ? "Enter a valid Email"
+                    : null,
+              ),
             ),
             const SizedBox(
               height: 30,
             ),
-            ElevatedButton.icon(
+            ElevatedButton(
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all(
                         const EdgeInsets.symmetric(vertical: 15)),
@@ -77,16 +82,14 @@ class ForgotPassword extends StatelessWidget {
                         emailforOTP: _emailController.text.trim().toString());
                   }
                 },
-                icon: const Icon(
-                  Icons.email_outlined,
-                  size: 25,
-                ),
-                label: const Text("Reset Password",
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold))),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * .4,
-            ),
+                child: authProvider.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : const Text("Reset Password",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold))),
+            SizedBox(height: size * .4),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

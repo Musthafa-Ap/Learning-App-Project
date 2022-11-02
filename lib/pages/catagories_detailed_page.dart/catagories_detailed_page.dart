@@ -35,12 +35,12 @@ class CatagoriesDetailedPage extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         children: [
-          Text(
-            "Development",
-            style: const TextStyle(
-                color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
-          ),
-          KHeight15,
+          // Text(
+          //   "Development",
+          //   style: const TextStyle(
+          //       color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+          // ),
+          // KHeight15,
           Text(
             "Courses to get you started",
             style: const TextStyle(

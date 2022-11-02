@@ -6,12 +6,15 @@ import 'package:nuox_project/pages/featured/services/catagories_section/catagori
 
 class CatagoriesProvider with ChangeNotifier {
   CatagoriesModel? catagoriesList;
+  bool isLoading = false;
   Future<void> getAll() async {
+    isLoading = true;
     Response response = await get(
         Uri.parse("http://learningapp.e8demo.com/api/category_list/"));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       catagoriesList = CatagoriesModel.fromJson(data);
+      isLoading = false;
       notifyListeners();
       //print(catagoriesList!.data![1].categoryName);
     }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
+import 'package:nuox_project/authentication/providers/widgets/top_image.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/constants.dart';
@@ -24,7 +25,11 @@ class MobileNumberOTPSubmissionPage extends StatelessWidget {
             padding: const EdgeInsets.all(15),
             children: [
               SizedBox(
-                height: size * .3,
+                height: size * .15,
+              ),
+              TopImage(),
+              SizedBox(
+                height: size * .2,
               ),
               TextFormField(
                 keyboardType: TextInputType.number,
@@ -62,9 +67,13 @@ class MobileNumberOTPSubmissionPage extends StatelessWidget {
                     Icons.mobile_friendly,
                     size: 25,
                   ),
-                  label: const Text("Submit",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)))
+                  label: authProvider.isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : const Text("Submit",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)))
             ]));
   }
 }

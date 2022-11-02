@@ -9,13 +9,13 @@ import '../../course_detailed_page/course_detailed_page.dart';
 import '../../course_detailed_page/services/course_detailed_provider.dart';
 
 class BigItemCard extends StatelessWidget {
-  final bool isRecomended;
-  final int id;
-  final String courseName;
-  final String authorName;
-  final int coursePrice;
-  final double rating;
-  final String image;
+  final bool? isRecomended;
+  final int? id;
+  final String? courseName;
+  final String? authorName;
+  final int? coursePrice;
+  final double? rating;
+  final String? image;
   const BigItemCard({
     Key? key,
     required this.courseName,
@@ -24,7 +24,7 @@ class BigItemCard extends StatelessWidget {
     required this.rating,
     required this.image,
     required this.id,
-    required this.isRecomended,
+    this.isRecomended = true,
   }) : super(key: key);
 
   @override
@@ -49,11 +49,13 @@ class BigItemCard extends StatelessWidget {
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     image: DecorationImage(
-                        fit: BoxFit.fill, image: NetworkImage(image))),
+                        fit: BoxFit.fill,
+                        image: NetworkImage(image ??
+                            "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg"))),
               ),
               KHeight5,
               Text(
-                courseName,
+                courseName ?? "Course name",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
@@ -63,7 +65,7 @@ class BigItemCard extends StatelessWidget {
               ),
               KHeight5,
               Text(
-                authorName,
+                authorName ?? "Instructor",
                 style: TextStyle(fontSize: 12, color: Colors.grey[300]),
               ),
               KHeight5,
@@ -75,7 +77,7 @@ class BigItemCard extends StatelessWidget {
                   ),
                   RatingBarIndicator(
                     unratedColor: Colors.grey,
-                    rating: rating,
+                    rating: rating ?? 3,
                     itemBuilder: (context, index) => Icon(
                       Icons.star,
                       color: Colors.yellow,
@@ -105,11 +107,14 @@ class BigItemCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  isRecomended ? BestsellerWidget() : SizedBox(),
-                  BigCartIconButton(
-                    id: id.toInt(),
-                    price: coursePrice.toInt(),
-                  )
+                  // isRecomended! ? BestsellerWidget() : SizedBox(),
+                  BestsellerWidget(),
+                  id != null
+                      ? BigCartIconButton(
+                          id: id!.toInt(),
+                          price: coursePrice!.toInt(),
+                        )
+                      : SizedBox()
                 ],
               ),
             ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:nuox_project/my_home_page.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
@@ -126,10 +127,14 @@ class SmallItemCard extends StatelessWidget {
                                   price: coursePrice.toInt(),
                                   token: token);
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      backgroundColor: Colors.red,
-                                      content: Text("Please register")));
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(builder: (context) => Test()),
+                                (route) => false,
+                              );
+                              // ScaffoldMessenger.of(context).showSnackBar(
+                              //     SnackBar(
+                              //         backgroundColor: Colors.red,
+                              //         content: Text("Please register")));
                             }
                           },
                           icon: Icon(

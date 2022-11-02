@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
+import 'package:nuox_project/authentication/providers/widgets/top_image.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/my_home_page.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
@@ -44,7 +45,11 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
           padding: const EdgeInsets.all(15),
           children: [
             SizedBox(
-              height: size * .3,
+              height: size * .15,
+            ),
+            TopImage(),
+            SizedBox(
+              height: size * .1,
             ),
             TextFormField(
               keyboardType: TextInputType.number,
@@ -62,7 +67,6 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
               validator: (otp) =>
                   otp == null || otp.isEmpty ? "Enter a valid OTP" : null,
             ),
-            KHeight20,
             KHeight,
             TextFormField(
               style: const TextStyle(color: Colors.black),
@@ -92,20 +96,6 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
               ),
             ),
             KHeight,
-            FlutterPwValidator(
-              controller: _newPasswordController,
-              minLength: 8,
-              uppercaseCharCount: 1,
-              numericCharCount: 1,
-              specialCharCount: 1,
-              width: 400,
-              height: 150,
-              onSuccess: () {
-                print("matched");
-              },
-              // onFail: yourCallbackFunction),
-            ),
-            KHeight20,
             TextFormField(
               obscureText: _obscureText1,
               style: const TextStyle(color: Colors.black),
@@ -131,9 +121,21 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                   ? null
                   : "Password mismatch"),
             ),
-            SizedBox(
-              height: size * .1,
+            KHeight,
+            FlutterPwValidator(
+              controller: _newPasswordController,
+              minLength: 8,
+              uppercaseCharCount: 1,
+              numericCharCount: 1,
+              specialCharCount: 1,
+              width: 400,
+              height: 150,
+              onSuccess: () {
+                print("matched");
+              },
+              // onFail: yourCallbackFunction),
             ),
+            KHeight15,
             ElevatedButton(
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all(
@@ -154,10 +156,15 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                         newPassword: _newPasswordController.text.toString());
                   }
                 },
-                child: const Text(
-                  "Submit",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                )),
+                child: authProvider.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : const Text(
+                        "Submit",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      )),
           ],
         ),
       ),

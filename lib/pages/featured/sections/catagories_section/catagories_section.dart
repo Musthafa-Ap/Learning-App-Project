@@ -10,8 +10,7 @@ class CatagoriesSection extends StatelessWidget {
   const CatagoriesSection({super.key});
   @override
   Widget build(BuildContext context) {
-    final catagoriesProvider =
-        Provider.of<CatagoriesProvider>(context).catagoriesList;
+    final catagoriesProvider = Provider.of<CatagoriesProvider>(context);
     return Column(
       children: [
         Row(
@@ -29,20 +28,25 @@ class CatagoriesSection extends StatelessWidget {
         ),
         SizedBox(
           height: 60,
-          child: ListView.builder(
-            physics: const BouncingScrollPhysics(),
-            itemCount: 4,
-            shrinkWrap: true,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) {
-              final datas = catagoriesProvider!.data![index];
-              return CatagoriesButton(
-                title: datas.categoryName.toString(),
-                navigatepage: "catagoriesDetailedPage",
-                id: datas.id!,
-              );
-            },
-          ),
+          child: catagoriesProvider.isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: 4,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    final datas =
+                        catagoriesProvider.catagoriesList?.data![index];
+                    return CatagoriesButton(
+                      title: datas?.categoryName.toString(),
+                      navigatepage: "catagoriesDetailedPage",
+                      id: datas?.id,
+                    );
+                  },
+                ),
         )
       ],
     );

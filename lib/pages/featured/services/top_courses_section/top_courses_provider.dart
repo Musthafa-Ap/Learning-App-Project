@@ -9,12 +9,15 @@ import 'package:nuox_project/pages/featured/services/top_courses_section/top_cou
 class TopCoursesProvider with ChangeNotifier {
   BannerModel? banner;
   TopCoursesModel? topCoursesList;
+  bool isLoading = false;
   Future<void> getAll() async {
+    isLoading = true;
     Response response = await get(
         Uri.parse("http://learningapp.e8demo.com/api/top_course_list/"));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       topCoursesList = TopCoursesModel.fromJson(data);
+      isLoading = false;
       notifyListeners();
     }
   }

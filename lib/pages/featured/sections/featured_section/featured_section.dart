@@ -4,7 +4,7 @@ import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catago
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/services/catagories_section/catagories_provider.dart';
-import 'package:nuox_project/pages/featured/services/featured_model.dart';
+import 'package:nuox_project/pages/featured/services/featured_section/featured_model.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:nuox_project/pages/featured/widgets/small_item_card.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
@@ -12,7 +12,7 @@ import 'package:nuox_project/widgets/see_all_widget.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants/constants.dart';
 import '../../../../widgets/bold_heading.dart';
-import '../../services/featured_provider.dart';
+import '../../services/featured_section/featured_provider.dart';
 import '../top_courses_section/top_courses_section.dart';
 import '../catagories_section/catagories_section.dart';
 import '../../widgets/big_item_card.dart';
@@ -50,16 +50,16 @@ class _FeaturedSectionState extends State<FeaturedSection> {
     final featuredProvider = Provider.of<FeaturedProvider>(context);
     //featuredProvider.Sample();
     final size = MediaQuery.of(context).size.width;
-    return featuredProvider.isLoading == true
-        ? Center(child: CircularProgressIndicator())
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              KHeight15,
-              const BoldHeading(
-                heading: "Featured",
-              ),
-              SizedBox(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        KHeight15,
+        const BoldHeading(
+          heading: "Featured",
+        ),
+        featuredProvider.isLoading == true
+            ? const Center(child: CircularProgressIndicator())
+            : SizedBox(
                 height: size * .60,
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
@@ -99,11 +99,11 @@ class _FeaturedSectionState extends State<FeaturedSection> {
                   ),
                 ),
               ),
-              KHeight20,
-              CatagoriesSection(),
-              KHeight20,
-              TopCoursesSection(),
-            ],
-          );
+        KHeight20,
+        CatagoriesSection(),
+        KHeight20,
+        TopCoursesSection(),
+      ],
+    );
   }
 }

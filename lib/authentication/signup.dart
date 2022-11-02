@@ -7,6 +7,9 @@ import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nuox_project/authentication/login_page.dart';
 import 'package:nuox_project/authentication/mobile_number_verification_page.dart';
+import 'package:nuox_project/authentication/providers/widgets/top_image.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../my_home_page.dart';
 import 'providers/auth_provider.dart';
 import '../constants/constants.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +38,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   File? documentFile;
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.width;
     final authProvider = Provider.of<AuthProvider>(context);
     Future<void> signIn() async {
       try {
@@ -62,8 +66,12 @@ class _SignUpWidgetState extends State<SignUpWidget> {
             physics: const BouncingScrollPhysics(),
             padding: const EdgeInsets.all(20),
             children: [
-              const SizedBox(
-                height: 15,
+              SizedBox(
+                height: size * .05,
+              ),
+              TopImage(),
+              SizedBox(
+                height: size * .1,
               ),
               TextFormField(
                 inputFormatters: [
@@ -170,7 +178,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 },
                 // onFail: yourCallbackFunction),
               ),
-              KHeight15,
+              KHeight,
               ValueListenableBuilder(
                 valueListenable: instructorOptionNotifier,
                 builder: (context, newvValue, child) {
@@ -276,9 +284,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       : const SizedBox();
                 },
               ),
-              const SizedBox(
-                height: 25,
-              ),
+              KHeight,
               ElevatedButton(
                   style: ButtonStyle(
                       padding: MaterialStateProperty.all(
@@ -340,7 +346,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold))),
 
-              KHeight20,
+              KHeight,
               Row(
                 children: const [
                   Expanded(
@@ -361,16 +367,29 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   ))
                 ],
               ),
-              KHeight20,
+              KHeight,
+
               SizedBox(
                 height: 50,
                 child: OutlinedButton(
                   onPressed: () {
-                    signIn();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => MobileNumberverificationPage()));
                   },
-                  child: const Text(
-                    "Log in with Google",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      Container(
+                        width: 45,
+                        child: Image.network(
+                            "https://cdn5.vectorstock.com/i/1000x1000/93/64/telephone-receiver-line-icon-on-black-background-vector-26849364.jpg"),
+                      ),
+                      Text(
+                        "Log in with Mobile number",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      Spacer()
+                    ],
                   ),
                   style: ButtonStyle(
                       side: MaterialStateProperty.all(
@@ -379,44 +398,22 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               ),
               KHeight20,
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                      child: Divider(
-                    thickness: 1,
-                    color: Colors.white,
-                  )),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text("OR",
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold)),
+                  GestureDetector(
+                    onTap: () {
+                      signIn();
+                    },
+                    child: SizedBox(
+                      width: 25,
+                      child: Image.network(
+                          "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png"),
+                    ),
                   ),
-                  Expanded(
-                      child: Divider(
-                    color: Colors.white,
-                    thickness: 1,
-                  ))
                 ],
               ),
-              KHeight20,
-              SizedBox(
-                height: 50,
-                child: OutlinedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => MobileNumberverificationPage()));
-                  },
-                  child: const Text(
-                    "Log in with Mobile number",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  style: ButtonStyle(
-                      side: MaterialStateProperty.all(
-                          const BorderSide(color: Colors.white))),
-                ),
-              ),
               KHeight15,
-              KHeight20,
+
               //////////
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -440,6 +437,38 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                           fontSize: 17),
                     ),
                   )
+                ],
+              ),
+              KHeight,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Join as a ",
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      SharedPreferences sharedPref =
+                          await SharedPreferences.getInstance();
+                      sharedPref.setBool("isLogged", true);
+                      sharedPref.setBool("guest", true);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Colors.green,
+                          content: Text('Joined as a guest')));
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                          (route) => false);
+                    },
+                    child: Text(
+                      "Guest",
+                      style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16),
+                    ),
+                  ),
                 ],
               ),
             ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:nuox_project/pages/featured/services/featured_model.dart';
-import 'package:nuox_project/pages/featured/services/featured_provider.dart';
+import 'package:nuox_project/pages/featured/services/featured_section/featured_model.dart';
+import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/widgets/course_detailes_list_tile.dart';
 import 'package:provider/provider.dart';
 

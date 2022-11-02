@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/my_home_page.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_model.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:provider/provider.dart';
@@ -35,9 +36,10 @@ class BigCartIconButton extends StatelessWidget {
                     price: price.toInt(),
                     token: token);
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    backgroundColor: Colors.red,
-                    content: Text("Please register")));
+                Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => Test()),
+                  (route) => false,
+                );
               }
             },
             icon: Icon(

@@ -6,8 +6,8 @@ import 'package:nuox_project/pages/catagories_detailed_page.dart/widgets/sub_cat
 import 'package:provider/provider.dart';
 
 class CatagoriesButton extends StatelessWidget {
-  final int id;
-  final String title;
+  final int? id;
+  final String? title;
   final String? navigatepage;
   const CatagoriesButton(
       {required this.navigatepage, required this.title, required this.id});
@@ -42,7 +42,7 @@ class CatagoriesButton extends StatelessWidget {
                   builder: (context) => CatagoriesDetailedPage()));
             }
           },
-          child: Text(title)),
+          child: Text(title ?? "Title of the course")),
     );
   }
 }

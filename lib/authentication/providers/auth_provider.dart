@@ -10,7 +10,7 @@ import 'package:nuox_project/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../login_page.dart';
 import '../../my_home_page.dart';
-import '../../pages/featured/services/featured_model.dart';
+import '../../pages/featured/services/featured_section/featured_model.dart';
 
 class AuthProvider with ChangeNotifier {
   var mobile_error;
@@ -63,6 +63,7 @@ class AuthProvider with ChangeNotifier {
   void numberOTPSubmission(
       {required number, required context, required OTP}) async {
     try {
+      setLoading(true);
       var response = await http.post(
           Uri.parse(
               "http://learningapp.e8demo.com/api/user-mobileotp/MobileNumberOtpVerification/"),
@@ -71,15 +72,18 @@ class AuthProvider with ChangeNotifier {
       Map<String, dynamic> data = jsonDecode(response.body);
       print("datas=$data");
       if (data['status'] == false) {
+        setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
             content: Text(data['message'].toString())));
       } else if (data.containsKey("token")) {
+        setLoading(false);
         String token = data['token']['access_token'];
         final sharedPrefs = await SharedPreferences.getInstance();
         //  await sharedPrefs!.clear();
         await sharedPrefs.setBool("isLogged", true);
         await sharedPrefs.setString("access_token", token);
+        await sharedPrefs.setString("number", number);
         print("token=$token");
         //  <String, dynamic> checking = data['token'];
 
@@ -92,6 +96,7 @@ class AuthProvider with ChangeNotifier {
         );
       }
     } catch (e) {
+      setLoading(false);
       print(e.toString());
     }
   }
@@ -99,6 +104,8 @@ class AuthProvider with ChangeNotifier {
   void numberVerification({required number, required context}) async {
     String num = countryCode + number;
     try {
+      number_error = null;
+      setLoading(true);
       var response = await http.post(
           Uri.parse(
               "http://learningapp.e8demo.com/api/user-mobileotp/MobileNumberOtp/"),
@@ -106,6 +113,7 @@ class AuthProvider with ChangeNotifier {
       Map<String, dynamic> data = jsonDecode(response.body);
       //  print(data.toString());
       if (data['status'] == 200) {
+        setLoading(false);
         //  print("datas = $data");
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green, content: Text(data['message'])));
@@ -114,6 +122,7 @@ class AuthProvider with ChangeNotifier {
                   number: num,
                 )));
       } else {
+        setLoading(false);
         //  print(data['message']);
         number_error = data['message'];
         notifyListeners();
@@ -121,6 +130,7 @@ class AuthProvider with ChangeNotifier {
             backgroundColor: Colors.red, content: Text(data['message'])));
       }
     } catch (e) {
+      setLoading(false);
       print(e.toString());
     }
   }
@@ -128,27 +138,32 @@ class AuthProvider with ChangeNotifier {
   void EmailOTPSubmission(
       {required OTP, context, required email, required newPassword}) async {
     try {
+      setLoading(true);
       var response = await http.post(
           Uri.parse(
               "http://learningapp.e8demo.com/api/user-forgotpassword/forgot_password_otp_verification/"),
           body: {'email': email, 'otp': OTP, 'new_password': newPassword});
       Map<String, dynamic> data = jsonDecode(response.body);
       if (data['status'] == true) {
+        setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green, content: Text(data['message'])));
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => LoginPage()));
       } else if (data['status'] == false) {
+        setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red, content: Text(data['message'])));
       }
     } catch (e) {
+      setLoading(false);
       print(e.toString());
     }
   }
 
   void forgotPassword({required emailforOTP, context}) async {
     try {
+      setLoading(true);
       var response = await http.post(
           Uri.parse(
               "http://learningapp.e8demo.com/api/user-forgotpassword/forgot_password_otp/"),
@@ -156,15 +171,18 @@ class AuthProvider with ChangeNotifier {
       Map<String, dynamic> data = jsonDecode(response.body);
 
       if (data['status'] == 200) {
+        setLoading(false);
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => OTPVerificationPage(
                   mailid: emailforOTP,
                 )));
       } else if (data['status'] == false) {
+        setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red, content: Text(data['message'])));
       }
     } catch (e) {
+      setLoading(false);
       print(e.toString());
     }
   }
@@ -175,10 +193,11 @@ class AuthProvider with ChangeNotifier {
       required String password}) async {
     setLoading(true);
     try {
+      login_email_error = null;
+      login_pass_error = null;
       var response = await http.post(
           Uri.parse("http://learningapp.e8demo.com/api/user-login/"),
           body: {'email': email, 'password': password});
-
       if (response.statusCode == 200) {
         login_email_error = null;
         login_pass_error = null;
@@ -204,17 +223,20 @@ class AuthProvider with ChangeNotifier {
               content: Text("Successfully logged in")));
           setLoading(false);
         } else if (data['result'] == "failure") {
-          print(data.toString());
           Map<String, dynamic> error = data['errors'];
           if (error.containsKey('email')) {
             login_email_error = error['email'];
+            notifyListeners();
           } else {
             login_email_error = null;
+            notifyListeners();
           }
           if (error.containsKey('password')) {
             login_pass_error = error['password'];
+            notifyListeners();
           } else {
             login_pass_error = null;
+            notifyListeners();
           }
           notifyListeners();
           setLoading(false);
@@ -222,6 +244,8 @@ class AuthProvider with ChangeNotifier {
         }
       } else {
         print("failed");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.red, content: Text("check your password")));
         setLoading(false);
       }
     } catch (e) {
@@ -241,6 +265,8 @@ class AuthProvider with ChangeNotifier {
 
     setLoading(true);
     try {
+      email_error = null;
+      mobile_error = null;
       var response = await http.post(
           Uri.parse("http://learningapp.e8demo.com/api/user-register/"),
           body: {
@@ -257,11 +283,8 @@ class AuthProvider with ChangeNotifier {
         setLoading(false);
         notifyListeners();
         final sharedPrefs = await SharedPreferences.getInstance();
-        //   await sharedPrefs!.clear();
         await sharedPrefs.setBool("isLogged", true);
-        //  print("data=$data");
         var accessToken = data["token"]["access_token"];
-        // print("access token = $accessToken");
         await sharedPrefs.setString("name", name);
         await sharedPrefs.setString("email", email);
         await sharedPrefs.setString("access_token", accessToken);
@@ -316,6 +339,8 @@ class AuthProvider with ChangeNotifier {
 
     setLoading(true);
     try {
+      email_error = null;
+      mobile_error = null;
       var response = http.MultipartRequest(
         "POST",
         Uri.parse("http://learningapp.e8demo.com/api/user-register/"),
@@ -382,6 +407,32 @@ class AuthProvider with ChangeNotifier {
     } catch (e) {
       setLoading(false);
       print(e.toString());
+    }
+  }
+
+  void logOut(context) async {
+    SharedPreferences _shared = await SharedPreferences.getInstance();
+    var token = _shared.getString("access_token");
+    String auth = "Bearer $token";
+    var api = "http://learningapp.e8demo.com/api/logout/";
+    var response = await http.get(
+      Uri.parse(api),
+      headers: {"Authorization": auth},
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.green,
+          content: Text("Successfully logged out")));
+      _shared.clear();
+      selectedIndex.value = 0;
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => LoginPage(),
+          ),
+          (route) => false);
+    } else {
+      print("status code oth400");
     }
   }
 }

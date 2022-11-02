@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nuox_project/authentication/moblie_number_otp_submission_page.dart';
 import 'package:nuox_project/authentication/otp_verification_page.dart';
+import 'package:nuox_project/authentication/providers/widgets/top_image.dart';
 import 'package:nuox_project/authentication/signup.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
@@ -29,8 +30,11 @@ class MobileNumberverificationPage extends StatelessWidget {
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(15),
           children: [
+            SizedBox(height: size * .15),
+            TopImage(),
+            // SizedBox(height: size * .05),
             SizedBox(
-              height: size * .4,
+              height: size * .2,
             ),
             TextFormField(
               inputFormatters: [
@@ -82,12 +86,17 @@ class MobileNumberverificationPage extends StatelessWidget {
                         number: _numberController.text.toString());
                   }
                 },
-                child: const Text(
-                  "Submit",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                )),
+                child: authProvider.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : const Text(
+                        "Submit",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      )),
             SizedBox(
-              height: MediaQuery.of(context).size.height * .4,
+              height: MediaQuery.of(context).size.height * .2,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

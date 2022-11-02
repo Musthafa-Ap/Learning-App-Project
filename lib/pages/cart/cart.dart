@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/authentication/login_page.dart';
 import 'package:nuox_project/pages/cart/buy_all_page/buy_all_page.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/featured/sections/catagories_section/see_all_catagories.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/constants.dart';
 import '../../widgets/course_detailes_list_tile.dart';
 
 class Cart extends StatelessWidget {
-  const Cart({super.key});
+  bool? isGuest;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class Cart extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: cartProvider.cartItems == null
-            ? const Center(
+            ? Center(
                 child: Text(
                 "Bag is Empty",
                 style: TextStyle(color: Colors.white, fontSize: 18),

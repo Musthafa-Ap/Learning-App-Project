@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CartProvider with ChangeNotifier {
   CartModel? cartItems;
+
   Future<void> getAllCartItems() async {
     SharedPreferences _shared = await SharedPreferences.getInstance();
     var token = _shared.getString("access_token");
@@ -20,6 +21,7 @@ class CartProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       cartItems = CartModel.fromJson(data);
+
       notifyListeners();
     }
   }
@@ -31,13 +33,13 @@ class CartProvider with ChangeNotifier {
     SharedPreferences _shared = await SharedPreferences.getInstance();
     var token = _shared.getString("access_token");
     String auth = "Bearer $token";
-    print(token);
+
     try {
       var response = await http.put(
           Uri.parse("http://learningapp.e8demo.com/api/add_to_cart/"),
           headers: {"Authorization": auth, "Content-Type": "application/json"},
           body: jsonEncode({"course": courseID, "section": variantID}));
-      print(response.body);
+
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green,

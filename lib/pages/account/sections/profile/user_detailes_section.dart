@@ -1,8 +1,4 @@
-import 'dart:io';
-
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/pages/account/sections/profile/profile_edit_page.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +51,6 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
                   backgroundImage: NetworkImage(
                       "https://www.pngitem.com/pimgs/m/421-4213036_avatar-hd-png-download.png"),
                 )),
-            // Center(child: IconButton(onPressed: () {}, icon: Icon(Icons.edit)))
           ],
         ),
         KHeight20,

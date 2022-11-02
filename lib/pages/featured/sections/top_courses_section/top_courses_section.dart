@@ -15,8 +15,7 @@ class TopCoursesSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width;
-    final topCoursesProvider =
-        Provider.of<TopCoursesProvider>(context).topCoursesList;
+    final topCoursesProvider = Provider.of<TopCoursesProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -28,23 +27,28 @@ class TopCoursesSection extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: 3,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      final datas = topCoursesProvider?.data?[index];
-                      return BigItemCard(
-                        id: datas!.id!.toInt(),
-                        rating: datas.rating!.toDouble(),
-                        image: datas.thumbnail!.fullSize.toString(),
-                        courseName: datas.courseName.toString(),
-                        coursePrice: datas.price!.toInt(),
-                        authorName: datas.instructor!.name.toString(),
-                        isRecomended: datas.recommendedCourse!,
-                      );
-                    }),
+                topCoursesProvider.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: 3,
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          final datas =
+                              topCoursesProvider.topCoursesList?.data?[index];
+                          return BigItemCard(
+                            id: datas?.id!.toInt(),
+                            rating: datas?.rating!.toDouble(),
+                            image: datas?.thumbnail!.fullSize.toString(),
+                            courseName: datas?.courseName.toString(),
+                            coursePrice: datas?.price!.toInt(),
+                            authorName: datas?.instructor!.name.toString(),
+                            isRecomended: datas?.recommendedCourse,
+                          );
+                        }),
                 KWidth30,
                 GestureDetector(
                   child: SeeAllWidget(),

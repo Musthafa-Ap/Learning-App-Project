@@ -24,7 +24,7 @@ class FAQPage extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Colors.white)),
+                border: Border.all(color: Colors.grey)),
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               itemCount: 14,

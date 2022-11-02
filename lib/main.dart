@@ -5,7 +5,7 @@ import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catago
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/services/catagories_section/catagories_provider.dart';
-import 'package:nuox_project/pages/featured/services/featured_provider.dart';
+import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
