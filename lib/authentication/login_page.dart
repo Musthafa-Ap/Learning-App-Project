@@ -229,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 ),
                 KHeight15,
-                // KHeight20,
+                KHeight20,
                 //////////
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -255,7 +255,7 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 ),
-                KHeight,
+                KHeight20,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

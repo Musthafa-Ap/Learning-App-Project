@@ -21,6 +21,7 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
 
   String? name;
   String? email;
+  String? image;
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthProvider>(context);
 
@@ -48,8 +49,9 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
                   radius: 50,
-                  backgroundImage: NetworkImage(
-                      "https://www.pngitem.com/pimgs/m/421-4213036_avatar-hd-png-download.png"),
+                  backgroundImage: NetworkImage(image == null
+                      ? "https://www.pngitem.com/pimgs/m/421-4213036_avatar-hd-png-download.png"
+                      : image!),
                 )),
           ],
         ),
@@ -83,7 +85,8 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
     SharedPreferences sharedPref = await SharedPreferences.getInstance();
     setState(() {
       name = sharedPref.getString("name");
-      email = sharedPref.getString('email');
+      email = sharedPref.getString("email");
+      image = sharedPref.getString("image");
     });
   }
 }

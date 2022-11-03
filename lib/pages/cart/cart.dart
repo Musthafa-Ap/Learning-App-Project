@@ -62,17 +62,21 @@ class Cart extends StatelessWidget {
                                 horizontal: 15, vertical: 5),
                             child: ElevatedButton(
                               onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => BuyAllPage()));
+                                cartProvider.isCoupenSuccess = false;
+                                cartProvider.getCheckout(context);
                               },
-                              child: Text(
-                                cartProvider.cartItems!.data!.cartItem!
-                                            .length ==
-                                        1
-                                    ? "Buy Item"
-                                    : "Buy All",
-                                style: TextStyle(fontSize: 20),
-                              ),
+                              child: cartProvider.isLoading
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Text(
+                                      cartProvider.cartItems!.data!.cartItem!
+                                                  .length ==
+                                              1
+                                          ? "Buy Item"
+                                          : "Buy All",
+                                      style: TextStyle(fontSize: 20),
+                                    ),
                               style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.all(Colors.purple)),

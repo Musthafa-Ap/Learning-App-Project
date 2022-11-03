@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/constants/constants.dart';
-import 'package:nuox_project/pages/account/sections/support/faq_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'listtile_account_page.dart';
 import 'widgets/account_page_button.dart';
 import 'widgets/small_heading_account_page.dart';
 import 'sections/profile/user_detailes_section.dart';
 
-class Account extends StatelessWidget {
-  const Account({super.key});
+class Account extends StatefulWidget {
+  Account({super.key});
+
+  @override
+  State<Account> createState() => _AccountState();
+}
+
+class _AccountState extends State<Account> {
+  bool? isChangePass = false;
+  @override
+  void initState() {
+    get();
+    super.initState();
+  }
+
+  void get() async {
+    SharedPreferences _shared = await SharedPreferences.getInstance();
+    setState(() {
+      isChangePass = _shared.getBool("changepass");
+    });
+    print(isChangePass);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,29 +56,21 @@ class Account extends StatelessWidget {
           ),
           KHeight15,
           ListTileAccountPage(
-            tiletitle: "Change Password",
-            index: 2,
-          ),
-          KHeight15,
-          ListTileAccountPage(
-            tiletitle: "About App Business",
+            tiletitle: "Share the app",
             index: 3,
           ),
           KHeight15,
           ListTileAccountPage(
-            tiletitle: "Help and Support",
+            tiletitle: "Delete Account",
             index: 4,
           ),
           KHeight15,
-          ListTileAccountPage(
-            tiletitle: "Share the app",
-            index: 5,
-          ),
-          KHeight15,
-          ListTileAccountPage(
-            tiletitle: "Delete Account",
-            index: 6,
-          ),
+          isChangePass == true
+              ? ListTileAccountPage(
+                  tiletitle: "Change Password",
+                  index: 2,
+                )
+              : SizedBox(),
           KHeight20,
           AccountPageButton(buttontitle: "Sign out"),
           KHeight,

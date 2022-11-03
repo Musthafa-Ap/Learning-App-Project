@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nuox_project/constants/constants.dart';
+import 'package:nuox_project/pages/account/account_services/account_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileEditPage extends StatefulWidget {
@@ -25,6 +27,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   File? _image;
   String? _email;
   String? _mobile;
+  String? _address;
+  String? _dob;
+  String? _gender;
+  String? _profileimage;
   @override
   void initState() {
     getdata();
@@ -36,6 +42,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     name = _sharedPref.getString("name");
     String? email = _sharedPref.getString("email");
     String? _nmbr = _sharedPref.getString("number");
+    _address = _sharedPref.getString("address");
+    _dob = _sharedPref.getString("dob");
+    _gender = _sharedPref.getString("gender");
+    _profileimage = _sharedPref.getString("image");
     if (name != null) {
       setState(() {
         _nameController.text = name!;
@@ -51,12 +61,25 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         _mobile = _nmbr;
       });
     }
+    if (_address != null) {
+      setState(() {
+        _addressController.text = _address!;
+      });
+    }
+    if (_dob != null) {
+      selectedDateNotifier.value = _dob!;
+    }
+    if (_gender != null) {
+      selectedGenderNotifier.value = _gender!;
+    }
   }
 
   TextEditingController _emailController = TextEditingController();
   TextEditingController _numberController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final accountProvider =
+        Provider.of<AccountProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -74,11 +97,12 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 _pickImage();
               },
               child: _image == null
-                  ? const CircleAvatar(
+                  ? CircleAvatar(
                       backgroundColor: Colors.transparent,
                       radius: 90,
-                      backgroundImage: NetworkImage(
-                          "https://www.pngitem.com/pimgs/m/421-4213036_avatar-hd-png-download.png"),
+                      backgroundImage: NetworkImage(_profileimage == null
+                          ? "https://www.pngitem.com/pimgs/m/421-4213036_avatar-hd-png-download.png"
+                          : _profileimage!),
                     )
                   : CircleAvatar(
                       backgroundColor: Colors.transparent,
@@ -257,29 +281,29 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   borderRadius: BorderRadius.circular(5),
                   color: Colors.black,
                   border: Border.all(color: Colors.white)),
-              child: Padding(
-                  padding: const EdgeInsets.all(7.0),
-                  child: ValueListenableBuilder(
-                    valueListenable: selectedGenderNotifier,
-                    builder: (context, value, child) {
-                      return DropdownButton(
-                          borderRadius: BorderRadius.circular(10),
-                          underline: const SizedBox(),
-                          iconEnabledColor: Colors.white,
-                          dropdownColor: Colors.purple,
-                          value: value,
-                          items: _genders
-                              .map((e) => DropdownMenuItem(
-                                  value: e,
-                                  child: Text(e,
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 16))))
-                              .toList(),
-                          onChanged: (newValue) {
-                            selectedGenderNotifier.value = newValue!;
-                          });
-                    },
-                  )),
+              child: ValueListenableBuilder(
+                valueListenable: selectedGenderNotifier,
+                builder: (context, value, child) {
+                  return Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: DropdownButtonFormField(
+                        borderRadius: BorderRadius.circular(10),
+                        iconEnabledColor: Colors.white,
+                        dropdownColor: Colors.purple,
+                        value: value,
+                        items: _genders
+                            .map((e) => DropdownMenuItem(
+                                value: e,
+                                child: Text(e,
+                                    style: const TextStyle(
+                                        color: Colors.white, fontSize: 16))))
+                            .toList(),
+                        onChanged: (newValue) {
+                          selectedGenderNotifier.value = newValue!;
+                        }),
+                  );
+                },
+              ),
             ),
 
             KHeight15, //Dataofbirth
@@ -296,7 +320,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   var dateTime = DateTime.parse(selectedDateTemp.toString());
 
                   var formate1 =
-                      "${dateTime.day}-${dateTime.month}-${dateTime.year}";
+                      "${dateTime.year}-${dateTime.month}-${dateTime.day}";
                   selectedDateNotifier.value = formate1;
                 }
               },
@@ -365,18 +389,48 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   if (_formKey.currentState!.validate()) {
                     String date = selectedDateNotifier.value;
                     String name = _nameController.text;
-                    String number = _numberController.text;
+                    String number = _mobile == null
+                        ? "+91${_numberController.text}"
+                        : _mobile!;
                     String gender = selectedGenderNotifier.value;
-                    String email = _emailController.text;
+                    String email =
+                        _email == null ? _emailController.text : _email!;
                     String address = _addressController.text;
+                    // if (_image == null) {
+                    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    //       backgroundColor: Colors.red,
+                    //       content: Text('Please upload a profile picture')));
+                    //   return;
+                    // }
                     if (date == "Select Date of Birth") {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text('Please select date of birth')));
                       return;
-                    }
+                    } ////////////
+                    print(address);
+                    print(email);
+                    print(gender);
+                    print(date);
+                    print(name);
+                    print(number);
+                    print(_image);
+                    accountProvider.editProfile(
+                        name: name,
+                        email: email,
+                        mobile: number,
+                        gender: gender,
+                        dob: date,
+                        address: address,
+                        context: context,
+                        image: _image);
                   }
-
-                  //   Navigator.of(context).pop();
                 },
-                child: Text("Submit"),
+                child: accountProvider.isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Text("Submit"),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.purple)),
               ),

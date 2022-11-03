@@ -413,7 +413,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 ],
               ),
               KHeight15,
-
+              KHeight20,
               //////////
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -439,7 +439,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   )
                 ],
               ),
-              KHeight,
+              KHeight20,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

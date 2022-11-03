@@ -3,13 +3,17 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/account/widgets/small_heading_account_page.dart';
+import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
+import 'package:provider/provider.dart';
 
 class BuyAllPage extends StatelessWidget {
   BuyAllPage({super.key});
-  ValueNotifier _paymentNotifier = ValueNotifier("");
+  TextEditingController _coupenController = TextEditingController();
+  ValueNotifier _paymentNotifier = ValueNotifier("GPay");
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -27,7 +31,7 @@ class BuyAllPage extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
             trailing: Text(
-              "₹3499.00",
+              "₹${cartProvider.checkoutDetailes!.data!.totalAmount!.toDouble()}",
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -37,7 +41,9 @@ class BuyAllPage extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
             trailing: Text(
-              "- ₹499.00",
+              cartProvider.isCoupenSuccess == true
+                  ? "- ₹${cartProvider.coupenDetailes!.discountAmount!.toDouble()}"
+                  : "- ₹${cartProvider.checkoutDetailes!.data!.discountAmount!.toDouble()}",
               style: TextStyle(color: Colors.white),
             ),
           ),
@@ -54,49 +60,99 @@ class BuyAllPage extends StatelessWidget {
                   fontSize: 18),
             ),
             trailing: Text(
-              "₹3000.00",
+              cartProvider.isCoupenSuccess == true
+                  ? "₹${cartProvider.coupenDetailes!.grandTotal!.toDouble()}"
+                  : "₹${cartProvider.checkoutDetailes!.data!.grandTotal!.toDouble()}",
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 18),
             ),
           ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 18),
-            padding: EdgeInsets.only(left: 10),
-            height: 40,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(5)),
-            child: Center(
-                child: Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                        border: InputBorder.none, hintText: "Enter coupon"),
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    print("Coupen applied");
-                  },
-                  child: Container(
-                    width: 70,
-                    decoration: BoxDecoration(
-                        color: Colors.purple,
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(5),
-                            bottomRight: Radius.circular(5))),
-                    child: Center(
-                        child: Text(
-                      "Apply",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    )),
-                  ),
+          KHeight20,
+          cartProvider.isCoupenSuccess == true
+              ? Container(
+                  margin: EdgeInsets.symmetric(horizontal: 70),
+                  height: 30,
+                  decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: Colors.white)),
+                  child: Center(
+                      child: Row(
+                    children: [
+                      Spacer(),
+                      Text(
+                        "Coupen Applied",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.white),
+                      ),
+                      KWidth10,
+                      Image.network(
+                        "https://cdn.pixabay.com/photo/2014/04/02/11/01/tick-305245__340.png",
+                        height: 15,
+                      ),
+                      Spacer()
+                    ],
+                  )),
                 )
-              ],
-            )),
-          ),
+              : Container(
+                  margin: EdgeInsets.symmetric(horizontal: 18),
+                  padding: EdgeInsets.only(left: 10),
+                  height: 40,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5)),
+                  child: Center(
+                      child: Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _coupenController,
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Enter coupon"),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (_coupenController.text == null ||
+                              _coupenController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                backgroundColor: Colors.white,
+                                content: Text(
+                                  "Invalid coupen code",
+                                  style: TextStyle(color: Colors.black),
+                                )));
+                          } else {
+                            cartProvider.coupenApply(
+                                coupen: _coupenController.text,
+                                context: context);
+                          }
+                        },
+                        child: Container(
+                          width: 70,
+                          decoration: BoxDecoration(
+                              color: Colors.purple,
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(5),
+                                  bottomRight: Radius.circular(5))),
+                          child: cartProvider.isLoading
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : const Center(
+                                  child: Text(
+                                  "Apply",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )),
+                        ),
+                      )
+                    ],
+                  )),
+                ),
           KHeight15,
           BoldHeading(heading: "Select a payment method : "),
           ValueListenableBuilder(
@@ -131,7 +187,7 @@ class BuyAllPage extends StatelessWidget {
                         },
                       ),
                       Text(
-                        "Cradit/Debit Card",
+                        "Credit/Debit Card",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       )
                     ],
@@ -187,7 +243,13 @@ class BuyAllPage extends StatelessWidget {
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
                   )),
-              onPressed: () {},
+              onPressed: () {
+                if (cartProvider.isCoupenSuccess == true) {
+                  print(cartProvider.promo_code);
+                } else {
+                  print("without promo code");
+                }
+              },
               child: Text("Checkout"),
             ),
           )

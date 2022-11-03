@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/my_home_page.dart';
+import 'package:nuox_project/pages/account/account_services/account_provider.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
@@ -24,7 +25,8 @@ void main() async {
     ChangeNotifierProvider(create: (_) => CourseDetailedProvider()),
     ChangeNotifierProvider(create: (_) => CatagoriesDetailedProvider()),
     ChangeNotifierProvider(create: (_) => RecomendationsProvider()),
-    ChangeNotifierProvider(create: (_) => CartProvider())
+    ChangeNotifierProvider(create: (_) => CartProvider()),
+    ChangeNotifierProvider(create: (_) => AccountProvider())
   ], child: MyApp()));
 }
 

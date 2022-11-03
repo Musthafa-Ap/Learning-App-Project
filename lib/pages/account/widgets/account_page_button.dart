@@ -3,6 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nuox_project/authentication/login_page.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/my_home_page.dart';
+import 'package:nuox_project/pages/account/account_services/account_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +21,8 @@ class AccountPageButton extends StatelessWidget {
             backgroundColor:
                 MaterialStateProperty.all(Color.fromARGB(0, 40, 39, 39))),
         onPressed: () {
+          // Navigator.of(context)
+          //     .push(MaterialPageRoute(builder: (context) => LoginPage()));
           authProvider.logOut(context);
         },
         child: Text(

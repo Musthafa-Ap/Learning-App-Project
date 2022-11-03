@@ -34,13 +34,20 @@ class CourseDetailedProvider with ChangeNotifier {
           headers: {"Authorization": auth, "Content-Type": "application/json"},
           body: jsonEncode(
               {"course": courseID, "variant": variantID, "price": price}));
-      var data = jsonDecode(response.body);
+      Map<String, dynamic> data = jsonDecode(response.body);
       print(data);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green,
             content: Text("Item added to the bag")));
         print("Add to cart successfully");
+      } else if (data["message"] == "Course is Already Purchased") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.white,
+            content: Text(
+              "Course is already purchased",
+              style: TextStyle(color: Colors.black),
+            )));
       }
     } catch (e) {
       print(e.toString());

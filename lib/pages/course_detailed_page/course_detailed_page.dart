@@ -116,7 +116,8 @@ class CourseDetailedPage extends StatelessWidget {
                 ),
                 KHeight5,
                 Text(
-                  "All-in-one Guitar Course,FingerStyle Guitar,Blues Guitar,Acoustic Guitar,Electric Guitar & Fingerpicking Guitarra",
+                  courseDeailedProvider.courseDetailes!.data!.first.description
+                      .toString(),
                   style: TextStyle(color: Colors.white),
                 ),
                 KHeight,

@@ -38,6 +38,7 @@ class Data {
   int? id;
   String? courseName;
   double? price;
+  String? description;
   int? offerPrice;
   SubCategory? subCategory;
   String? createdAt;
@@ -51,6 +52,7 @@ class Data {
 
   Data(
       {this.id,
+      this.description,
       this.courseName,
       this.price,
       this.offerPrice,
@@ -66,6 +68,7 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    description = json['description'];
     courseName = json['course_name'];
     price = json['price'];
     offerPrice = json['offer_price'];
@@ -91,6 +94,7 @@ class Data {
     data['id'] = this.id;
     data['course_name'] = this.courseName;
     data['price'] = this.price;
+    data['description'] = this.description;
     data['offer_price'] = this.offerPrice;
     if (this.subCategory != null) {
       data['sub_category'] = this.subCategory!.toJson();

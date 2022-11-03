@@ -46,6 +46,7 @@ class AuthProvider with ChangeNotifier {
           await sharedPrefs.setString("name", name);
           await sharedPrefs.setString("email", email);
           await sharedPrefs.setString("access_token", token);
+          await sharedPrefs.setBool("changepass", false);
           notifyListeners();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.green,
@@ -84,6 +85,7 @@ class AuthProvider with ChangeNotifier {
         await sharedPrefs.setBool("isLogged", true);
         await sharedPrefs.setString("access_token", token);
         await sharedPrefs.setString("number", number);
+        await sharedPrefs.setBool("changepass", false);
         print("token=$token");
         //  <String, dynamic> checking = data['token'];
 
@@ -203,7 +205,7 @@ class AuthProvider with ChangeNotifier {
         login_pass_error = null;
         notifyListeners();
         var data = jsonDecode(response.body);
-
+        print(data);
         if (data['result'] == "success") {
           final sharedPrefs = await SharedPreferences.getInstance();
           //  await sharedPrefs!.clear();
@@ -211,6 +213,7 @@ class AuthProvider with ChangeNotifier {
           await sharedPrefs.setString("email", email);
           var accessToken = data['token']['access_token'].toString();
           await sharedPrefs.setString("access_token", accessToken);
+          await sharedPrefs.setBool("changepass", true);
           print("Acess_token");
           // print(accessToken);
           notifyListeners();
@@ -224,12 +227,17 @@ class AuthProvider with ChangeNotifier {
           setLoading(false);
         } else if (data['result'] == "failure") {
           Map<String, dynamic> error = data['errors'];
+          print(error);
           if (error.containsKey('email')) {
             login_email_error = error['email'];
             notifyListeners();
           } else {
             login_email_error = null;
             notifyListeners();
+          }
+          if (error.containsKey("message")) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                backgroundColor: Colors.red, content: Text(error["message"])));
           }
           if (error.containsKey('password')) {
             login_pass_error = error['password'];
@@ -288,6 +296,8 @@ class AuthProvider with ChangeNotifier {
         await sharedPrefs.setString("name", name);
         await sharedPrefs.setString("email", email);
         await sharedPrefs.setString("access_token", accessToken);
+        await sharedPrefs.setString("number", num);
+        await sharedPrefs.setBool("changepass", true);
         notifyListeners();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green,
@@ -373,6 +383,8 @@ class AuthProvider with ChangeNotifier {
           await sharedPrefs.setString("name", name);
           await sharedPrefs.setString("email", email);
           await sharedPrefs.setString("access_token", token);
+          await sharedPrefs.setString("number", num);
+          await sharedPrefs.setBool("changepass", true);
           notifyListeners();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.green,
@@ -433,6 +445,24 @@ class AuthProvider with ChangeNotifier {
           (route) => false);
     } else {
       print("status code oth400");
+    }
+  }
+
+  void deleteAccount(context) async {
+    print("entered");
+    SharedPreferences _shared = await SharedPreferences.getInstance();
+    String? token = _shared.getString("access_token");
+    String auth = "Bearer $token";
+    var response = await http.delete(
+        Uri.parse("http://learningapp.e8demo.com/api/delete-profile/"),
+        headers: {"Authorization": auth});
+    print(response.body);
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          backgroundColor: Colors.green, content: Text("Account deleted")));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => LoginPage()),
+          (route) => false);
     }
   }
 }

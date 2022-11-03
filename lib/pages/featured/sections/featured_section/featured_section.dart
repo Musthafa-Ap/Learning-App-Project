@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/pages/account/account_services/account_provider.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
@@ -43,6 +44,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
     super.initState();
     Provider.of<CartProvider>(context, listen: false).getAllCartItems();
     Provider.of<TopCoursesProvider>(context, listen: false).bannerList();
+    Provider.of<AccountProvider>(context, listen: false).getFAQ();
   }
 
   @override

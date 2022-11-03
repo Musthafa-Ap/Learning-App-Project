@@ -8,6 +8,7 @@ class TopImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
+      backgroundColor: Colors.transparent,
       radius: 70,
       child: ClipOval(
         child: Image.network(
