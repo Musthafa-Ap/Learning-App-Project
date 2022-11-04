@@ -101,7 +101,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       backgroundColor: Colors.transparent,
                       radius: 90,
                       backgroundImage: NetworkImage(_profileimage == null
-                          ? "https://www.pngitem.com/pimgs/m/421-4213036_avatar-hd-png-download.png"
+                          ? "https://cdn2.vectorstock.com/i/1000x1000/20/76/man-avatar-profile-vector-21372076.jpg"
                           : _profileimage!),
                     )
                   : CircleAvatar(
@@ -408,13 +408,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           content: Text('Please select date of birth')));
                       return;
                     } ////////////
-                    print(address);
-                    print(email);
-                    print(gender);
-                    print(date);
-                    print(name);
-                    print(number);
-                    print(_image);
                     accountProvider.editProfile(
                         name: name,
                         email: email,

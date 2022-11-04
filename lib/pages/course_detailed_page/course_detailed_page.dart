@@ -4,9 +4,10 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/my_home_page.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
+import 'package:nuox_project/pages/course_detailed_page/sections/author_detailes_page/author_detailes.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
-import 'package:nuox_project/pages/review_page/review_page.dart';
+import 'package:nuox_project/pages/course_detailed_page/sections/review_page/review_page.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
 import 'package:provider/provider.dart';
@@ -126,6 +127,9 @@ class CourseDetailedPage extends StatelessWidget {
                 KHeight,
                 GestureDetector(
                   onTap: () {
+                    courseDeailedProvider.getReview(
+                        courseID: courseDeailedProvider
+                            .courseDetailes!.data!.first.id);
                     Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => ReviewPage()));
                   },
@@ -254,14 +258,20 @@ class CourseDetailedPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 16),
                     ),
-                    Text(
-                      courseDeailedProvider
-                          .courseDetailes!.data!.first.instructor!.name
-                          .toString(),
-                      style: const TextStyle(
-                          color: Colors.purple,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AuthorDetailesPage()));
+                      },
+                      child: Text(
+                        courseDeailedProvider
+                            .courseDetailes!.data!.first.instructor!.name
+                            .toString(),
+                        style: const TextStyle(
+                            color: Colors.purple,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
                     )
                   ],
                 ),

@@ -45,6 +45,9 @@ class _FeaturedSectionState extends State<FeaturedSection> {
     Provider.of<CartProvider>(context, listen: false).getAllCartItems();
     Provider.of<TopCoursesProvider>(context, listen: false).bannerList();
     Provider.of<AccountProvider>(context, listen: false).getFAQ();
+    Provider.of<CourseDetailedProvider>(context, listen: false)
+        .getReview(courseID: 2);
+    Provider.of<AccountProvider>(context, listen: false).getAboutApp();
   }
 
   @override

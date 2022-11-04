@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/authentication/login_page.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/pages/account/sections/support/about_app_page.dart';
 import 'package:nuox_project/pages/account/sections/support/change_password.dart';
@@ -55,6 +56,11 @@ class ListTileAccountPage extends StatelessWidget {
                       ElevatedButton(
                           onPressed: () {
                             authProvider.deleteAccount(context);
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()),
+                              (route) => false,
+                            );
                           },
                           child: Text("Yes"))
                     ],

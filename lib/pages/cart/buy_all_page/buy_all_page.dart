@@ -244,10 +244,29 @@ class BuyAllPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10)),
                   )),
               onPressed: () {
+                var payment;
+                if (_paymentNotifier.value == "GPay") {
+                  payment = "gpay";
+                } else if (_paymentNotifier.value == "Cradit/Debit Card") {
+                  payment = "card";
+                } else if (_paymentNotifier.value == "PayPal") {
+                  payment = "paypal";
+                } else if (_paymentNotifier.value == "Net Banking") {
+                  payment = "netbanking";
+                }
+
                 if (cartProvider.isCoupenSuccess == true) {
                   print(cartProvider.promo_code);
+                  cartProvider.checkoutWithPromo(
+                      paymentMode: payment,
+                      context: context,
+                      promocode: cartProvider.promo_code.toString());
+                  print(cartProvider.promo_code);
                 } else {
+                  print(payment);
                   print("without promo code");
+                  cartProvider.checkoutWithoutPromo(
+                      paymentMode: payment, context: context);
                 }
               },
               child: Text("Checkout"),

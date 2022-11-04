@@ -50,7 +50,7 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
                   backgroundColor: Colors.transparent,
                   radius: 50,
                   backgroundImage: NetworkImage(image == null
-                      ? "https://www.pngitem.com/pimgs/m/421-4213036_avatar-hd-png-download.png"
+                      ? "https://cdn2.vectorstock.com/i/1000x1000/20/76/man-avatar-profile-vector-21372076.jpg"
                       : image!),
                 )),
           ],

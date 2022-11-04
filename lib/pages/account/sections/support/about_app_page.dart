@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:nuox_project/constants/constants.dart';
+import 'package:nuox_project/pages/account/account_services/account_provider.dart';
+import 'package:provider/provider.dart';
 
 class AboutAppPage extends StatelessWidget {
   const AboutAppPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final accountProvider = Provider.of<AccountProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -21,9 +24,10 @@ class AboutAppPage extends StatelessWidget {
               border: Border.all(color: Colors.grey),
               borderRadius: BorderRadius.circular(5)),
           child: Column(
-            children: const [
+            children: [
+              KHeight20,
               Text(
-                "NUOX Learning App",
+                accountProvider.aboutApp!.data!.first.title.toString(),
                 style: TextStyle(
                     decoration: TextDecoration.underline,
                     color: Colors.white,
@@ -33,7 +37,7 @@ class AboutAppPage extends StatelessWidget {
               KHeight15,
               Expanded(
                 child: Text(
-                  "Nuox Learning App is a leading destination for online courses that empowers you to grow professionally and personally.Get the app to explore our expansive library of thousands of topics with cutting-edge online video courses in Coding,Developemnt, Python, Java, Business, Marketing, SEO, SEM, Drawing, Photography and much more.",
+                  accountProvider.aboutApp!.data!.first.aboutApp.toString(),
                   style: TextStyle(
                       color: Colors.white, fontSize: 18, wordSpacing: 3),
                 ),

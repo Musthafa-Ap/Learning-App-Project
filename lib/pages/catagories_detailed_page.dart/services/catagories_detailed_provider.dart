@@ -12,7 +12,6 @@ class CatagoriesDetailedProvider with ChangeNotifier {
   SubCatagoriesDetailedModel? subCatagoriesDetailes;
   bool isCatagoryDetailedLoading = false;
   Future<void> getAll({required catagoriesID}) async {
-    print("get all entered");
     isCatagoryDetailedLoading = true;
     var api =
         "http://learningapp.e8demo.com/api/course_list/?cate_id=$catagoriesID";
@@ -21,7 +20,6 @@ class CatagoriesDetailedProvider with ChangeNotifier {
       var data = jsonDecode(response.body);
       catagoriesDetailes = CatagoriesDetailedModel.fromJson(data);
       isCatagoryDetailedLoading = false;
-      print(data);
       notifyListeners();
     }
   }

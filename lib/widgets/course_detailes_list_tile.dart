@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/course_detailed_page/course_detailed_page.dart';
+import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_model.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/widgets/big_item_card.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
@@ -32,8 +33,16 @@ class CourseDetailesListTile extends StatelessWidget {
     this.isRecomended = false,
   }) : super(key: key);
   final bool isCartItem;
+  String? variant;
   @override
   Widget build(BuildContext context) {
+    if (variantID == 1) {
+      variant = "Beginner";
+    } else if (variantID == 2) {
+      variant = "Intermediate";
+    } else {
+      variant = "Expert";
+    }
     final cartProvider = Provider.of<CartProvider>(context);
     final size = MediaQuery.of(context).size.width;
     return GestureDetector(
@@ -106,6 +115,15 @@ class CourseDetailesListTile extends StatelessWidget {
                             ),
                           ],
                         ),
+                        KHeight5,
+                        isCartItem
+                            ? Text(
+                                variant!,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              )
+                            : SizedBox(),
                         KHeight5,
                         Text(
                           "₹$coursePrice",

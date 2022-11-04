@@ -50,7 +50,10 @@ class AuthProvider with ChangeNotifier {
           notifyListeners();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.green,
-              content: Text('Successfully logged in')));
+              content: Text(
+                'Successfully logged in',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )));
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => MyHomePage()),
               (route) => false);
@@ -76,7 +79,10 @@ class AuthProvider with ChangeNotifier {
         setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
-            content: Text(data['message'].toString())));
+            content: Text(
+              data['message'].toString(),
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )));
       } else if (data.containsKey("token")) {
         setLoading(false);
         String token = data['token']['access_token'];
@@ -129,7 +135,11 @@ class AuthProvider with ChangeNotifier {
         number_error = data['message'];
         notifyListeners();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.red, content: Text(data['message'])));
+            backgroundColor: Colors.red,
+            content: Text(
+              data['message'],
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )));
       }
     } catch (e) {
       setLoading(false);
@@ -155,7 +165,11 @@ class AuthProvider with ChangeNotifier {
       } else if (data['status'] == false) {
         setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.red, content: Text(data['message'])));
+            backgroundColor: Colors.red,
+            content: Text(
+              data['message'],
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )));
       }
     } catch (e) {
       setLoading(false);
@@ -181,7 +195,11 @@ class AuthProvider with ChangeNotifier {
       } else if (data['status'] == false) {
         setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.red, content: Text(data['message'])));
+            backgroundColor: Colors.red,
+            content: Text(
+              data['message'],
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )));
       }
     } catch (e) {
       setLoading(false);
@@ -223,7 +241,10 @@ class AuthProvider with ChangeNotifier {
           );
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.green,
-              content: Text("Successfully logged in")));
+              content: Text(
+                "Successfully logged in",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )));
           setLoading(false);
         } else if (data['result'] == "failure") {
           Map<String, dynamic> error = data['errors'];
@@ -237,7 +258,11 @@ class AuthProvider with ChangeNotifier {
           }
           if (error.containsKey("message")) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                backgroundColor: Colors.red, content: Text(error["message"])));
+                backgroundColor: Colors.red,
+                content: Text(
+                  error["message"],
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )));
           }
           if (error.containsKey('password')) {
             login_pass_error = error['password'];
@@ -253,7 +278,11 @@ class AuthProvider with ChangeNotifier {
       } else {
         print("failed");
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.red, content: Text("check your password")));
+            backgroundColor: Colors.red,
+            content: Text(
+              "check your password",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )));
         setLoading(false);
       }
     } catch (e) {
@@ -301,7 +330,10 @@ class AuthProvider with ChangeNotifier {
         notifyListeners();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green,
-            content: Text("User created successfully")));
+            content: Text(
+              "User created successfully",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )));
         Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => MyHomePage()),
             (route) => false);
@@ -388,7 +420,10 @@ class AuthProvider with ChangeNotifier {
           notifyListeners();
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.green,
-              content: Text("User created successfully")));
+              content: Text(
+                "User created successfully",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )));
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(builder: (context) => MyHomePage()),
               (route) => false);
@@ -435,7 +470,10 @@ class AuthProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           backgroundColor: Colors.green,
-          content: Text("Successfully logged out")));
+          content: Text(
+            "Successfully logged out",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )));
       _shared.clear();
       selectedIndex.value = 0;
       Navigator.of(context).pushAndRemoveUntil(
@@ -459,7 +497,11 @@ class AuthProvider with ChangeNotifier {
     print(response.body);
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.green, content: Text("Account deleted")));
+          backgroundColor: Colors.green,
+          content: Text(
+            "Account deleted",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          )));
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => LoginPage()),
           (route) => false);

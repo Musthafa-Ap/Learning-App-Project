@@ -14,6 +14,7 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
+  DateTime dateTime = DateTime.now();
   bool? isChangePass = false;
   @override
   void initState() {
@@ -26,11 +27,11 @@ class _AccountState extends State<Account> {
     setState(() {
       isChangePass = _shared.getBool("changepass");
     });
-    print(isChangePass);
   }
 
   @override
   Widget build(BuildContext context) {
+    var formate1 = "${dateTime.day}.${dateTime.month}.${dateTime.year}";
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -70,13 +71,13 @@ class _AccountState extends State<Account> {
                   tiletitle: "Change Password",
                   index: 2,
                 )
-              : SizedBox(),
+              : const SizedBox(),
           KHeight20,
           AccountPageButton(buttontitle: "Sign out"),
           KHeight,
           Center(
             child: Text(
-              "Tutorial App v8.32.0.1745",
+              "Tutorial App $formate1 V1",
               style: TextStyle(color: Colors.white, fontSize: 14),
             ),
           )
