@@ -62,6 +62,11 @@ class _AccountState extends State<Account> {
           ),
           KHeight15,
           ListTileAccountPage(
+            tiletitle: "Report a problem",
+            index: 5,
+          ),
+          KHeight15,
+          ListTileAccountPage(
             tiletitle: "Delete Account",
             index: 4,
           ),

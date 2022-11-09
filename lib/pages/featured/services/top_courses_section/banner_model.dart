@@ -69,49 +69,20 @@ class Data {
 }
 
 class BannerImg {
-  int? id;
-  String? name;
-  BannerImage? bannerImage;
-  String? action;
+  String? bannerImg;
   int? actionId;
 
-  BannerImg({this.id, this.name, this.bannerImage, this.action, this.actionId});
+  BannerImg({this.bannerImg, this.actionId});
 
   BannerImg.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    bannerImage = json['banner_img'] != null
-        ? new BannerImage.fromJson(json['banner_img'])
-        : null;
-    action = json['action'];
+    bannerImg = json['banner_img'];
     actionId = json['action_id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    if (this.bannerImage != null) {
-      data['banner_img'] = this.bannerImage!.toJson();
-    }
-    data['action'] = this.action;
+    data['banner_img'] = this.bannerImg;
     data['action_id'] = this.actionId;
-    return data;
-  }
-}
-
-class BannerImage {
-  String? fullSize;
-
-  BannerImage({this.fullSize});
-
-  BannerImage.fromJson(Map<String, dynamic> json) {
-    fullSize = json['full_size'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['full_size'] = this.fullSize;
     return data;
   }
 }

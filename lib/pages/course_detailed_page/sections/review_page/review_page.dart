@@ -5,20 +5,22 @@ import 'package:nuox_project/pages/course_detailed_page/services/course_detailed
 import 'package:provider/provider.dart';
 
 class ReviewPage extends StatelessWidget {
-  ReviewPage({super.key});
-  ValueNotifier<double> _ratingNotifier = ValueNotifier(1);
+  int id;
+  ReviewPage({required this.id});
+  ValueNotifier<int> _ratingNotifier = ValueNotifier(1);
+  TextEditingController _reviewController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final courseDetailedProvider = Provider.of<CourseDetailedProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Add Review"),
+        title: const Text("Add Review"),
       ),
       body: ListView(
         shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.all(15),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.all(15),
         children: [
           ValueListenableBuilder(
             valueListenable: _ratingNotifier,
@@ -33,13 +35,14 @@ class ReviewPage extends StatelessWidget {
                         minRating: 1,
                         direction: Axis.horizontal,
                         itemCount: 5,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                        itemBuilder: (context, _) => Icon(
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: Colors.amber,
                             ),
                         onRatingUpdate: (rating) {
-                          _ratingNotifier.value = rating;
+                          _ratingNotifier.value = rating.toInt();
                         }),
                     Text(
                       _ratingNotifier.value.toString(),
@@ -61,6 +64,7 @@ class ReviewPage extends StatelessWidget {
                 color: Colors.black,
                 border: Border.all(color: Colors.white)),
             child: TextField(
+              controller: _reviewController,
               style: TextStyle(color: Colors.white),
               maxLines: 6,
               decoration: InputDecoration(
@@ -73,8 +77,22 @@ class ReviewPage extends StatelessWidget {
           SizedBox(
             height: 50,
             child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
+              onPressed: () async {
+                var rating = _ratingNotifier.value;
+                var review = _reviewController.text;
+                print(review);
+                print(rating);
+                if (review == null || review.isEmpty) {
+                  courseDetailedProvider.addRatingWithoutReview(
+                      context: context, rating: rating, id: id);
+                  print(rating.toString());
+                  print("review is null");
+                } else {
+                  await courseDetailedProvider.addRatingWithReview(
+                      rating: rating, id: id, review: review, context: context);
+                  _reviewController.text = "";
+                }
+                //Navigator.of(context).pop();
               },
               child: Text("Submit"),
               style: ButtonStyle(

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
-import 'package:nuox_project/pages/featured/sections/top_courses_section/top_courses_section.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/banner_model.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_model.dart';
 
@@ -29,7 +28,6 @@ class TopCoursesProvider with ChangeNotifier {
       var data = jsonDecode(response.body);
       banner = BannerModel.fromJson(data);
       notifyListeners();
-      //  print(banner!.data!.first.bannerImg!.first.bannerImage!.fullSize);
     }
   }
 }

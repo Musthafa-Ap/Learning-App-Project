@@ -4,8 +4,11 @@ import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/pages/account/sections/support/about_app_page.dart';
 import 'package:nuox_project/pages/account/sections/support/change_password.dart';
 import 'package:nuox_project/pages/account/sections/support/faq_page.dart';
+import 'package:nuox_project/pages/account/sections/support/report_page.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+
+import '../../my_home_page.dart';
 
 class ListTileAccountPage extends StatelessWidget {
   final int index;
@@ -25,6 +28,9 @@ class ListTileAccountPage extends StatelessWidget {
           } else if (index == 1) {
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => AboutAppPage()));
+          } else if (index == 5) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => ReportPage()));
           } else if (index == 2) {
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => ChangePasswordPage()));
@@ -56,6 +62,7 @@ class ListTileAccountPage extends StatelessWidget {
                       ElevatedButton(
                           onPressed: () {
                             authProvider.deleteAccount(context);
+                            selectedIndex.value = 0;
                             Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
                                   builder: (context) => LoginPage()),

@@ -4,11 +4,13 @@ import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catago
 import 'package:nuox_project/pages/catagories_detailed_page.dart/widgets/sub_catagories_detailed_page.dart';
 import 'package:nuox_project/pages/course_detailed_page/course_detailed_page.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
+import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/widgets/catagories_button.dart';
 import 'package:nuox_project/pages/featured/widgets/see_all_page_featured.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/course_detailes_list_tile.dart';
+import '../featured/widgets/small_item_card.dart';
 import 'widgets/catagory_detailed_page_item_card.dart';
 
 class CatagoriesDetailedPage extends StatelessWidget {
@@ -17,6 +19,7 @@ class CatagoriesDetailedPage extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
+    final courseDeailedProvider = Provider.of<CourseDetailedProvider>(context);
     final size = MediaQuery.of(context).size.width;
     final catagoriesDetailedProvider =
         Provider.of<CatagoriesDetailedProvider>(context);
@@ -29,7 +32,9 @@ class CatagoriesDetailedPage extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
-        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.sort))],
+        // actions: [
+        //   IconButton(onPressed: () async {}, icon: const Icon(Icons.sort))
+        // ],
       ),
       body: ListView(
         physics: const BouncingScrollPhysics(),
@@ -65,6 +70,7 @@ class CatagoriesDetailedPage extends StatelessWidget {
                   image: datas!.thumbnail!.fullSize.toString(),
                   courseName: datas.courseName.toString(),
                   price: datas.price!.toInt(),
+                  ratingCount: datas.ratingCount!.toInt(),
                   rating: datas.rating!.toInt(),
                   id: datas.id!,
                 );
@@ -97,17 +103,26 @@ class CatagoriesDetailedPage extends StatelessWidget {
             ),
           ),
           KHeight15,
-          const BoldHeading(heading: "Recently viewed"),
-          //ivide thalkaalam oru cardundaakki vechathaanh.api kittiyaal small item card thanne call cheythaal mathi
+          const BoldHeading(heading: "Recently viewed"), KHeight5,
           SizedBox(
             height: size * .6,
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
-              itemCount: 5,
+              itemCount:
+                  courseDeailedProvider.recentlyViewedList!.data!.data!.length,
               itemBuilder: (context, index) {
-                return RecentlyViewedCard();
+                final datas = courseDeailedProvider
+                    .recentlyViewedList!.data!.data![index];
+                return SmallItemCard(
+                    courseName: datas.courseName,
+                    authorName: datas.instructorName,
+                    coursePrice: datas.coursePrice,
+                    image: datas.courseThumbnail.toString(),
+                    rating: datas.rating!.toDouble(),
+                    id: datas.id,
+                    ratingCount: datas.ratingCount);
               },
             ),
           ),
@@ -120,15 +135,16 @@ class CatagoriesDetailedPage extends StatelessWidget {
                 recomendationProvider.recomendationsCourses!.data!.length,
             itemBuilder: (context, index) {
               final datas =
-                  recomendationProvider.recomendationsCourses!.data![index];
+                  recomendationProvider.recomendationsCourses?.data?[index];
               return CourseDetailesListTile(
-                courseName: datas.courseName.toString(),
-                authorName: datas.instructor!.name.toString(),
-                coursePrice: datas.price!.toDouble(),
-                image: datas.thumbnail!.fullSize.toString(),
-                rating: datas.rating!.toDouble(),
-                id: datas.id!.toInt(),
-                isRecomended: datas.recommendedCourse!,
+                courseName: datas?.courseName.toString(),
+                authorName: datas?.instructor?.name.toString(),
+                coursePrice: datas?.price?.toDouble(),
+                image: datas?.thumbnail?.fullSize.toString(),
+                ratingCount: datas?.ratingCount,
+                rating: datas?.rating?.toDouble(),
+                id: datas?.id?.toInt(),
+                isRecomended: datas?.recommendedCourse,
               );
             },
           ),

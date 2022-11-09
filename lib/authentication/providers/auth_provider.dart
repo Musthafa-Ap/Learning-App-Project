@@ -502,6 +502,7 @@ class AuthProvider with ChangeNotifier {
             "Account deleted",
             style: TextStyle(fontWeight: FontWeight.bold),
           )));
+      selectedIndex.value = 0;
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => LoginPage()),
           (route) => false);

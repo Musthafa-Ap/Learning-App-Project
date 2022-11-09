@@ -56,7 +56,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     },
                     icon: Icon(
                       Icons.remove_red_eye,
-                      color: _obscureText ? Colors.grey : Colors.black,
+                      color: _obscureText2 ? Colors.grey : Colors.black,
                     )),
                 filled: true,
                 fillColor: Colors.white,
@@ -109,7 +109,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     },
                     icon: Icon(
                       Icons.remove_red_eye,
-                      color: _obscureText ? Colors.grey : Colors.black,
+                      color: _obscureText1 ? Colors.grey : Colors.black,
                     )),
                 filled: true,
                 fillColor: Colors.white,

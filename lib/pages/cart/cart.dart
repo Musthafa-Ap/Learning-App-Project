@@ -24,7 +24,8 @@ class Cart extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: cartProvider.cartItems == null
+        child: cartProvider.cartItems == null ||
+                cartProvider.cartItems!.data!.cartItem!.isEmpty
             ? Center(
                 child: Text(
                 "Bag is Empty",
@@ -44,6 +45,7 @@ class Cart extends StatelessWidget {
                           courseName: datas.courseName.toString(),
                           authorName: datas.autherName.toString(),
                           coursePrice: datas.price!.toDouble(),
+                          ratingCount: 100,
                           image: datas.courseimage.toString(),
                           rating: datas.rating!.toDouble(),
                           id: datas.courseId!.toInt(),

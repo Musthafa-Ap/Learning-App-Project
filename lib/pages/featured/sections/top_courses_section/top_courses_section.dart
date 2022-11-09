@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/featured/sections/top_courses_section/see_all_page_top_courses.dart';
+import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_model.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:nuox_project/pages/featured/widgets/big_item_card.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../../../constants/constants.dart';
 import '../../../../widgets/bold_heading.dart';
 import '../../../../widgets/see_all_widget.dart';
+import '../../services/featured_section/featured_provider.dart';
 import '../../widgets/small_item_card.dart';
 
 class TopCoursesSection extends StatelessWidget {
@@ -21,7 +23,7 @@ class TopCoursesSection extends StatelessWidget {
       children: [
         const BoldHeading(heading: "Top Courses in Mobile\nDevelopment"),
         SizedBox(
-          height: size * .75,
+          height: size * .8,
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,
@@ -39,13 +41,15 @@ class TopCoursesSection extends StatelessWidget {
                         itemBuilder: (context, index) {
                           final datas =
                               topCoursesProvider.topCoursesList?.data?[index];
+
                           return BigItemCard(
-                            id: datas?.id!.toInt(),
-                            rating: datas?.rating!.toDouble(),
-                            image: datas?.thumbnail!.fullSize.toString(),
+                            id: datas?.id?.toInt(),
+                            rating: datas?.rating?.toDouble(),
+                            image: datas?.thumbnail?.fullSize.toString(),
                             courseName: datas?.courseName.toString(),
-                            coursePrice: datas?.price!.toInt(),
-                            authorName: datas?.instructor!.name.toString(),
+                            ratingCount: datas?.ratingCount?.toInt(),
+                            coursePrice: datas?.price?.toInt(),
+                            authorName: datas?.instructor?.name.toString(),
                             isRecomended: datas?.recommendedCourse,
                           );
                         }),
@@ -53,6 +57,8 @@ class TopCoursesSection extends StatelessWidget {
                 GestureDetector(
                   child: SeeAllWidget(),
                   onTap: () {
+                    Provider.of<FeaturedProvider>(context, listen: false)
+                        .sortedCourses = null;
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => SeeAllPageTopCourses()));
                   },

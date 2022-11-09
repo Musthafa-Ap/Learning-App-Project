@@ -1,21 +1,34 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:nuox_project/pages/course_detailed_page/sections/review_page/review_model.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_model.dart';
+import 'package:nuox_project/pages/course_detailed_page/services/recently_viewed_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CourseDetailedProvider with ChangeNotifier {
+  bool? isRecentEmpty;
+  RecentlyViewedModel? recentlyViewedList;
   bool isReviewLoading = false;
   ReviewModel? getReviewList;
   CourseDetailedModel? courseDetailes;
   bool isCourseLoading = false;
   Future<void> getAll({required courseID}) async {
     isCourseLoading = true;
+    SharedPreferences _shared = await SharedPreferences.getInstance();
+    var token = _shared.getString("access_token");
+    String auth = "Bearer $token";
     var api =
         "http://learningapp.e8demo.com/api/user-coursedetail/?coursedetail_id=$courseID";
-    var response = await http.get(Uri.parse(api));
+    var response;
+    if (token == null) {
+      response = await http.get(Uri.parse(api));
+    } else {
+      response =
+          await http.get(Uri.parse(api), headers: {"Authorization": auth});
+    }
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       courseDetailes = CourseDetailedModel.fromJson(data);
@@ -45,7 +58,6 @@ class CourseDetailedProvider with ChangeNotifier {
               "Item added to the bag",
               style: TextStyle(fontWeight: FontWeight.bold),
             )));
-        print("Add to cart successfully");
       } else if (data["message"] == "Course is Already Purchased") {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.white,
@@ -59,7 +71,7 @@ class CourseDetailedProvider with ChangeNotifier {
     }
   }
 
-  void getReview({required courseID}) async {
+  Future<void> getReview({required courseID}) async {
     try {
       isReviewLoading = true;
       SharedPreferences _shared = await SharedPreferences.getInstance();
@@ -73,13 +85,88 @@ class CourseDetailedProvider with ChangeNotifier {
         isReviewLoading = false;
         var data = jsonDecode(response.body);
         getReviewList = ReviewModel.fromJson(data);
-        print(getReviewList!.data!.first.review);
         notifyListeners();
       }
       notifyListeners();
     } catch (e) {
       isReviewLoading = false;
       notifyListeners();
+      print(e.toString());
+    }
+  }
+
+  Future<void> addRatingWithoutReview(
+      {required rating, required id, required context}) async {
+    try {
+      SharedPreferences _shared = await SharedPreferences.getInstance();
+      var token = _shared.getString("access_token");
+      String auth = "Bearer $token";
+      var api = "http://learningapp.e8demo.com/api/user-review/add_review/";
+      var response = await http.post(Uri.parse(api),
+          headers: {"Authorization": auth},
+          body: {"rating": rating.toString(), "course_id": id.toString()});
+      Map<String, dynamic> data = jsonDecode(response.body);
+      if (data["status_code"] == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+              "Rating added successfully",
+              style: TextStyle(color: Colors.white),
+            )));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> addRatingWithReview(
+      {required rating, required id, required context, required review}) async {
+    try {
+      SharedPreferences _shared = await SharedPreferences.getInstance();
+      var token = _shared.getString("access_token");
+      String auth = "Bearer $token";
+      var api = "http://learningapp.e8demo.com/api/user-review/add_review/";
+      var response = await http.post(Uri.parse(api), headers: {
+        "Authorization": auth
+      }, body: {
+        "rating": rating.toString(),
+        "course_id": id.toString(),
+        "review": review
+      });
+      Map<String, dynamic> data = jsonDecode(response.body);
+      if (data["status_code"] == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+              "Review added successfully",
+              style: TextStyle(color: Colors.white),
+            )));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void getRecentlyViewed() async {
+    try {
+      SharedPreferences _shared = await SharedPreferences.getInstance();
+      var token = _shared.getString("access_token");
+      String auth = "Bearer $token";
+      var response = await http.get(
+          Uri.parse("http://learningapp.e8demo.com/api/recent-courses/"),
+          headers: {"Authorization": auth});
+      // print(response.statusCode);
+      // print(response.body);
+      var data = jsonDecode(response.body);
+
+      notifyListeners();
+      if (response.statusCode == 200) {
+        recentlyViewedList = RecentlyViewedModel.fromJson(data);
+      } else {
+        isRecentEmpty = true;
+        notifyListeners();
+      }
+    } catch (e) {
       print(e.toString());
     }
   }

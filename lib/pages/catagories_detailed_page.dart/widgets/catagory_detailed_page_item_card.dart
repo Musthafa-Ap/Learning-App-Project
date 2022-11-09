@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/widgets/big_cart_icon_button.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/constants.dart';
@@ -8,10 +9,11 @@ import '../../course_detailed_page/services/course_detailed_provider.dart';
 
 class CatagoryDetailedPageItemCard extends StatelessWidget {
   final int id;
-  final String courseName;
-  final int rating;
-  final int price;
-  final String image;
+  final String? courseName;
+  final int? rating;
+  final int? price;
+  final String? image;
+  final int? ratingCount;
   const CatagoryDetailedPageItemCard({
     Key? key,
     required this.courseName,
@@ -19,14 +21,15 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
     required this.price,
     required this.image,
     required this.id,
+    required this.ratingCount,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: () {
-        Provider.of<CourseDetailedProvider>(context, listen: false)
+      onTap: () async {
+        await Provider.of<CourseDetailedProvider>(context, listen: false)
             .getAll(courseID: id);
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => CourseDetailedPage()));
@@ -41,11 +44,13 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
               width: size * .83,
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      fit: BoxFit.fill, image: NetworkImage(image))),
+                      fit: BoxFit.fill,
+                      image: NetworkImage(image ??
+                          "http://learningapp.e8demo.com/media/thumbnail_img/4-physics.jpeg"))),
             ),
             KHeight5,
             Text(
-              courseName,
+              courseName ?? "Course name",
               maxLines: 2,
               style: const TextStyle(
                   color: Colors.white,
@@ -53,9 +58,28 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
                   fontSize: 18),
             ),
             KHeight5,
-            Text(
-              "${rating} ***** (36,907)",
-              style: TextStyle(fontSize: 12, color: Colors.yellow),
+            Row(
+              children: [
+                Text(
+                  "${rating} ",
+                  style: TextStyle(fontSize: 12, color: Colors.yellow),
+                ),
+                RatingBarIndicator(
+                  unratedColor: Colors.grey,
+                  rating: rating?.toDouble() ?? 4.toDouble(),
+                  itemCount: 5,
+                  itemSize: 10,
+                  direction: Axis.horizontal,
+                  itemBuilder: (context, index) => const Icon(
+                    Icons.star,
+                    color: Colors.yellow,
+                  ),
+                ),
+                Text(
+                  " (${ratingCount})",
+                  style: const TextStyle(fontSize: 12, color: Colors.yellow),
+                ),
+              ],
             ),
             KHeight5,
             Row(
@@ -87,7 +111,7 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
                 ),
                 BigCartIconButton(
                   id: id,
-                  price: price,
+                  price: price!,
                 )
               ],
             )

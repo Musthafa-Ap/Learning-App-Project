@@ -420,10 +420,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   }
                 },
                 child: accountProvider.isLoading
-                    ? Center(
+                    ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : Text("Submit"),
+                    : const Text("Submit"),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.purple)),
               ),
@@ -445,7 +445,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         // SharedPreferences _sharedpref = await SharedPreferences.getInstance();
         // _sharedpref.setString("image", path);
         // print(_image);
-
+        print(_image!.path);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green,
             content: Text('Image updoaded successfully')));

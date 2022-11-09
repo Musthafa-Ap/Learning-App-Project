@@ -1,19 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:nuox_project/pages/my_learning/widgets/my_learning_video_player.dart';
+import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.dart';
+import 'package:nuox_project/pages/my_learning/widgets/course_videos_page.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/constants.dart';
 
 class MyLearningCard extends StatelessWidget {
+  final int? id;
+  final String? courseName;
+  final String? author;
+  final String? img;
   const MyLearningCard({
     Key? key,
+    required this.id,
+    required this.courseName,
+    required this.author,
+    required this.img,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final myLearningsProvider = Provider.of<MyLearningsProvider>(context);
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => MyLearningVideoPlayer()));
+      onTap: () async {
+        if (id != null) {
+          await myLearningsProvider.getCourseDetailes(
+              courseID: id, context: context);
+        }
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 5),
@@ -30,7 +43,7 @@ class MyLearningCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5),
                     image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: NetworkImage(
+                        image: NetworkImage(img ??
                             "https://www.chegg.com/play/wp-content/uploads/sites/3/2020/05/7-Tips-and-Tricks-to-Boost-Your-Learning-During-Online-Lectures_featuredimage.jpg"))),
               ),
               Expanded(
@@ -40,7 +53,8 @@ class MyLearningCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Comeplete Guitar Lessons System - Beginner to Advanced",
+                        courseName ??
+                            "Comeplete Guitar Lessons System - Beginner to Advanced",
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
@@ -50,7 +64,7 @@ class MyLearningCard extends StatelessWidget {
                       ),
                       KHeight5,
                       Text(
-                        "Erich Andreas",
+                        author ?? "Erich Andreas",
                         style: TextStyle(fontSize: 12, color: Colors.grey[300]),
                       ),
                     ],

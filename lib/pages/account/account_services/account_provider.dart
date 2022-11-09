@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:nuox_project/my_home_page.dart';
 import 'package:nuox_project/pages/account/account.dart';
 import 'package:nuox_project/pages/account/account_services/about_app_model.dart';
 import 'package:nuox_project/pages/account/account_services/faq_model.dart';
@@ -33,64 +35,89 @@ class AccountProvider with ChangeNotifier {
       required address,
       context,
       File? image}) async {
-    isLoading = true;
     SharedPreferences _shared = await SharedPreferences.getInstance();
     String? token = _shared.getString("access_token");
     String auth = "Bearer $token";
-    try {
-      var response = http.MultipartRequest(
-        "PUT",
-        Uri.parse("http://learningapp.e8demo.com/api/user-edit/"),
-      );
-      response.headers["Authorization"] = auth;
-      response.fields['email'] = email;
-      response.fields['mobile'] = mobile;
-      response.fields['name'] = name;
-      response.fields['gender'] = gender;
-      response.fields['dob'] = dob;
-      response.fields['address'] = address;
-      if (image != null) {
-        response.files
-            .add(await http.MultipartFile.fromPath('profile_pic', image.path));
-      }
-      response.send().then((value) async {
-        var data = await value.stream.toBytes();
-        var body = String.fromCharCodes(data);
-        Map<String, dynamic> msg = jsonDecode(body);
-        if (msg.containsKey("non_field_errors")) {
-          isLoading = false;
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Colors.red,
-              content: Text(msg["non_field_errors"][0])));
-        }
-        if (msg["status_code"] == 200) {
-          isLoading = false;
-          SharedPreferences _shared = await SharedPreferences.getInstance();
-          _shared.setString("name", name);
-          _shared.setString("email", email);
-          _shared.setString("number", mobile);
-          _shared.setString("dob", dob);
-          _shared.setString("address", address);
-          _shared.setString("gender", gender);
-          if (image != null) {
-            _shared.setString("image", msg['data']['profile_pic']);
-          }
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Colors.green, content: Text(msg["status"])));
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-              builder: (context) => Account(),
-            ),
-            (route) => false,
-          );
-        }
-        // print(msg["data"][0]);
-        // print(msg["non_field_errors"][0]);
-      });
-    } catch (e) {
-      isLoading = false;
-      print(e.toString());
+    // try {
+    isLoading = true;
+    var response = http.MultipartRequest(
+      "PUT",
+      Uri.parse("http://learningapp.e8demo.com/api/user-edit/"),
+    );
+    response.headers["Authorization"] = auth.toString();
+    response.fields['email'] = email;
+    response.fields['mobile'] = mobile;
+    response.fields['name'] = name;
+    response.fields['gender'] = gender;
+    response.fields['dob'] = dob;
+    response.fields['address'] = address;
+
+    if (image != null) {
+      response.files
+          .add(await http.MultipartFile.fromPath('profile_pic', image.path));
     }
+    print(auth);
+    print(email);
+    print(mobile);
+    print(name);
+    print(gender);
+    print(dob);
+    print(address);
+    print(image?.path);
+    // await response.send().then((request) {
+    //   http.Response.fromStream(request).then((value) {
+    //     print(value.statusCode);
+    //     print(value.body);
+    //   });
+    // });
+    response.send().then((value) async {
+      // print("value == ${value.stream}");
+      var data = await value.stream.toBytes();
+      var body = String.fromCharCodes(data);
+      log(body);
+      Map<String, dynamic> msg = jsonDecode(body);
+      //  print("message = ${msg}");
+      if (msg.containsKey("non_field_errors")) {
+        isLoading = false;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(msg["non_field_errors"][0])));
+      }
+      if (msg["status_code"] == 200) {
+        isLoading = false;
+        SharedPreferences _shared = await SharedPreferences.getInstance();
+        _shared.setString("name", name);
+        _shared.setString("email", email);
+        _shared.setString("number", mobile);
+        _shared.setString("dob", dob);
+        _shared.setString("address", address);
+        _shared.setString("gender", gender);
+        if (image != null) {
+          _shared.setString("image", msg['data']['profile_pic'].toString());
+        }
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.green, content: Text(msg["status"])));
+
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(
+            builder: (context) => MyHomePage(),
+          ),
+          (route) => false,
+        );
+        selectedIndex.value = 4;
+      } else {
+        isLoading = false;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(msg["Please select a image below 2 MB"])));
+      }
+      // print(msg["data"][0]);
+      // print(msg["non_field_errors"][0]);
+    });
+    // } catch (e) {
+    //   isLoading = false;
+    //   print(e.toString());
+    // }
   }
 
   void changePassword(
@@ -117,7 +144,6 @@ class AccountProvider with ChangeNotifier {
             'retype_password': retypeNewPass
           });
       Map<String, dynamic> data = jsonDecode(response.body);
-      print(data);
       if (data['result'] == "success") {
         isChangePassLoading = false;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -153,8 +179,23 @@ class AccountProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         aboutApp = AboutAppModel.fromJson(data);
-        print(aboutApp!.data!.first.aboutApp);
         notifyListeners();
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void report({required email, required problem, required context}) async {
+    try {
+      var response = await http.post(
+          Uri.parse("http://learningapp.e8demo.com/api/report-issue/"),
+          body: {"email": email, "report_issue": problem});
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.green,
+            content: Text("Successfully submitted")));
+        Navigator.of(context).pop();
       }
     } catch (e) {
       print(e.toString());

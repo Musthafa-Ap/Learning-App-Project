@@ -9,11 +9,11 @@ import 'package:nuox_project/pages/featured/services/catagories_section/catagori
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
-import 'package:nuox_project/authentication/providers/auth_provider.dart';
+import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.dart';
+import 'package:nuox_project/pages/search/services/search_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'authentication/login_page.dart';
-import 'authentication/providers/auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,9 @@ void main() async {
     ChangeNotifierProvider(create: (_) => CatagoriesDetailedProvider()),
     ChangeNotifierProvider(create: (_) => RecomendationsProvider()),
     ChangeNotifierProvider(create: (_) => CartProvider()),
-    ChangeNotifierProvider(create: (_) => AccountProvider())
+    ChangeNotifierProvider(create: (_) => AccountProvider()),
+    ChangeNotifierProvider(create: (_) => MyLearningsProvider()),
+    ChangeNotifierProvider(create: (_) => SearchProvider())
   ], child: MyApp()));
 }
 

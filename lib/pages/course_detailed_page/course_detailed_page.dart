@@ -3,27 +3,59 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/my_home_page.dart';
-import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/course_detailed_page/sections/author_detailes_page/author_detailes.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/sections/review_page/review_page.dart';
+import 'package:nuox_project/pages/featured/widgets/small_item_card.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:video_player/video_player.dart';
 import '../../widgets/course_detailes_list_tile.dart';
 
-class CourseDetailedPage extends StatelessWidget {
+class CourseDetailedPage extends StatefulWidget {
   CourseDetailedPage({super.key});
 
-  ValueNotifier _selectedValue = ValueNotifier("Beginner");
+  @override
+  State<CourseDetailedPage> createState() => _CourseDetailedPageState();
+}
 
+class _CourseDetailedPageState extends State<CourseDetailedPage> {
+  ValueNotifier _selectedValue = ValueNotifier("Beginner");
+  late VideoPlayerController _controller;
   var _items = ["Beginner", "Intermediate", "Expert"];
+  int currentIndex = 0;
+  @override
+  void initState() {
+    final courseDeailedProviders =
+        Provider.of<CourseDetailedProvider>(context, listen: false);
+    print(
+        "video link ==== ${courseDeailedProviders.courseDetailes?.data?.first.introVideo}");
+
+    super.initState();
+    _controller = VideoPlayerController.network(courseDeailedProviders
+            .courseDetailes?.data?.first.introVideo ??
+        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
+      ..initialize().then((_) {
+        setState(() {});
+        _controller.pause();
+        _controller.setLooping(false);
+        _controller.setVolume(1);
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final isMuted = _controller.value.volume == 0;
     final courseDeailedProvider = Provider.of<CourseDetailedProvider>(context);
     final recomendationsProvider = Provider.of<RecomendationsProvider>(context);
     // final cartProvider = Provider.of<CartProvider>(context);
@@ -40,14 +72,9 @@ class CourseDetailedPage extends StatelessWidget {
           KWidth5,
           IconButton(
               onPressed: () async {
-                print(courseDeailedProvider
+                await Share.share(courseDeailedProvider
                     .courseDetailes!.data!.first.introVideo
                     .toString());
-                await Share.share(courseDeailedProvider
-                        .courseDetailes!.data!.first.introVideo
-                        .toString()
-                    //"https://i.guim.co.uk/img/media/71dd7c5b208e464995de3467caf9671dc86fcfd4/1176_345_3557_2135/master/3557.jpg?width=620&quality=45&dpr=2&s=none");
-                    );
               },
               icon: const Icon(CupertinoIcons.share))
         ],
@@ -65,15 +92,129 @@ class CourseDetailedPage extends StatelessWidget {
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(20),
               children: [
-                Container(
-                    height: size * .5,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(courseDeailedProvider
-                          .courseDetailes!.data!.first.thumbnail!.fullSize
-                          .toString()),
-                    ))),
+                Stack(
+                  children: [
+                    SizedBox(
+                      height: size * .5,
+                      child: PageView(
+                        onPageChanged: (index) {
+                          setState(() {
+                            currentIndex = index;
+                            print(currentIndex);
+                          });
+                        },
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: NetworkImage(courseDeailedProvider
+                                      .courseDetailes
+                                      ?.data
+                                      ?.first
+                                      .thumbnail
+                                      ?.fullSize
+                                      .toString() ??
+                                  "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg"),
+                            )),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _controller.value.isPlaying
+                                    ? _controller.pause()
+                                    : _controller.play();
+                              });
+                            },
+                            child: Container(
+                                child: _controller.value.isInitialized
+                                    ? Stack(
+                                        children: [
+                                          AspectRatio(
+                                              aspectRatio:
+                                                  _controller.value.aspectRatio,
+                                              child: VideoPlayer(_controller)),
+                                          _controller.value.isPlaying
+                                              ? const SizedBox()
+                                              : Align(
+                                                  alignment: Alignment.center,
+                                                  child: IconButton(
+                                                      onPressed: () {
+                                                        setState(() {
+                                                          _controller.play();
+                                                        });
+                                                      },
+                                                      icon: Icon(
+                                                        Icons.play_arrow,
+                                                        color: Colors.white,
+                                                        size: 45,
+                                                      )),
+                                                ),
+                                          Positioned(
+                                            right: 10,
+                                            bottom: 5,
+                                            child: CircleAvatar(
+                                              backgroundColor: Colors.grey,
+                                              child: IconButton(
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _controller.setVolume(
+                                                          isMuted ? 1 : 0);
+                                                    });
+                                                  },
+                                                  icon: Icon(
+                                                    isMuted
+                                                        ? Icons.volume_off
+                                                        : Icons.volume_up,
+                                                    color: Colors.black,
+                                                  )),
+                                            ),
+                                          ),
+                                          Align(
+                                              alignment: Alignment.bottomCenter,
+                                              child: VideoProgressIndicator(
+                                                  _controller,
+                                                  allowScrubbing: true))
+                                        ],
+                                      )
+                                    : const Center(
+                                        child: CircularProgressIndicator(),
+                                      )),
+                          )
+                        ],
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                                width: 8,
+                                height: 8,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 3, vertical: 10),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: currentIndex == 0
+                                        ? Colors.purple
+                                        : Colors.grey)),
+                            Container(
+                                width: 8,
+                                height: 8,
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 3, vertical: 10),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: currentIndex == 1
+                                        ? Colors.purple
+                                        : Colors.grey))
+                          ]),
+                    )
+                  ],
+                ),
                 KHeight15,
                 ValueListenableBuilder(
                   valueListenable: _selectedValue,
@@ -117,9 +258,10 @@ class CourseDetailedPage extends StatelessWidget {
                 ),
                 KHeight5,
                 Text(
-                  courseDeailedProvider.courseDetailes!.data!.first.description
-                      .toString(),
-                  style: TextStyle(color: Colors.white),
+                  courseDeailedProvider.courseDetailes?.data?.first.description
+                          .toString() ??
+                      "Course description",
+                  style: const TextStyle(color: Colors.white),
                 ),
                 KHeight,
                 const Align(
@@ -127,24 +269,32 @@ class CourseDetailedPage extends StatelessWidget {
                 KHeight,
                 GestureDetector(
                   onTap: () {
-                    courseDeailedProvider.getReview(
-                        courseID: courseDeailedProvider
-                            .courseDetailes!.data!.first.id);
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ReviewPage()));
+                    if (courseDeailedProvider.courseDetailes?.data?.first.id !=
+                        null) {
+                      courseDeailedProvider.getReview(
+                          courseID: courseDeailedProvider
+                              .courseDetailes!.data!.first.id);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ReviewPage(
+                                id: courseDeailedProvider
+                                    .courseDetailes!.data!.first.id!
+                                    .toInt(),
+                              )));
+                    }
                   },
                   child: Row(
                     children: [
                       Text(
-                        "${courseDeailedProvider.courseDetailes!.data!.first.rating} ",
+                        "${courseDeailedProvider.courseDetailes?.data?.first.rating ?? "4"} ",
                         style:
                             const TextStyle(fontSize: 12, color: Colors.yellow),
                       ),
                       RatingBarIndicator(
                         unratedColor: Colors.grey,
                         rating: courseDeailedProvider
-                            .courseDetailes!.data!.first.rating!
-                            .toDouble(),
+                                .courseDetailes?.data?.first.rating!
+                                .toDouble() ??
+                            4,
                         itemBuilder: (context, index) => Icon(
                           Icons.star,
                           color: Colors.yellow,
@@ -153,27 +303,51 @@ class CourseDetailedPage extends StatelessWidget {
                         itemSize: 10.0,
                         direction: Axis.horizontal,
                       ),
-                      Text(
-                        " (36,500)",
-                        style:
-                            const TextStyle(fontSize: 12, color: Colors.yellow),
-                      ),
+                      courseDeailedProvider
+                                  .courseDetailes?.data?.first.ratingCount ==
+                              null
+                          ? Text(
+                              " (36,500)",
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.yellow),
+                            )
+                          : Text(
+                              "  (${courseDeailedProvider.courseDetailes?.data?.first.ratingCount})",
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.yellow),
+                            ),
                     ],
                   ),
                 ),
                 KHeight,
-                Row(
-                  children: [
-                    Text(
-                      "(2,414 ratings)",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                    KWidth5,
-                    Text(
-                      "18,267 students",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    )
-                  ],
+                GestureDetector(
+                  onTap: () async {
+                    if (courseDeailedProvider.courseDetailes?.data?.first.id !=
+                        null) {
+                      await courseDeailedProvider.getReview(
+                          courseID: courseDeailedProvider
+                              .courseDetailes!.data!.first.id);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ReviewPage(
+                                id: courseDeailedProvider
+                                    .courseDetailes!.data!.first.id!
+                                    .toInt(),
+                              )));
+                    }
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        "(2,414 ratings)",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                      KWidth5,
+                      Text(
+                        "18,267 students",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      )
+                    ],
+                  ),
                 ),
                 KHeight5,
                 ValueListenableBuilder(
@@ -260,13 +434,19 @@ class CourseDetailedPage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => AuthorDetailesPage()));
+                        if (courseDeailedProvider
+                                .courseDetailes?.data?.first.instructor?.name
+                                .toString() !=
+                            null) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => AuthorDetailesPage()));
+                        }
                       },
                       child: Text(
                         courseDeailedProvider
-                            .courseDetailes!.data!.first.instructor!.name
-                            .toString(),
+                                .courseDetailes?.data?.first.instructor?.name
+                                .toString() ??
+                            "Author name",
                         style: const TextStyle(
                             color: Colors.purple,
                             fontWeight: FontWeight.bold,
@@ -390,38 +570,49 @@ class CourseDetailedPage extends StatelessWidget {
                   ),
                 ),
                 KHeight15,
-                const BoldHeading(heading: "Recently viewed"),
-                //ivide thalkaalam oru cardundaakki vechathaanh.api kittiyaal small item card thanne call cheythaal mathi
+                const BoldHeading(heading: "Recently viewed"), KHeight5,
+                //  ivide thalkaalam oru cardundaakki vechathaanh.api kittiyaal small item card thanne call cheythaal mathi
                 SizedBox(
                   height: size * .6,
                   child: ListView.builder(
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     shrinkWrap: true,
-                    itemCount: 5,
+                    itemCount: courseDeailedProvider
+                        .recentlyViewedList!.data!.data!.length,
                     itemBuilder: (context, index) {
-                      return RecentlyViewedCard();
+                      final datas = courseDeailedProvider
+                          .recentlyViewedList!.data!.data![index];
+                      return SmallItemCard(
+                          courseName: datas.courseName,
+                          authorName: datas.instructorName,
+                          coursePrice: datas.coursePrice,
+                          image: datas.courseThumbnail.toString(),
+                          rating: datas.rating!.toDouble(),
+                          id: datas.id,
+                          ratingCount: datas.ratingCount);
                     },
                   ),
                 ),
-                KHeight15,
+                KHeight,
                 const BoldHeading(heading: "Recommendations"),
                 ListView.builder(
                   shrinkWrap: true,
                   physics: const BouncingScrollPhysics(),
                   itemCount: recomendationsProvider
-                      .recomendationsCourses!.data!.length,
+                      .recomendationsCourses?.data?.length,
                   itemBuilder: (context, index) {
                     final datas = recomendationsProvider
-                        .recomendationsCourses!.data![index];
+                        .recomendationsCourses?.data?[index];
                     return CourseDetailesListTile(
-                      courseName: datas.courseName.toString(),
-                      authorName: datas.instructor!.name.toString(),
-                      coursePrice: datas.price!.toDouble(),
-                      image: datas.thumbnail!.fullSize.toString(),
-                      rating: datas.rating!.toDouble(),
-                      id: datas.id!.toInt(),
-                      isRecomended: datas.recommendedCourse!,
+                      courseName: datas?.courseName.toString(),
+                      authorName: datas?.instructor?.name.toString(),
+                      coursePrice: datas?.price?.toDouble(),
+                      image: datas?.thumbnail?.fullSize.toString(),
+                      ratingCount: datas?.ratingCount,
+                      rating: datas?.rating?.toDouble(),
+                      id: datas?.id?.toInt(),
+                      isRecomended: datas?.recommendedCourse,
                     );
                   },
                 ),

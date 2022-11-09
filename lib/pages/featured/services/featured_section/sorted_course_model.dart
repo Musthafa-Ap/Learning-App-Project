@@ -1,20 +1,10 @@
-class TopCoursesModel {
+class SortedCourseModel {
   String? message;
   List<Data>? data;
-  int? pageCount;
-  int? pages;
-  bool? hasNext;
-  bool? hasPrevious;
 
-  TopCoursesModel(
-      {this.message,
-      this.data,
-      this.pageCount,
-      this.pages,
-      this.hasNext,
-      this.hasPrevious});
+  SortedCourseModel({this.message, this.data});
 
-  TopCoursesModel.fromJson(Map<String, dynamic> json) {
+  SortedCourseModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     if (json['data'] != null) {
       data = <Data>[];
@@ -22,10 +12,6 @@ class TopCoursesModel {
         data!.add(new Data.fromJson(v));
       });
     }
-    pageCount = json['page_count'];
-    pages = json['pages'];
-    hasNext = json['has_next'];
-    hasPrevious = json['has_previous'];
   }
 
   Map<String, dynamic> toJson() {
@@ -34,10 +20,6 @@ class TopCoursesModel {
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['page_count'] = this.pageCount;
-    data['pages'] = this.pages;
-    data['has_next'] = this.hasNext;
-    data['has_previous'] = this.hasPrevious;
     return data;
   }
 }
@@ -45,8 +27,9 @@ class TopCoursesModel {
 class Data {
   int? id;
   String? courseName;
+  String? description;
   double? price;
-  int? offerPrice;
+  double? offerPrice;
   SubCategory? subCategory;
   String? createdAt;
   String? updatedAt;
@@ -61,6 +44,7 @@ class Data {
   Data(
       {this.id,
       this.courseName,
+      this.description,
       this.price,
       this.offerPrice,
       this.subCategory,
@@ -75,9 +59,9 @@ class Data {
       this.ratingCount});
 
   Data.fromJson(Map<String, dynamic> json) {
-    ratingCount = json['rating_count'];
     id = json['id'];
     courseName = json['course_name'];
+    description = json['description'];
     price = json['price'];
     offerPrice = json['offer_price'];
     subCategory = json['sub_category'] != null
@@ -95,13 +79,14 @@ class Data {
         : null;
     introVideo = json['intro_video'];
     rating = json['rating'];
+    ratingCount = json['rating_count'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['rating_count'] = this.ratingCount;
     data['id'] = this.id;
     data['course_name'] = this.courseName;
+    data['description'] = this.description;
     data['price'] = this.price;
     data['offer_price'] = this.offerPrice;
     if (this.subCategory != null) {
@@ -119,6 +104,7 @@ class Data {
     }
     data['intro_video'] = this.introVideo;
     data['rating'] = this.rating;
+    data['rating_count'] = this.ratingCount;
     return data;
   }
 }
@@ -126,13 +112,15 @@ class Data {
 class SubCategory {
   int? id;
   String? subCatehoryName;
+  bool? isActive;
   int? category;
 
-  SubCategory({this.id, this.subCatehoryName, this.category});
+  SubCategory({this.id, this.subCatehoryName, this.isActive, this.category});
 
   SubCategory.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     subCatehoryName = json['sub_catehory_name'];
+    isActive = json['is_active'];
     category = json['category'];
   }
 
@@ -140,59 +128,133 @@ class SubCategory {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['sub_catehory_name'] = this.subCatehoryName;
+    data['is_active'] = this.isActive;
     data['category'] = this.category;
     return data;
   }
 }
 
 class Thumbnail {
-  String? thumbnail;
   String? fullSize;
+  String? thumbnail;
 
-  Thumbnail({this.thumbnail, this.fullSize});
+  Thumbnail({this.fullSize, this.thumbnail});
 
   Thumbnail.fromJson(Map<String, dynamic> json) {
-    thumbnail = json['thumbnail'];
     fullSize = json['full_size'];
+    thumbnail = json['thumbnail'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['thumbnail'] = this.thumbnail;
     data['full_size'] = this.fullSize;
+    data['thumbnail'] = this.thumbnail;
     return data;
   }
 }
 
 class Instructor {
+  int? id;
   String? name;
-  Thumbnail? profilePic;
-  String? phone;
   String? email;
-  String? details;
+  String? gender;
+  String? dob;
+  String? mobile;
+  String? address;
+  String? userSocialId;
+  String? isActive;
+  String? isAdmin;
+  String? isStaff;
+  String? password;
+  String? profilePic;
+  String? lastLogin;
+  bool? isSuperuser;
+  String? imagePpoi;
+  bool? isInstructor;
+  String? instructorDocs;
+  List? groups;
+  List? userPermissions;
 
   Instructor(
-      {this.name, this.profilePic, this.phone, this.email, this.details});
+      {this.id,
+      this.name,
+      this.email,
+      this.gender,
+      this.dob,
+      this.mobile,
+      this.address,
+      this.userSocialId,
+      this.isActive,
+      this.isAdmin,
+      this.isStaff,
+      this.password,
+      this.profilePic,
+      this.lastLogin,
+      this.isSuperuser,
+      this.imagePpoi,
+      this.isInstructor,
+      this.instructorDocs,
+      this.groups,
+      this.userPermissions});
 
   Instructor.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     name = json['name'];
-    profilePic = json['profile_pic'] != null
-        ? new Thumbnail.fromJson(json['profile_pic'])
-        : null;
-    phone = json['phone'];
     email = json['email'];
-    details = json['details'];
+    gender = json['gender'];
+    dob = json['dob'];
+    mobile = json['mobile'];
+    address = json['address'];
+    userSocialId = json['user_social_id'];
+    isActive = json['is_active'];
+    isAdmin = json['is_admin'];
+    isStaff = json['is_staff'];
+    password = json['password'];
+    profilePic = json['profile_pic'];
+    lastLogin = json['last_login'];
+    isSuperuser = json['is_superuser'];
+    imagePpoi = json['image_ppoi'];
+    isInstructor = json['is_instructor'];
+    instructorDocs = json['instructor_docs'];
+    if (json['groups'] != null) {
+      groups = [];
+
+      groups!.add((json['groups']));
+    }
+    if (json['user_permissions'] != null) {
+      userPermissions = [];
+
+      userPermissions!.add(json['user_permissions']);
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['name'] = this.name;
-    if (this.profilePic != null) {
-      data['profile_pic'] = this.profilePic!.toJson();
-    }
-    data['phone'] = this.phone;
     data['email'] = this.email;
-    data['details'] = this.details;
+    data['gender'] = this.gender;
+    data['dob'] = this.dob;
+    data['mobile'] = this.mobile;
+    data['address'] = this.address;
+    data['user_social_id'] = this.userSocialId;
+    data['is_active'] = this.isActive;
+    data['is_admin'] = this.isAdmin;
+    data['is_staff'] = this.isStaff;
+    data['password'] = this.password;
+    data['profile_pic'] = this.profilePic;
+    data['last_login'] = this.lastLogin;
+    data['is_superuser'] = this.isSuperuser;
+    data['image_ppoi'] = this.imagePpoi;
+    data['is_instructor'] = this.isInstructor;
+    data['instructor_docs'] = this.instructorDocs;
+    if (this.groups != null) {
+      data['groups'] = this.groups!.map((v) => v.toJson()).toList();
+    }
+    if (this.userPermissions != null) {
+      data['user_permissions'] =
+          this.userPermissions!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

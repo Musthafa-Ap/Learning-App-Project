@@ -49,6 +49,7 @@ class Data {
   Instructor? instructor;
   String? introVideo;
   int? rating;
+  int? ratingCount;
 
   Data(
       {this.id,
@@ -64,9 +65,11 @@ class Data {
       this.thumbnail,
       this.instructor,
       this.introVideo,
-      this.rating});
+      this.rating,
+      this.ratingCount});
 
   Data.fromJson(Map<String, dynamic> json) {
+    ratingCount = json['rating_count'];
     id = json['id'];
     description = json['description'];
     courseName = json['course_name'];
@@ -91,6 +94,7 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['rating_count'] = this.ratingCount;
     data['id'] = this.id;
     data['course_name'] = this.courseName;
     data['price'] = this.price;

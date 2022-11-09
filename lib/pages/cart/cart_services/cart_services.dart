@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../buy_all_page/buy_all_page.dart';
 
 class CartProvider with ChangeNotifier {
+  String? orderID;
   String? promo_code;
   bool isCoupenSuccess = false;
   bool isLoading = false;
@@ -23,7 +26,7 @@ class CartProvider with ChangeNotifier {
   Future<void> getAllCartItems() async {
     SharedPreferences _shared = await SharedPreferences.getInstance();
     var token = _shared.getString("access_token");
-    // print(token);
+    print(token);
     String auth = "Bearer $token";
     var api = "http://learningapp.e8demo.com/api/add_to_cart/";
     var response = await http.get(
@@ -119,8 +122,10 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  void checkoutWithoutPromo(
-      {required String paymentMode, required context}) async {
+  void checkoutWithoutPromo({
+    required String paymentMode,
+    required context,
+  }) async {
     try {
       SharedPreferences _shared = await SharedPreferences.getInstance();
       var token = _shared.getString("access_token");
@@ -131,9 +136,11 @@ class CartProvider with ChangeNotifier {
       }, body: {
         "payment_method": paymentMode,
       });
+      print(response.body);
+      print(response.statusCode);
       Map<String, dynamic> data = jsonDecode(response.body);
       print(response.statusCode);
-      print(data);
+      orderID = data['data']['order_id'];
       if (data['message'] == "success") {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green,
@@ -155,31 +162,36 @@ class CartProvider with ChangeNotifier {
       {required String paymentMode,
       required context,
       required String promocode}) async {
-    SharedPreferences _shared = await SharedPreferences.getInstance();
-    var token = _shared.getString("access_token");
-    String auth = "Bearer $token";
-    print("promo = $promocode");
-    print("payment = $paymentMode");
-    var api = "http://learningapp.e8demo.com/api/confirm_purchase/";
-    var response = await http.post(Uri.parse(api),
-        headers: {"Authorization": auth},
-        body: {"payment_method": "gpay", "promo_code": "FLASH20ZQW"});
-    print(auth);
-    print(response.request);
-    print(response.statusCode);
-    print(response.body);
-    Map<String, dynamic> data = jsonDecode(response.body);
-    print(data);
-    if (data["message"] == "success") {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          backgroundColor: Colors.green,
-          content: Text(
-            "Course ordered",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          )));
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => MyLearning()),
-          (route) => false);
+    try {
+      SharedPreferences _shared = await SharedPreferences.getInstance();
+      var token = _shared.getString("access_token");
+      String auth = "Bearer $token";
+      print("promo = $promocode");
+      print("payment = $paymentMode");
+      var api = "http://learningapp.e8demo.com/api/confirm_purchase/";
+      var response = await http.post(Uri.parse(api),
+          headers: {
+            "Authorization": auth,
+            "Content-Type": 'application/json',
+          },
+          body: jsonEncode(
+              {"payment_method": paymentMode, "promo_code": promocode}));
+      Map<String, dynamic> data = jsonDecode(response.body);
+      orderID = data['data']['order_id'];
+      if (data["message"] == "success") {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+              "Course ordered",
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            )));
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => ConformPurchasePage()),
+            (route) => false);
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

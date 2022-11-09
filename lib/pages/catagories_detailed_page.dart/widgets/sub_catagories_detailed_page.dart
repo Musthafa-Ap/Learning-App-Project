@@ -21,12 +21,13 @@ class SubCatagoriesDetailedPage extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         children: [
-          Text(
-            "Development",
-            style: const TextStyle(
-                color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
-          ),
-          KHeight15,
+          // Text(
+          //   "Development",
+          //   style: const TextStyle(
+          //       color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
+          // ),
+          // KHeight15,
+          KHeight5,
           Text(
             "Courses to get you started",
             style: const TextStyle(
@@ -56,15 +57,16 @@ class SubCatagoriesDetailedPage extends StatelessWidget {
             itemCount: catagoriesProvider.subCatagoriesDetailes!.data!.length,
             itemBuilder: (context, index) {
               final datas =
-                  catagoriesProvider.subCatagoriesDetailes!.data![index];
+                  catagoriesProvider.subCatagoriesDetailes?.data?[index];
               return CourseDetailesListTile(
-                authorName: datas.instructor!.name.toString(),
-                courseName: datas.courseName.toString(),
-                coursePrice: datas.price!.toDouble(),
-                id: datas.id!.toInt(),
-                image: datas.thumbnail!.fullSize.toString(),
-                rating: datas.rating!.toDouble(),
-                isRecomended: datas.recommendedCourse!,
+                authorName: datas?.instructor?.name.toString(),
+                courseName: datas?.courseName.toString(),
+                coursePrice: datas?.price?.toDouble(),
+                id: datas?.id?.toInt(),
+                ratingCount: datas?.ratingCount,
+                image: datas?.thumbnail?.fullSize.toString(),
+                rating: datas?.rating?.toDouble(),
+                isRecomended: datas?.recommendedCourse,
               );
             },
           ),

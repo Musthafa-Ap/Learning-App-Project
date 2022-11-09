@@ -12,13 +12,14 @@ import '../constants/constants.dart';
 import 'big_cart_icon_button.dart';
 
 class CourseDetailesListTile extends StatelessWidget {
+  final int? ratingCount;
   bool? isRecomended;
-  final int id;
-  final String courseName;
-  final String authorName;
-  final double coursePrice;
-  final String image;
-  final double rating;
+  final int? id;
+  final String? courseName;
+  final String? authorName;
+  final double? coursePrice;
+  final String? image;
+  final double? rating;
   final int? variantID;
   CourseDetailesListTile({
     this.isCartItem = false,
@@ -31,6 +32,7 @@ class CourseDetailesListTile extends StatelessWidget {
     required this.id,
     this.variantID,
     this.isRecomended = false,
+    required this.ratingCount,
   }) : super(key: key);
   final bool isCartItem;
   String? variant;
@@ -46,8 +48,8 @@ class CourseDetailesListTile extends StatelessWidget {
     final cartProvider = Provider.of<CartProvider>(context);
     final size = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: () {
-        Provider.of<CourseDetailedProvider>(context, listen: false)
+      onTap: () async {
+        await Provider.of<CourseDetailedProvider>(context, listen: false)
             .getAll(courseID: id);
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => CourseDetailedPage()));
@@ -66,7 +68,9 @@ class CourseDetailesListTile extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       image: DecorationImage(
-                          fit: BoxFit.cover, image: NetworkImage(image))),
+                          fit: BoxFit.cover,
+                          image: NetworkImage(image ??
+                              "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg"))),
                 ),
                 Expanded(
                   child: Padding(
@@ -75,7 +79,7 @@ class CourseDetailesListTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          courseName,
+                          courseName ?? "Course name",
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -85,7 +89,7 @@ class CourseDetailesListTile extends StatelessWidget {
                         ),
                         KHeight5,
                         Text(
-                          authorName,
+                          authorName ?? "Author name",
                           style:
                               TextStyle(fontSize: 12, color: Colors.grey[300]),
                         ),
@@ -99,7 +103,7 @@ class CourseDetailesListTile extends StatelessWidget {
                             ),
                             RatingBarIndicator(
                               unratedColor: Colors.grey,
-                              rating: rating,
+                              rating: rating ?? 4,
                               itemBuilder: (context, index) => Icon(
                                 Icons.star,
                                 color: Colors.yellow,
@@ -109,7 +113,7 @@ class CourseDetailesListTile extends StatelessWidget {
                               direction: Axis.horizontal,
                             ),
                             Text(
-                              " (36,907)",
+                              " (${ratingCount})",
                               style:
                                   TextStyle(fontSize: 12, color: Colors.yellow),
                             ),
@@ -126,7 +130,7 @@ class CourseDetailesListTile extends StatelessWidget {
                             : SizedBox(),
                         KHeight5,
                         Text(
-                          "₹$coursePrice",
+                          "₹${coursePrice ?? "Course price"}",
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -156,8 +160,8 @@ class CourseDetailesListTile extends StatelessWidget {
                                         },
                                         icon: Icon(Icons.delete)))
                                 : BigCartIconButton(
-                                    id: id,
-                                    price: coursePrice.toInt(),
+                                    id: id!,
+                                    price: coursePrice!.toInt(),
                                   )
                           ],
                         )
