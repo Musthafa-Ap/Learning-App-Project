@@ -78,14 +78,33 @@ class CourseDetailesListTile extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          courseName ?? "Course name",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              courseName ?? "Course name",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 46),
+                              child: GestureDetector(
+                                onTap: () {
+                                  print("hello");
+                                },
+                                child: Icon(
+                                  Icons.favorite_border,
+                                  size: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          ],
                         ),
                         KHeight5,
                         Text(

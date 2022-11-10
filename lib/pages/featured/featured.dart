@@ -1,26 +1,15 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/featured/sections/whichlist_section/whishlist_page.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:math' as math;
 import '../course_detailed_page/course_detailed_page.dart';
 import '../course_detailed_page/services/course_detailed_provider.dart';
 import 'sections/featured_section/featured_section.dart';
-import 'widgets/top_image_section.dart';
 import 'widgets/top_text_section.dart';
-
-List _images = [
-  "https://www.timeshighereducation.com/sites/default/files/styles/the_breaking_news_image_style/public/istock-1213470247_0.jpg?itok=VZUWOAHL",
-  "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg",
-  "http://learningapp.e8demo.com/media/banner_img/5-diwali.jpeg",
-  "http://learningapp.e8demo.com/media/thumbnail_img/4-physics.jpeg",
-];
 
 class Featured extends StatefulWidget {
   Featured({super.key});
@@ -86,7 +75,7 @@ class _FeaturedState extends State<Featured> {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => WhichlistPage()));
                 },
-                icon: Icon(Icons.favorite_outline))
+                icon: const Icon(Icons.notifications_outlined))
           ],
         ),
         body: ListView(
@@ -108,7 +97,7 @@ class _FeaturedState extends State<Featured> {
             KHeight,
             topCoursesProvider.banner == null ||
                     topCoursesProvider.banner!.data!.first.bannerImg!.isEmpty
-                ? SizedBox()
+                ? const SizedBox()
                 : Stack(
                     children: [
                       SizedBox(

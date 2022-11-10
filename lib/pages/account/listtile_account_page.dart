@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../my_home_page.dart';
+import '../featured/sections/whichlist_section/whishlist_page.dart';
 
 class ListTileAccountPage extends StatelessWidget {
   final int index;
@@ -34,6 +35,9 @@ class ListTileAccountPage extends StatelessWidget {
           } else if (index == 2) {
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => ChangePasswordPage()));
+          } else if (index == 6) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => WhichlistPage()));
           } else if (index == 3) {
             await Share.share(
                 "https://i.guim.co.uk/img/media/71dd7c5b208e464995de3467caf9671dc86fcfd4/1176_345_3557_2135/master/3557.jpg?width=620&quality=45&dpr=2&s=none");

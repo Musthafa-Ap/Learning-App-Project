@@ -14,7 +14,7 @@ class AuthorDetailesPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Author Detailes"),
+        title: const Text("Author Detailes"),
       ),
       body: Container(
         margin: EdgeInsets.all(20),
@@ -22,6 +22,7 @@ class AuthorDetailesPage extends StatelessWidget {
         child: ListView(padding: EdgeInsets.all(10), children: [
           KHeight15,
           CircleAvatar(
+              backgroundColor: Colors.transparent,
               radius: 80,
               backgroundImage: NetworkImage(
                   "https://images.ctfassets.net/kvf8rpi09wgk/2FAVdt4PCl8SMmd6PFD9yR/69937dcdf4032e741307878928d3198f/Phil_Kulp_Headshot.jpg?w=400&q=50&h=400&fit=thumb")),
@@ -30,7 +31,7 @@ class AuthorDetailesPage extends StatelessWidget {
             child: Text(
               courseDeailedProvider.courseDetailes!.data!.first.instructor!.name
                   .toString(),
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold),
@@ -42,7 +43,7 @@ class AuthorDetailesPage extends StatelessWidget {
               courseDeailedProvider
                   .courseDetailes!.data!.first.instructor!.email
                   .toString(),
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
           KHeight5,
@@ -51,7 +52,7 @@ class AuthorDetailesPage extends StatelessWidget {
               courseDeailedProvider
                   .courseDetailes!.data!.first.instructor!.phone
                   .toString(),
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
           KHeight20,
@@ -59,7 +60,7 @@ class AuthorDetailesPage extends StatelessWidget {
             courseDeailedProvider
                 .courseDetailes!.data!.first.instructor!.details
                 .toString(),
-            style: TextStyle(color: Colors.white, fontSize: 17),
+            style: const TextStyle(color: Colors.white, fontSize: 17),
           ),
         ]),
       ),

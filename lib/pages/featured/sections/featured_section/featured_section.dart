@@ -36,7 +36,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
     Provider.of<CatagoriesProvider>(context, listen: false).getAll();
     Provider.of<TopCoursesProvider>(context, listen: false).getAll();
     Provider.of<CourseDetailedProvider>(context, listen: false)
-        .getAll(courseID: 1);
+        .getAll(courseID: 2);
     Provider.of<CatagoriesDetailedProvider>(context, listen: false)
         .getAll(catagoriesID: 1);
     Provider.of<CatagoriesDetailedProvider>(context, listen: false)

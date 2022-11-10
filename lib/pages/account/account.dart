@@ -47,6 +47,11 @@ class _AccountState extends State<Account> {
           const SmallHeading(heading: "Support"),
           KHeight,
           ListTileAccountPage(
+            tiletitle: "Whishlist",
+            index: 6,
+          ),
+          KHeight,
+          ListTileAccountPage(
             tiletitle: "FAQ",
             index: 0,
           ),
