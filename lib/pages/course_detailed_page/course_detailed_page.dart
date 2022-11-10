@@ -67,14 +67,18 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Featured"),
+        title: const Text("Featured"),
         actions: [
-          KWidth5,
+          kWidth5,
           IconButton(
               onPressed: () async {
-                await Share.share(courseDeailedProvider
-                    .courseDetailes!.data!.first.introVideo
-                    .toString());
+                if (courseDeailedProvider
+                        .courseDetailes!.data!.first.introVideo !=
+                    null) {
+                  await Share.share(courseDeailedProvider
+                      .courseDetailes!.data!.first.introVideo
+                      .toString());
+                }
               },
               icon: const Icon(CupertinoIcons.share))
         ],
@@ -100,7 +104,6 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                         onPageChanged: (index) {
                           setState(() {
                             currentIndex = index;
-                            print(currentIndex);
                           });
                         },
                         children: [
@@ -144,7 +147,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                                           _controller.play();
                                                         });
                                                       },
-                                                      icon: Icon(
+                                                      icon: const Icon(
                                                         Icons.play_arrow,
                                                         color: Colors.white,
                                                         size: 45,
@@ -194,7 +197,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                             Container(
                                 width: 8,
                                 height: 8,
-                                margin: EdgeInsets.symmetric(
+                                margin: const EdgeInsets.symmetric(
                                     horizontal: 3, vertical: 10),
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
@@ -204,7 +207,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                             Container(
                                 width: 8,
                                 height: 8,
-                                margin: EdgeInsets.symmetric(
+                                margin: const EdgeInsets.symmetric(
                                     horizontal: 3, vertical: 10),
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
@@ -215,7 +218,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                     )
                   ],
                 ),
-                KHeight15,
+                kHeight15,
                 ValueListenableBuilder(
                   valueListenable: _selectedValue,
                   builder: (context, value, child) {
@@ -224,8 +227,9 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                       children: [
                         BoldHeading(
                             heading: courseDeailedProvider
-                                .courseDetailes!.data!.first.courseName
-                                .toString()),
+                                    .courseDetailes?.data?.first.courseName
+                                    .toString() ??
+                                "Course name"),
                         Container(
                           height: 25,
                           padding: const EdgeInsets.only(
@@ -256,17 +260,17 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                     );
                   },
                 ),
-                KHeight5,
+                kHeight5,
                 Text(
                   courseDeailedProvider.courseDetailes?.data?.first.description
                           .toString() ??
                       "Course description",
                   style: const TextStyle(color: Colors.white),
                 ),
-                KHeight,
+                kHeight,
                 const Align(
                     alignment: Alignment.centerLeft, child: BestsellerWidget()),
-                KHeight,
+                kHeight,
                 GestureDetector(
                   onTap: () {
                     if (courseDeailedProvider.courseDetailes?.data?.first.id !=
@@ -295,7 +299,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                 .courseDetailes?.data?.first.rating!
                                 .toDouble() ??
                             4,
-                        itemBuilder: (context, index) => Icon(
+                        itemBuilder: (context, index) => const Icon(
                           Icons.star,
                           color: Colors.yellow,
                         ),
@@ -306,10 +310,10 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                       courseDeailedProvider
                                   .courseDetailes?.data?.first.ratingCount ==
                               null
-                          ? Text(
+                          ? const Text(
                               " (36,500)",
-                              style: const TextStyle(
-                                  fontSize: 12, color: Colors.yellow),
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.yellow),
                             )
                           : Text(
                               "  (${courseDeailedProvider.courseDetailes?.data?.first.ratingCount})",
@@ -319,37 +323,37 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                     ],
                   ),
                 ),
-                KHeight,
-                GestureDetector(
-                  onTap: () async {
-                    if (courseDeailedProvider.courseDetailes?.data?.first.id !=
-                        null) {
-                      await courseDeailedProvider.getReview(
-                          courseID: courseDeailedProvider
-                              .courseDetailes!.data!.first.id);
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ReviewPage(
-                                id: courseDeailedProvider
-                                    .courseDetailes!.data!.first.id!
-                                    .toInt(),
-                              )));
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      Text(
-                        "(2,414 ratings)",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                      KWidth5,
-                      Text(
-                        "18,267 students",
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      )
-                    ],
-                  ),
-                ),
-                KHeight5,
+                kHeight,
+                // GestureDetector(
+                //   onTap: () async {
+                //     if (courseDeailedProvider.courseDetailes?.data?.first.id !=
+                //         null) {
+                //       await courseDeailedProvider.getReview(
+                //           courseID: courseDeailedProvider
+                //               .courseDetailes!.data!.first.id);
+                //       Navigator.of(context).push(MaterialPageRoute(
+                //           builder: (context) => ReviewPage(
+                //                 id: courseDeailedProvider
+                //                     .courseDetailes!.data!.first.id!
+                //                     .toInt(),
+                //               )));
+                //     }
+                //   },
+                //   child: Row(
+                //     children: [
+                //       Text(
+                //         "(2,414 ratings)",
+                //         style: TextStyle(color: Colors.white, fontSize: 16),
+                //       ),
+                //       KWidth5,
+                //       Text(
+                //         "18,267 students",
+                //         style: TextStyle(color: Colors.white, fontSize: 16),
+                //       )
+                //     ],
+                //   ),
+                // ),
+                // KHeight5,
                 ValueListenableBuilder(
                   valueListenable: _selectedValue,
                   builder: (context, value, child) {
@@ -385,9 +389,9 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 27),
                             ),
-                            KWidth10,
+                            kWidth10,
                             const Text(
-                              "₹7499",
+                              "₹10,000",
                               style: TextStyle(
                                   color: Colors.white,
                                   decoration: TextDecoration.lineThrough),
@@ -422,7 +426,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                     );
                   },
                 ),
-                KHeight,
+                kHeight,
                 Row(
                   children: [
                     const Text(
@@ -439,7 +443,8 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                 .toString() !=
                             null) {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => AuthorDetailesPage()));
+                              builder: (context) =>
+                                  const AuthorDetailesPage()));
                         }
                       },
                       child: Text(
@@ -455,59 +460,21 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                     )
                   ],
                 ),
-                // KHeight,
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 75),
-                //   child: SizedBox(
-                //     height: 50,
-                //     child: ElevatedButton(
-                //       onPressed: () {},
-                //       child: Text("Buy now"),
-                //       style: ButtonStyle(
-                //           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                //               RoundedRectangleBorder(
-                //                   borderRadius: BorderRadius.circular(22))),
-                //           backgroundColor: MaterialStateProperty.all(Colors.purple)),
-                //     ),
-                //   ),
-                // ),
-                KHeight,
+
+                kHeight,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 75),
                   child: SizedBox(
                     height: 50,
                     child: OutlinedButton.icon(
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.shopping_bag_outlined,
                         color: Colors.white,
                       ),
                       onPressed: () async {
-                        // for (int i = 0;
-                        //     i < cartProvider.cartItems!.data!.cartItem!.length;
-                        //     i++) {
-                        //   // print(
-                        //   //     "${cartProvider.cartItems!.data!.cartItem![i].courseId}");
-                        //   if (cartProvider.cartItems!.data!.cartItem![i].courseId ==
-                        //       courseDeailedProvider.courseDetailes!.data!.first.id!
-                        //           .toInt()) {
-                        //     setState(() {
-                        //       alreadyAdded = true;
-                        //     });
-                        //     print("found");
-                        // print(cartProvider.cartItems!.data!.cartItem![i].courseId
-                        //     .toString());
-                        // print(courseDeailedProvider
-                        //     .courseDetailes!.data!.first.id!
-                        //     .toString());
-
-                        //  }
-                        // print("again");
-                        // print(alreadyAdded);
-                        // }
                         SharedPreferences _Sharedpref =
                             await SharedPreferences.getInstance();
                         var token = _Sharedpref.getString("access_token");
-                        print(token);
                         if (_selectedValue.value == "Beginner") {
                           variant = 1;
                         } else if (_selectedValue.value == "Intermediate") {
@@ -548,8 +515,10 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                 token: token);
                           }
                         } else {
+                          if (!mounted) return;
                           Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(builder: (context) => Test()),
+                            MaterialPageRoute(
+                                builder: (context) => const Test()),
                             (route) => false,
                           );
                         }
@@ -562,39 +531,48 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                           side: MaterialStateProperty.all(const BorderSide(
                             color: Colors.white,
                           ))),
-                      label: Text(
+                      label: const Text(
                         "Add to Bag",
-                        style: const TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
                   ),
                 ),
-                KHeight15,
-                const BoldHeading(heading: "Recently viewed"), KHeight5,
+                kHeight15,
+                courseDeailedProvider.recentlyViewedList == null ||
+                        courseDeailedProvider
+                            .recentlyViewedList!.data!.data!.isEmpty
+                    ? const SizedBox()
+                    : const BoldHeading(heading: "Recently viewed"),
+                kHeight5,
                 //  ivide thalkaalam oru cardundaakki vechathaanh.api kittiyaal small item card thanne call cheythaal mathi
-                SizedBox(
-                  height: size * .6,
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: courseDeailedProvider
-                        .recentlyViewedList!.data!.data!.length,
-                    itemBuilder: (context, index) {
-                      final datas = courseDeailedProvider
-                          .recentlyViewedList!.data!.data![index];
-                      return SmallItemCard(
-                          courseName: datas.courseName,
-                          authorName: datas.instructorName,
-                          coursePrice: datas.coursePrice,
-                          image: datas.courseThumbnail.toString(),
-                          rating: datas.rating!.toDouble(),
-                          id: datas.id,
-                          ratingCount: datas.ratingCount);
-                    },
-                  ),
-                ),
-                KHeight,
+                courseDeailedProvider.recentlyViewedList == null ||
+                        courseDeailedProvider
+                            .recentlyViewedList!.data!.data!.isEmpty
+                    ? const SizedBox()
+                    : SizedBox(
+                        height: size * .6,
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemCount: courseDeailedProvider
+                              .recentlyViewedList?.data?.data?.length,
+                          itemBuilder: (context, index) {
+                            final datas = courseDeailedProvider
+                                .recentlyViewedList?.data?.data?[index];
+                            return SmallItemCard(
+                                courseName: datas?.courseName,
+                                authorName: datas?.instructorName,
+                                coursePrice: datas?.coursePrice,
+                                image: datas?.courseThumbnail.toString(),
+                                rating: datas?.rating?.toDouble(),
+                                id: datas?.id,
+                                ratingCount: datas?.ratingCount);
+                          },
+                        ),
+                      ),
+                kHeight,
                 const BoldHeading(heading: "Recommendations"),
                 ListView.builder(
                   shrinkWrap: true,
@@ -618,89 +596,6 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                 ),
               ],
             ),
-    );
-  }
-}
-
-class RecentlyViewedCard extends StatelessWidget {
-  const RecentlyViewedCard({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SizedBox(
-        width: size * .365,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              height: size * .185,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  image: DecorationImage(
-                      fit: BoxFit.fill,
-                      image: NetworkImage(
-                          "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg"))),
-            ),
-            KHeight5,
-            Text(
-              "Python",
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            KHeight5,
-            Text(
-              "Marko",
-              style: TextStyle(fontSize: 12, color: Colors.grey[300]),
-            ),
-            KHeight5,
-            Row(
-              children: [
-                Text(
-                  "2.6 ***** (36,907)",
-                  style: TextStyle(fontSize: 12, color: Colors.yellow),
-                ),
-              ],
-            ),
-            KHeight5,
-            Text(
-              "₹6000",
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-            KHeight5,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                BestsellerWidget(),
-                Container(
-                    decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(5)),
-                    margin: const EdgeInsets.only(right: 20),
-                    height: 30,
-                    width: 50,
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.shopping_bag,
-                          color: Colors.white,
-                          size: 28,
-                        )))
-              ],
-            )
-          ],
-        ),
-      ),
     );
   }
 }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/my_home_page.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
@@ -18,7 +16,7 @@ class ConformPurchasePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: ListView(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         children: [
           SizedBox(
             height: size * .3,
@@ -26,17 +24,17 @@ class ConformPurchasePage extends StatelessWidget {
           CircleAvatar(
             backgroundColor: Colors.transparent,
             radius: size * .25,
-            backgroundImage: NetworkImage(
+            backgroundImage: const NetworkImage(
                 "https://static.vecteezy.com/system/resources/previews/006/900/704/original/green-tick-checkbox-illustration-isolated-on-white-background-free-vector.jpg"),
           ),
-          Center(
+          const Center(
             child: Text(
               "Congratulations",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
-          KHeight,
-          Center(
+          kHeight,
+          const Center(
             child: Text(
               "Course successfully purchased",
               style: TextStyle(fontSize: 18),
@@ -50,7 +48,7 @@ class ConformPurchasePage extends StatelessWidget {
             cartProvider.orderID == null
                 ? "Order ID : 32532542352"
                 : "Order ID : ${cartProvider.orderID}",
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           )),
           SizedBox(
             height: size * .2,
@@ -63,11 +61,11 @@ class ConformPurchasePage extends StatelessWidget {
                 onPressed: () async {
                   await myLearningsProvider.getMyLearnings();
                   Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context) => MyHomePage()),
+                    MaterialPageRoute(builder: (context) => const MyHomePage()),
                     (route) => false,
                   );
                 },
-                child: Text("Back to Home")),
+                child: const Text("Back to Home")),
           )
         ],
       ),

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileEditPage extends StatefulWidget {
-  ProfileEditPage({super.key});
+  const ProfileEditPage({super.key});
 
   @override
   State<ProfileEditPage> createState() => _ProfileEditPageState();
@@ -20,9 +20,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       ValueNotifier("Select Date of Birth");
   final _formKey = GlobalKey<FormState>();
   ValueNotifier<String> selectedGenderNotifier = ValueNotifier("Male");
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _addressController = TextEditingController();
-  var _genders = ["Male", "Female", "Others"];
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final _genders = ["Male", "Female", "Others"];
   String? name;
   File? _image;
   String? _email;
@@ -38,14 +38,14 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   }
 
   void getdata() async {
-    SharedPreferences _sharedPref = await SharedPreferences.getInstance();
-    name = _sharedPref.getString("name");
-    String? email = _sharedPref.getString("email");
-    String? _nmbr = _sharedPref.getString("number");
-    _address = _sharedPref.getString("address");
-    _dob = _sharedPref.getString("dob");
-    _gender = _sharedPref.getString("gender");
-    _profileimage = _sharedPref.getString("image");
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    name = sharedPref.getString("name");
+    String? email = sharedPref.getString("email");
+    String? _nmbr = sharedPref.getString("number");
+    _address = sharedPref.getString("address");
+    _dob = sharedPref.getString("dob");
+    _gender = sharedPref.getString("gender");
+    _profileimage = sharedPref.getString("image");
     if (name != null) {
       setState(() {
         _nameController.text = name!;
@@ -74,8 +74,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     }
   }
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _numberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _numberController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final accountProvider =
@@ -91,7 +91,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
           physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.all(15),
           children: [
-            KHeight,
+            kHeight,
             GestureDetector(
               onTap: () {
                 _pickImage();
@@ -110,26 +110,26 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       backgroundImage: FileImage(_image!),
                     ),
             ),
-            KHeight20,
+            kheight20,
             TextFormField(
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]"))
               ],
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               keyboardType: TextInputType.name,
               controller: _nameController,
               decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5.0),
-                    borderSide: BorderSide(
+                    borderSide: const BorderSide(
                       color: Colors.white,
                     ),
                   ),
-                  hintStyle: TextStyle(color: Colors.white),
+                  hintStyle: const TextStyle(color: Colors.white),
                   fillColor: Colors.black,
                   filled: true,
                   border: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.circular(5)),
                   hintText: "Name"),
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -137,26 +137,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   ? "Please enter your name"
                   : null),
             ),
-            // Container(
-            //   height: 60,
-            //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            //   decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(5),
-            //       color: Colors.black,
-            //       border: Border.all(color: Colors.white)),
-            //   child: Padding(
-            //     padding: const EdgeInsets.only(left: 5),
-            //     child: TextField(
-            //       controller: _nameController,
-            //       style: const TextStyle(color: Colors.white),
-            //       decoration: const InputDecoration(
-            //           border: InputBorder.none,
-            //           hintText: "Name",
-            //           hintStyle: TextStyle(color: Colors.white)),
-            //     ),
-            //   ),
-            // ),
-            KHeight15,
+            kHeight15,
             _email != null
                 ? Container(
                     padding: const EdgeInsets.only(left: 12),
@@ -169,50 +150,25 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         borderRadius: BorderRadius.circular(5)),
                     child: Text(
                       _email!,
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   )
-                // : Container(
-                //     height: 50,
-                //     padding:
-                //         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                //     decoration: BoxDecoration(
-                //         borderRadius: BorderRadius.circular(5),
-                //         color: Colors.black,
-                //         border: Border.all(color: Colors.white)),
-                //     child: Padding(
-                //       padding: const EdgeInsets.only(left: 5),
-                //       child: TextFormField(
-                //         controller: _nameController,
-                //         style: const TextStyle(color: Colors.white),
-                //         decoration: const InputDecoration(
-                //             border: InputBorder.none,
-                //             hintText: "Email",
-                //             hintStyle: TextStyle(color: Colors.white)),
-                //         autovalidateMode: AutovalidateMode.onUserInteraction,
-                //         validator: (email) =>
-                //             email != null && !EmailValidator.validate(email)
-                //                 ? "Enter a valid mail"
-                //                 : null,
-                //       ),
-                //     ),
-                //   ),
                 : TextFormField(
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     keyboardType: TextInputType.emailAddress,
                     controller: _emailController,
                     decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors.white,
                           ),
                         ),
-                        hintStyle: TextStyle(color: Colors.white),
+                        hintStyle: const TextStyle(color: Colors.white),
                         fillColor: Colors.black,
                         filled: true,
                         border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.white),
                             borderRadius: BorderRadius.circular(5)),
                         hintText: "Email"),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -221,7 +177,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                             ? "Enter a valid mail"
                             : null,
                   ),
-            KHeight,
+            kHeight,
             _mobile == null
                 ? TextFormField(
                     inputFormatters: [
@@ -229,28 +185,28 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       FilteringTextInputFormatter.digitsOnly
                     ],
                     keyboardType: TextInputType.number,
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     controller: _numberController,
                     decoration: InputDecoration(
                         prefixIcon: Container(
                           // alignment: Alignment.centerLeft,
                           padding: const EdgeInsets.only(top: 11, left: 1),
-                          child: Text(
+                          child: const Text(
                             "  +91",
                             style: TextStyle(fontSize: 18, color: Colors.white),
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors.white,
                           ),
                         ),
-                        hintStyle: TextStyle(color: Colors.white),
+                        hintStyle: const TextStyle(color: Colors.white),
                         fillColor: Colors.black,
                         filled: true,
                         border: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.white),
+                            borderSide: const BorderSide(color: Colors.white),
                             borderRadius: BorderRadius.circular(5)),
                         hintText: "Mobile number"),
                     autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -269,11 +225,11 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         borderRadius: BorderRadius.circular(5)),
                     child: Text(
                       _mobile!,
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
 
-            KHeight15,
+            kHeight15,
             Container(
               height: 60,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -306,13 +262,15 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               ),
             ),
 
-            KHeight15, //Dataofbirth
+            kHeight15, //Dataofbirth
             GestureDetector(
               onTap: () async {
                 final selectedDateTemp = await showDatePicker(
                     context: context,
-                    initialDate: DateTime.now().subtract(Duration(days: 10000)),
-                    firstDate: DateTime.now().subtract(Duration(days: 30000)),
+                    initialDate:
+                        DateTime.now().subtract(const Duration(days: 10000)),
+                    firstDate:
+                        DateTime.now().subtract(const Duration(days: 30000)),
                     lastDate: DateTime.now());
                 if (selectedDateTemp == null) {
                   return;
@@ -341,13 +299,13 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           builder: (context, value, child) {
                             return Text(
                               value,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 16),
                             );
                           },
                         ),
-                        KWidth5,
-                        Icon(
+                        kWidth5,
+                        const Icon(
                           Icons.calendar_month,
                           color: Colors.white,
                           size: 18,
@@ -356,7 +314,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     ),
                   )),
             ),
-            KHeight15,
+            kHeight15,
             Container(
               height: 150,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -369,8 +327,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 child: TextFormField(
                   maxLines: 8,
                   controller: _addressController,
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
                       border: InputBorder.none,
                       hintText: "Address",
                       hintStyle: TextStyle(color: Colors.white)),
@@ -381,10 +339,12 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 ),
               ),
             ),
-            KHeight20, KHeight,
+            kheight20, kHeight,
             SizedBox(
               height: 50,
               child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.purple)),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     String date = selectedDateNotifier.value;
@@ -403,7 +363,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     //   return;
                     // }
                     if (date == "Select Date of Birth") {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           backgroundColor: Colors.red,
                           content: Text('Please select date of birth')));
                       return;
@@ -424,8 +384,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         child: CircularProgressIndicator(),
                       )
                     : const Text("Submit"),
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.purple)),
               ),
             ),
           ],
@@ -446,7 +404,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
         // _sharedpref.setString("image", path);
         // print(_image);
         print(_image!.path);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
             content: Text('Image updoaded successfully')));
 

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/banner_model.dart';

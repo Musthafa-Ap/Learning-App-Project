@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class BoldHeading extends StatelessWidget {
   final String heading;
-  const BoldHeading({required this.heading});
+  const BoldHeading({super.key, required this.heading});
 
   @override
   Widget build(BuildContext context) {

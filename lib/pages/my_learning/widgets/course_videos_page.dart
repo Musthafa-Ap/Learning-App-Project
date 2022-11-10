@@ -4,124 +4,6 @@ import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.da
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
-// class MyLearningVideoPlayer extends StatefulWidget {
-//   const MyLearningVideoPlayer({super.key});
-
-//   @override
-//   State<MyLearningVideoPlayer> createState() => _MyLearningVideoPlayerState();
-// }
-
-// class _MyLearningVideoPlayerState extends State<MyLearningVideoPlayer> {
-//   late VideoPlayerController _controller;
-//   @override
-//   void initState() {
-//     super.initState();
-//     _controller = VideoPlayerController.network(
-//         'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
-//       ..initialize().then((_) {
-//         setState(() {});
-//         _controller.play();
-//         _controller.setLooping(false);
-//         _controller.setVolume(1);
-//       });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final isMuted = _controller.value.volume == 0;
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text("Learning"),
-//       ),
-//       body: ListView(
-//         physics: const BouncingScrollPhysics(),
-//         padding: const EdgeInsets.all(15),
-//         children: [
-//           GestureDetector(
-//             // behavior: HitTestBehavior.opaque,
-//             onTap: () {
-//               setState(() {
-//                 _controller.value.isPlaying
-//                     ? _controller.pause()
-//                     : _controller.play();
-//               });
-//             },
-//             child: SizedBox(
-//               height: 200,
-//               child: _controller.value.isInitialized
-//                   ? Stack(
-//                       children: [
-//                         AspectRatio(
-//                             aspectRatio: _controller.value.aspectRatio,
-//                             child: VideoPlayer(_controller)),
-//                         _controller.value.isPlaying
-//                             ? const SizedBox()
-//                             : Align(
-//                                 alignment: Alignment.center,
-//                                 child: IconButton(
-//                                     onPressed: () {
-//                                       setState(() {
-//                                         _controller.play();
-//                                       });
-//                                     },
-//                                     icon: Icon(
-//                                       Icons.play_arrow,
-//                                       color: Colors.white,
-//                                       size: 45,
-//                                     )),
-//                               ),
-//                         Positioned(
-//                           right: 10,
-//                           bottom: 5,
-//                           child: CircleAvatar(
-//                             backgroundColor: Colors.grey,
-//                             child: IconButton(
-//                                 onPressed: () {
-//                                   setState(() {
-//                                     _controller.setVolume(isMuted ? 1 : 0);
-//                                   });
-//                                 },
-//                                 icon: Icon(
-//                                   isMuted ? Icons.volume_off : Icons.volume_up,
-//                                   color: Colors.black,
-//                                 )),
-//                           ),
-//                         ),
-//                         Padding(
-//                           padding: const EdgeInsets.only(right: 7),
-//                           child: Align(
-//                               alignment: Alignment.bottomCenter,
-//                               child: VideoProgressIndicator(_controller,
-//                                   allowScrubbing: true)),
-//                         )
-//                       ],
-//                     )
-//                   : const Center(child: CircularProgressIndicator()),
-//             ),
-//           ),
-//           // IconButton(
-//           //     onPressed: () {
-//           //       setState(() {
-//           //         _controller.value.isPlaying
-//           //             ? _controller.pause()
-//           //             : _controller.play();
-//           //       });
-//           //     },
-//           //     icon: Icon(
-//           //       _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-//           //       color: Colors.white,
-//           //       size: 45,
-//           //     ))
-//           KHeight5,
-//           Text(
-//             "Introduction to Cloud computing on AWS for Beginners[2022])",
-//             style: TextStyle(color: Colors.white, fontSize: 18),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
 class Video {
   final String name;
   final String url;
@@ -193,7 +75,10 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
         setState(() {});
       })
       ..setLooping(true)
-      ..initialize().then((value) => _controller.play());
+      ..initialize().then((value) {
+        _controller.play();
+        _controller.setVolume(1);
+      });
   }
 
   @override
@@ -204,6 +89,11 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
     final size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         centerTitle: true,
         title: const Text("My Learnings"),
       ),
@@ -225,7 +115,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                   height: size * .501,
                                   child: VideoPlayer(_controller),
                                 ),
-                                KHeight,
+                                kHeight,
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 5.0),
@@ -278,7 +168,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                           : const Center(
                               child: CircularProgressIndicator(),
                             )),
-                  KHeight,
+                  kHeight,
                   Text(
                     myLearningsProvider
                             .courseVideoList?.data?[_currentIndex].topicName
@@ -289,7 +179,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
                   ),
-                  KHeight5,
+                  kHeight5,
                   Text(
                     myLearningsProvider
                             .courseVideoList?.data?[_currentIndex].description
@@ -300,7 +190,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                       fontSize: 16,
                     ),
                   ),
-                  KHeight,
+                  kHeight,
                   Expanded(
                       child: ListView.builder(
                     physics: const BouncingScrollPhysics(),
@@ -326,7 +216,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                 height: size * .21,
                                 width: size * .25,
                               ),
-                              KWidth10,
+                              kWidth10,
                               Text(
                                 datas.topicName.toString(),
                                 style: const TextStyle(

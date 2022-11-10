@@ -9,18 +9,9 @@ class ReviewModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
   }
 }
 
@@ -47,16 +38,5 @@ class Data {
     createdAt = json['created_at'];
     user = json['user'];
     course = json['course'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['rating'] = this.rating;
-    data['review'] = this.review;
-    data['created_at'] = this.createdAt;
-    data['user'] = this.user;
-    data['course'] = this.course;
-    return data;
   }
 }

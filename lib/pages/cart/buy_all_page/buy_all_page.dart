@@ -1,42 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:nuox_project/constants/constants.dart';
-import 'package:nuox_project/pages/account/widgets/small_heading_account_page.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
 import 'package:provider/provider.dart';
 
 class BuyAllPage extends StatelessWidget {
   BuyAllPage({super.key});
-  TextEditingController _coupenController = TextEditingController();
-  ValueNotifier _paymentNotifier = ValueNotifier("GPay");
+  final TextEditingController _coupenController = TextEditingController();
+  final ValueNotifier _paymentNotifier = ValueNotifier("GPay");
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Checkout"),
+        title: const Text("Checkout"),
       ),
       body: ListView(
-        physics: BouncingScrollPhysics(),
-        padding: EdgeInsets.all(15),
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.all(15),
         children: [
-          BoldHeading(heading: "Summary"),
-          KHeight15,
+          const BoldHeading(heading: "Summary"),
+          kHeight15,
           ListTile(
-            title: Text(
+            title: const Text(
               "Original price",
               style: TextStyle(color: Colors.white),
             ),
             trailing: Text(
               "₹${cartProvider.checkoutDetailes!.data!.totalAmount!.toDouble()}",
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
           ListTile(
-            title: Text(
+            title: const Text(
               "Discounts",
               style: TextStyle(color: Colors.white),
             ),
@@ -44,15 +41,15 @@ class BuyAllPage extends StatelessWidget {
               cartProvider.isCoupenSuccess == true
                   ? "- ₹${cartProvider.coupenDetailes!.discountAmount!.toDouble()}"
                   : "- ₹${cartProvider.checkoutDetailes!.data!.discountAmount!.toDouble()}",
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             ),
           ),
-          Divider(
+          const Divider(
             thickness: 1,
             color: Colors.grey,
           ),
           ListTile(
-            title: Text(
+            title: const Text(
               "Total:",
               style: TextStyle(
                   color: Colors.white,
@@ -63,16 +60,16 @@ class BuyAllPage extends StatelessWidget {
               cartProvider.isCoupenSuccess == true
                   ? "₹${cartProvider.coupenDetailes!.grandTotal!.toDouble()}"
                   : "₹${cartProvider.checkoutDetailes!.data!.grandTotal!.toDouble()}",
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 18),
             ),
           ),
-          KHeight20,
+          kheight20,
           cartProvider.isCoupenSuccess == true
               ? Container(
-                  margin: EdgeInsets.symmetric(horizontal: 70),
+                  margin: const EdgeInsets.symmetric(horizontal: 70),
                   height: 30,
                   decoration: BoxDecoration(
                       color: Colors.black,
@@ -81,26 +78,26 @@ class BuyAllPage extends StatelessWidget {
                   child: Center(
                       child: Row(
                     children: [
-                      Spacer(),
-                      Text(
+                      const Spacer(),
+                      const Text(
                         "Coupen Applied",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                             color: Colors.white),
                       ),
-                      KWidth10,
+                      kWidth10,
                       Image.network(
                         "https://cdn.pixabay.com/photo/2014/04/02/11/01/tick-305245__340.png",
                         height: 15,
                       ),
-                      Spacer()
+                      const Spacer()
                     ],
                   )),
                 )
               : Container(
-                  margin: EdgeInsets.symmetric(horizontal: 18),
-                  padding: EdgeInsets.only(left: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 18),
+                  padding: const EdgeInsets.only(left: 10),
                   height: 40,
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -111,21 +108,21 @@ class BuyAllPage extends StatelessWidget {
                       Expanded(
                         child: TextFormField(
                           controller: _coupenController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: "Enter coupon"),
                         ),
                       ),
                       GestureDetector(
                         onTap: () {
-                          if (_coupenController.text == null ||
-                              _coupenController.text.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                backgroundColor: Colors.white,
-                                content: Text(
-                                  "Invalid coupen code",
-                                  style: TextStyle(color: Colors.black),
-                                )));
+                          if (_coupenController.text.isEmpty) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                                    backgroundColor: Colors.white,
+                                    content: Text(
+                                      "Invalid coupen code",
+                                      style: TextStyle(color: Colors.black),
+                                    )));
                           } else {
                             cartProvider.coupenApply(
                                 coupen: _coupenController.text,
@@ -134,7 +131,7 @@ class BuyAllPage extends StatelessWidget {
                         },
                         child: Container(
                           width: 70,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                               color: Colors.purple,
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(5),
@@ -153,8 +150,8 @@ class BuyAllPage extends StatelessWidget {
                     ],
                   )),
                 ),
-          KHeight15,
-          BoldHeading(heading: "Select a payment method : "),
+          kHeight15,
+          const BoldHeading(heading: "Select a payment method : "),
           ValueListenableBuilder(
             valueListenable: _paymentNotifier,
             builder: (context, value, child) {
@@ -170,7 +167,7 @@ class BuyAllPage extends StatelessWidget {
                           _paymentNotifier.value = value;
                         },
                       ),
-                      Text(
+                      const Text(
                         "GPay",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       )
@@ -186,7 +183,7 @@ class BuyAllPage extends StatelessWidget {
                           _paymentNotifier.value = value;
                         },
                       ),
-                      Text(
+                      const Text(
                         "Credit/Debit Card",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       )
@@ -202,7 +199,7 @@ class BuyAllPage extends StatelessWidget {
                           _paymentNotifier.value = value;
                         },
                       ),
-                      Text(
+                      const Text(
                         "PayPal",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       )
@@ -218,7 +215,7 @@ class BuyAllPage extends StatelessWidget {
                           _paymentNotifier.value = value;
                         },
                       ),
-                      Text(
+                      const Text(
                         "Net Banking",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       )
@@ -228,7 +225,7 @@ class BuyAllPage extends StatelessWidget {
               );
             },
           ),
-          KHeight20,
+          kheight20,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18.0),
             child: ElevatedButton(
@@ -256,20 +253,16 @@ class BuyAllPage extends StatelessWidget {
                 }
 
                 if (cartProvider.isCoupenSuccess == true) {
-                  print(cartProvider.promo_code);
                   cartProvider.checkoutWithPromo(
                       paymentMode: payment,
                       context: context,
                       promocode: cartProvider.promo_code.toString());
-                  print(cartProvider.promo_code);
                 } else {
-                  print(payment);
-                  print("without promo code");
                   cartProvider.checkoutWithoutPromo(
                       paymentMode: payment, context: context);
                 }
               },
-              child: Text("Checkout"),
+              child: const Text("Checkout"),
             ),
           )
         ],

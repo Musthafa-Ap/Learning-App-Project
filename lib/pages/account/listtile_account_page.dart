@@ -7,14 +7,14 @@ import 'package:nuox_project/pages/account/sections/support/faq_page.dart';
 import 'package:nuox_project/pages/account/sections/support/report_page.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-
 import '../../my_home_page.dart';
-import '../featured/sections/whichlist_section/whishlist_page.dart';
+import 'sections/whishlist/whishlist_page.dart';
 
 class ListTileAccountPage extends StatelessWidget {
   final int index;
   final String tiletitle;
-  ListTileAccountPage({required this.tiletitle, required this.index});
+  const ListTileAccountPage(
+      {super.key, required this.tiletitle, required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +25,19 @@ class ListTileAccountPage extends StatelessWidget {
         onTap: () async {
           if (index == 0) {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => FAQPage()));
+                .push(MaterialPageRoute(builder: (context) => const FAQPage()));
           } else if (index == 1) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => AboutAppPage()));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const AboutAppPage()));
           } else if (index == 5) {
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => ReportPage()));
           } else if (index == 2) {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ChangePasswordPage()));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const ChangePasswordPage()));
           } else if (index == 6) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => WhichlistPage()));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const WhichlistPage()));
           } else if (index == 3) {
             await Share.share(
                 "https://i.guim.co.uk/img/media/71dd7c5b208e464995de3467caf9671dc86fcfd4/1176_345_3557_2135/master/3557.jpg?width=620&quality=45&dpr=2&s=none");
@@ -48,11 +48,11 @@ class ListTileAccountPage extends StatelessWidget {
                 builder: (ctx) {
                   return AlertDialog(
                     backgroundColor: Colors.black,
-                    title: Text(
+                    title: const Text(
                       "Delete Account",
                       style: TextStyle(color: Colors.white),
                     ),
-                    content: Text(
+                    content: const Text(
                       "Do you want to delete the account?",
                       style: TextStyle(color: Colors.white),
                     ),
@@ -61,7 +61,7 @@ class ListTileAccountPage extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: Text("No"),
+                        child: const Text("No"),
                       ),
                       ElevatedButton(
                           onPressed: () {
@@ -69,11 +69,11 @@ class ListTileAccountPage extends StatelessWidget {
                             selectedIndex.value = 0;
                             Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                  builder: (context) => LoginPage()),
+                                  builder: (context) => const LoginPage()),
                               (route) => false,
                             );
                           },
-                          child: Text("Yes"))
+                          child: const Text("Yes"))
                     ],
                   );
                 });
@@ -84,9 +84,9 @@ class ListTileAccountPage extends StatelessWidget {
           children: [
             Text(
               tiletitle,
-              style: TextStyle(color: Colors.white, fontSize: 16),
+              style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
-            Icon(
+            const Icon(
               Icons.arrow_forward_ios,
               color: Colors.white,
               size: 20,

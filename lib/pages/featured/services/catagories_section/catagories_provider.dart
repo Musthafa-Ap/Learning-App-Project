@@ -16,7 +16,6 @@ class CatagoriesProvider with ChangeNotifier {
       catagoriesList = CatagoriesModel.fromJson(data);
       isLoading = false;
       notifyListeners();
-      //print(catagoriesList!.data![1].categoryName);
     }
   }
 }

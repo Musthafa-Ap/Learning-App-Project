@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
-
 import '../../../constants/constants.dart';
 import '../../../widgets/bestseller.dart';
 import '../../../widgets/big_cart_icon_button.dart';
@@ -59,7 +58,7 @@ class BigItemCard extends StatelessWidget {
                             image: NetworkImage(image ??
                                 "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg"))),
                   ),
-                  KHeight5,
+                  kHeight5,
                   Text(
                     courseName ?? "Course name",
                     maxLines: 1,
@@ -69,12 +68,12 @@ class BigItemCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
-                  KHeight5,
+                  kHeight5,
                   Text(
                     authorName ?? "Instructor",
                     style: TextStyle(fontSize: 12, color: Colors.grey[300]),
                   ),
-                  KHeight5,
+                  kHeight5,
                   Row(
                     children: [
                       Text(
@@ -85,7 +84,7 @@ class BigItemCard extends StatelessWidget {
                       RatingBarIndicator(
                         unratedColor: Colors.grey,
                         rating: rating ?? 3,
-                        itemBuilder: (context, index) => Icon(
+                        itemBuilder: (context, index) => const Icon(
                           Icons.star,
                           color: Colors.yellow,
                         ),
@@ -94,34 +93,35 @@ class BigItemCard extends StatelessWidget {
                         direction: Axis.horizontal,
                       ),
                       Text(
-                        ratingCount != null ? " (${ratingCount})" : " (36,000)",
-                        style: TextStyle(fontSize: 12, color: Colors.yellow),
+                        ratingCount != null ? " ($ratingCount)" : " (36,000)",
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.yellow),
                       ),
                     ],
                   ),
-                  KHeight5,
+                  kHeight5,
                   Text(
                     "₹ ${coursePrice ?? "Course price"}",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
-                  KHeight5,
+                  kHeight5,
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // isRecomended! ? BestsellerWidget() : SizedBox(),
-                      BestsellerWidget(),
+                      const BestsellerWidget(),
                       id != null
                           ? BigCartIconButton(
                               id: id!.toInt(),
                               price: coursePrice!.toInt(),
                             )
-                          : SizedBox()
+                          : const SizedBox()
                     ],
                   ),
                 ],

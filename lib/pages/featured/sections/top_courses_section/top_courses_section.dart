@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/featured/sections/top_courses_section/see_all_page_top_courses.dart';
-import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_model.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:nuox_project/pages/featured/widgets/big_item_card.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../constants/constants.dart';
 import '../../../../widgets/bold_heading.dart';
 import '../../../../widgets/see_all_widget.dart';
 import '../../services/featured_section/featured_provider.dart';
-import '../../widgets/small_item_card.dart';
 
 class TopCoursesSection extends StatelessWidget {
-  TopCoursesSection({super.key});
+  const TopCoursesSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +50,9 @@ class TopCoursesSection extends StatelessWidget {
                             isRecomended: datas?.recommendedCourse,
                           );
                         }),
-                KWidth30,
+                kWidth30,
                 GestureDetector(
-                  child: SeeAllWidget(),
+                  child: const SeeAllWidget(),
                   onTap: () {
                     Provider.of<FeaturedProvider>(context, listen: false)
                         .sortedCourses = null;
@@ -63,7 +60,7 @@ class TopCoursesSection extends StatelessWidget {
                         builder: (context) => SeeAllPageTopCourses()));
                   },
                 ),
-                KWidth30
+                kWidth30
               ],
             ),
           ),

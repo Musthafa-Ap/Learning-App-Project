@@ -1,14 +1,9 @@
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:nuox_project/authentication/providers/widgets/top_image.dart';
 import 'package:nuox_project/constants/constants.dart';
-import 'package:nuox_project/my_home_page.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
-import '../widgets/oulined_text_field_widget.dart';
 
 class OTPVerificationPage extends StatefulWidget {
   String mailid;
@@ -47,7 +42,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
             SizedBox(
               height: size * .15,
             ),
-            TopImage(),
+            const TopImage(),
             SizedBox(
               height: size * .1,
             ),
@@ -62,12 +57,12 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   hintText: "ENTER OTP ",
-                  hintStyle: TextStyle(color: Colors.black)),
+                  hintStyle: const TextStyle(color: Colors.black)),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: (otp) =>
                   otp == null || otp.isEmpty ? "Enter a valid OTP" : null,
             ),
-            KHeight,
+            kHeight,
             TextFormField(
               style: const TextStyle(color: Colors.black),
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -95,7 +90,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                 hintText: "New Password",
               ),
             ),
-            KHeight,
+            kHeight,
             TextFormField(
               obscureText: _obscureText1,
               style: const TextStyle(color: Colors.black),
@@ -121,7 +116,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                   ? null
                   : "Password mismatch"),
             ),
-            KHeight,
+            kHeight,
             FlutterPwValidator(
               controller: _newPasswordController,
               minLength: 8,
@@ -130,12 +125,10 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
               specialCharCount: 1,
               width: 400,
               height: 150,
-              onSuccess: () {
-                print("matched");
-              },
+              onSuccess: () {},
               // onFail: yourCallbackFunction),
             ),
-            KHeight15,
+            kHeight15,
             ElevatedButton(
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all(
@@ -151,7 +144,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                   if (_globalKey.currentState!.validate()) {
                     authProvider.EmailOTPSubmission(
                         context: context,
-                        OTP: _otpController.text.toString(),
+                        otp: _otpController.text.toString(),
                         email: widget.mailid,
                         newPassword: _newPasswordController.text.toString());
                   }

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/authentication/providers/widgets/top_image.dart';
 import 'package:provider/provider.dart';
-
 import '../constants/constants.dart';
 
 class MobileNumberOTPSubmissionPage extends StatelessWidget {
@@ -27,7 +24,7 @@ class MobileNumberOTPSubmissionPage extends StatelessWidget {
               SizedBox(
                 height: size * .15,
               ),
-              TopImage(),
+              const TopImage(),
               SizedBox(
                 height: size * .2,
               ),
@@ -42,10 +39,10 @@ class MobileNumberOTPSubmissionPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     hintText: "Enter OTP ",
-                    hintStyle: TextStyle(color: Colors.black)),
+                    hintStyle: const TextStyle(color: Colors.black)),
               ),
-              KHeight20,
-              KHeight,
+              kheight20,
+              kHeight,
               ElevatedButton.icon(
                   style: ButtonStyle(
                       padding: MaterialStateProperty.all(
@@ -61,7 +58,7 @@ class MobileNumberOTPSubmissionPage extends StatelessWidget {
                     authProvider.numberOTPSubmission(
                         number: number,
                         context: context,
-                        OTP: _otpController.text.toString());
+                        otp: _otpController.text.toString());
                   },
                   icon: const Icon(
                     Icons.mobile_friendly,

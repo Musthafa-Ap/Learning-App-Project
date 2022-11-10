@@ -2,7 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nuox_project/constants/constants.dart';
-import 'package:nuox_project/pages/featured/sections/whichlist_section/whishlist_page.dart';
+import 'package:nuox_project/pages/featured/sections/notifications_section/notifications_page.dart';
+import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +13,7 @@ import 'sections/featured_section/featured_section.dart';
 import 'widgets/top_text_section.dart';
 
 class Featured extends StatefulWidget {
-  Featured({super.key});
+  const Featured({super.key});
 
   @override
   State<Featured> createState() => _FeaturedState();
@@ -72,8 +73,10 @@ class _FeaturedState extends State<Featured> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => WhichlistPage()));
+                  Provider.of<FeaturedProvider>(context, listen: false)
+                      .getNotifications();
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => NotificationsPage()));
                 },
                 icon: const Icon(Icons.notifications_outlined))
           ],
@@ -94,7 +97,7 @@ class _FeaturedState extends State<Featured> {
                     "Welcome $username,",
                     style: const TextStyle(color: Colors.white, fontSize: 17),
                   ),
-            KHeight,
+            kHeight,
             topCoursesProvider.banner == null ||
                     topCoursesProvider.banner!.data!.first.bannerImg!.isEmpty
                 ? const SizedBox()
@@ -126,7 +129,6 @@ class _FeaturedState extends State<Featured> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
                                         CourseDetailedPage()));
-                                print(datas.actionId);
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -165,7 +167,7 @@ class _FeaturedState extends State<Featured> {
                   ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [TopTextSection(), FeaturedSection()],
+              children: const [TopTextSection(), FeaturedSection()],
             )
           ],
         ));

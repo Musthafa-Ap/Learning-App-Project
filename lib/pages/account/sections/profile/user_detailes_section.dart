@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../constants/constants.dart';
 
 class UserDetailesSection extends StatefulWidget {
-  UserDetailesSection({super.key});
+  const UserDetailesSection({super.key});
 
   @override
   State<UserDetailesSection> createState() => _UserDetailesSectionState();
@@ -31,8 +31,8 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
           alignment: Alignment.topRight,
           child: IconButton(
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ProfileEditPage()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ProfileEditPage()));
               },
               icon: const Icon(
                 Icons.edit,
@@ -44,7 +44,7 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
             GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (Context) => ProfileEditPage()));
+                      builder: (Context) => const ProfileEditPage()));
                 },
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
@@ -55,25 +55,25 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
                 )),
           ],
         ),
-        KHeight20,
+        kheight20,
         Center(
           child: Text(
             name == null ? "Username" : name.toString(),
             style: const TextStyle(color: Colors.white, fontSize: 23),
           ),
         ),
-        KHeight,
+        kHeight,
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.mail_outline,
               color: Colors.white,
             ),
-            KWidth5,
+            kWidth5,
             Text(
               email == null ? "E-mail" : email.toString(),
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
             )
           ],
         ),

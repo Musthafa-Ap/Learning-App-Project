@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../constants/constants.dart';
 
 class TopTextSection extends StatelessWidget {
@@ -12,7 +11,7 @@ class TopTextSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        KHeight,
+        kHeight,
         const Text(
           "Learning that fits",
           style: TextStyle(
@@ -28,7 +27,7 @@ class TopTextSection extends StatelessWidget {
             fontSize: 16,
           ),
         ),
-        KHeight,
+        kHeight,
         Container(
           width: double.infinity,
           height: 35,

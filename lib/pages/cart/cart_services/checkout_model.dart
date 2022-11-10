@@ -8,15 +8,6 @@ class CheckoutModel {
     message = json['message'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    return data;
-  }
 }
 
 class Data {
@@ -45,17 +36,5 @@ class Data {
     paymentMethod = json['payment_method'];
     user = json['user'];
     promoCode = json['promo_code'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['grand_total'] = this.grandTotal;
-    data['total_amount'] = this.totalAmount;
-    data['discount_amount'] = this.discountAmount;
-    data['payment_method'] = this.paymentMethod;
-    data['user'] = this.user;
-    data['promo_code'] = this.promoCode;
-    return data;
   }
 }

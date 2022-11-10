@@ -13,7 +13,7 @@ class BestsellerWidget extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.white.withOpacity(.8),
           borderRadius: BorderRadius.circular(3)),
-      child: Align(
+      child: const Align(
           child: Text(
         "Bestseller",
         style: TextStyle(fontSize: 12),

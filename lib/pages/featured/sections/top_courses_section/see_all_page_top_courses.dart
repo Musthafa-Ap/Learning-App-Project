@@ -32,7 +32,7 @@ class SeeAllPageTopCourses extends StatelessWidget {
                       backgroundColor: Colors.white,
                       context: context,
                       builder: (BuildContext context) {
-                        return RangeClass();
+                        return const RangeClass();
                       },
                     );
                   },
@@ -41,8 +41,8 @@ class SeeAllPageTopCourses extends StatelessWidget {
         ],
       ),
       body: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 15),
-        physics: BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
+        physics: const BouncingScrollPhysics(),
         itemCount: topCoursesProvider!.data!.length,
         itemBuilder: (context, index) {
           final datas = topCoursesProvider.data![index];

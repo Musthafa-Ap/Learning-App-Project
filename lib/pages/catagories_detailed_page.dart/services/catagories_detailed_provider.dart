@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_model.dart';
@@ -32,7 +31,6 @@ class CatagoriesDetailedProvider with ChangeNotifier {
       var data = jsonDecode(response.body);
       subCatagories = SubCatagoriesModel.fromJson(data);
       notifyListeners();
-      // print(subCatagories!.data!.length.toString());
     }
   }
 
@@ -42,9 +40,7 @@ class CatagoriesDetailedProvider with ChangeNotifier {
     Response response = await get(Uri.parse(api));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      //  print("hello ${data}");
       subCatagoriesDetailes = SubCatagoriesDetailedModel.fromJson(data);
-      //  print(subCatagoriesDetailes!.data!.length.toString());
       notifyListeners();
     }
   }

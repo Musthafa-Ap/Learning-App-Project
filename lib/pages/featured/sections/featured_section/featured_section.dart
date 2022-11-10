@@ -8,9 +8,7 @@ import 'package:nuox_project/pages/featured/services/catagories_section/catagori
 import 'package:nuox_project/pages/featured/services/featured_section/featured_model.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:nuox_project/pages/featured/widgets/small_item_card.dart';
-import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.dart';
-import 'package:nuox_project/pages/search/services/search_model.dart';
 import 'package:nuox_project/pages/search/services/search_provider.dart';
 import 'package:nuox_project/widgets/see_all_widget.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +17,6 @@ import '../../../../widgets/bold_heading.dart';
 import '../../services/featured_section/featured_provider.dart';
 import '../top_courses_section/top_courses_section.dart';
 import '../catagories_section/catagories_section.dart';
-import '../../widgets/big_item_card.dart';
 import '../../widgets/see_all_page_featured.dart';
 
 class FeaturedSection extends StatefulWidget {
@@ -57,9 +54,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
     Provider.of<FeaturedProvider>(context, listen: false).sortedCourses = null;
     Provider.of<CourseDetailedProvider>(context, listen: false)
         .getRecentlyViewed();
-
-    // Provider.of<MyLearningsProvider>(context, listen: false)
-    //     .getCourseDetailes(courseID: 6);
+    Provider.of<FeaturedProvider>(context, listen: false).getNotifications();
   }
 
   @override
@@ -67,12 +62,11 @@ class _FeaturedSectionState extends State<FeaturedSection> {
     final featuredProvider = Provider.of<FeaturedProvider>(context);
     Provider.of<CourseDetailedProvider>(context, listen: false)
         .getRecentlyViewed();
-    //featuredProvider.Sample();
     final size = MediaQuery.of(context).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        KHeight15,
+        kHeight15,
         const BoldHeading(
           heading: "Featured",
         ),
@@ -105,7 +99,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
                           );
                         },
                       ),
-                      KWidth30,
+                      kWidth30,
                       GestureDetector(
                         child: const SeeAllWidget(),
                         onTap: () {
@@ -113,18 +107,19 @@ class _FeaturedSectionState extends State<FeaturedSection> {
                               .sortedCourses = null;
                           featuredProvider.sample();
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => SeeAllPageFeatured()));
+                              builder: (context) =>
+                                  const SeeAllPageFeatured()));
                         },
                       ),
-                      KWidth30
+                      kWidth30
                     ],
                   ),
                 ),
               ),
-        KHeight20,
-        CatagoriesSection(),
-        KHeight20,
-        TopCoursesSection(),
+        kheight20,
+        const CatagoriesSection(),
+        kheight20,
+        const TopCoursesSection(),
       ],
     );
   }

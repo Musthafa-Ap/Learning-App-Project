@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:nuox_project/authentication/moblie_number_otp_submission_page.dart';
@@ -10,7 +8,6 @@ import 'package:nuox_project/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../login_page.dart';
 import '../../my_home_page.dart';
-import '../../pages/featured/services/featured_section/featured_model.dart';
 
 class AuthProvider with ChangeNotifier {
   var mobile_error;
@@ -30,12 +27,15 @@ class AuthProvider with ChangeNotifier {
       {required String name,
       required BuildContext context,
       required String id,
-      required String email}) async {
+      required String email,
+      bool mounted = true}) async {
     try {
       var response = await http.post(
           Uri.parse("http://learningapp.e8demo.com/api/social_login/"),
           body: {'email': email, 'name': name, 'user_social_id': id});
-
+      Map<String, dynamic> data = jsonDecode(response.body);
+      print(data["result"]);
+      print(response.body);
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.body);
         if (data['result'] == "success") {
@@ -48,16 +48,26 @@ class AuthProvider with ChangeNotifier {
           await sharedPrefs.setString("access_token", token);
           await sharedPrefs.setBool("changepass", false);
           notifyListeners();
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: Colors.green,
               content: Text(
                 'Successfully logged in',
                 style: TextStyle(fontWeight: FontWeight.bold),
               )));
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => MyHomePage()),
+              MaterialPageRoute(builder: (context) => const MyHomePage()),
               (route) => false);
         }
+      } else if (data["result"] == "failure") {
+        print(data["errors"].toString());
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(
+              "Your account is blocked",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )));
       }
     } catch (e) {
       print(e.toString());
@@ -65,23 +75,22 @@ class AuthProvider with ChangeNotifier {
   }
 
   void numberOTPSubmission(
-      {required number, required context, required OTP}) async {
+      {required number, required context, required otp}) async {
     try {
       setLoading(true);
       var response = await http.post(
           Uri.parse(
               "http://learningapp.e8demo.com/api/user-mobileotp/MobileNumberOtpVerification/"),
-          body: {'mobile': number, 'otp': OTP});
+          body: {'mobile': number, 'otp': otp});
 
       Map<String, dynamic> data = jsonDecode(response.body);
-      print("datas=$data");
       if (data['status'] == false) {
         setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
             content: Text(
               data['message'].toString(),
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             )));
       } else if (data.containsKey("token")) {
         setLoading(false);
@@ -92,14 +101,13 @@ class AuthProvider with ChangeNotifier {
         await sharedPrefs.setString("access_token", token);
         await sharedPrefs.setString("number", number);
         await sharedPrefs.setBool("changepass", false);
-        print("token=$token");
         //  <String, dynamic> checking = data['token'];
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
             content: Text('OTP submitted successfully')));
         Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => MyHomePage()),
+          MaterialPageRoute(builder: (context) => const MyHomePage()),
           (route) => false,
         );
       }
@@ -138,7 +146,7 @@ class AuthProvider with ChangeNotifier {
             backgroundColor: Colors.red,
             content: Text(
               data['message'],
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             )));
       }
     } catch (e) {
@@ -148,13 +156,13 @@ class AuthProvider with ChangeNotifier {
   }
 
   void EmailOTPSubmission(
-      {required OTP, context, required email, required newPassword}) async {
+      {required otp, context, required email, required newPassword}) async {
     try {
       setLoading(true);
       var response = await http.post(
           Uri.parse(
               "http://learningapp.e8demo.com/api/user-forgotpassword/forgot_password_otp_verification/"),
-          body: {'email': email, 'otp': OTP, 'new_password': newPassword});
+          body: {'email': email, 'otp': otp, 'new_password': newPassword});
       Map<String, dynamic> data = jsonDecode(response.body);
       if (data['status'] == true) {
         setLoading(false);
@@ -168,7 +176,7 @@ class AuthProvider with ChangeNotifier {
             backgroundColor: Colors.red,
             content: Text(
               data['message'],
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             )));
       }
     } catch (e) {
@@ -198,7 +206,7 @@ class AuthProvider with ChangeNotifier {
             backgroundColor: Colors.red,
             content: Text(
               data['message'],
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             )));
       }
     } catch (e) {
@@ -210,7 +218,8 @@ class AuthProvider with ChangeNotifier {
   void login(
       {required BuildContext context,
       required String email,
-      required String password}) async {
+      required String password,
+      bool mounted = true}) async {
     setLoading(true);
     try {
       login_email_error = null;
@@ -218,12 +227,13 @@ class AuthProvider with ChangeNotifier {
       var response = await http.post(
           Uri.parse("http://learningapp.e8demo.com/api/user-login/"),
           body: {'email': email, 'password': password});
+      print(response.body);
       if (response.statusCode == 200) {
         login_email_error = null;
         login_pass_error = null;
         notifyListeners();
+        print(response.body);
         var data = jsonDecode(response.body);
-        print(data);
         if (data['result'] == "success") {
           final sharedPrefs = await SharedPreferences.getInstance();
           //  await sharedPrefs!.clear();
@@ -232,14 +242,14 @@ class AuthProvider with ChangeNotifier {
           var accessToken = data['token']['access_token'].toString();
           await sharedPrefs.setString("access_token", accessToken);
           await sharedPrefs.setBool("changepass", true);
-          print("Acess_token");
-          // print(accessToken);
+
           notifyListeners();
+          if (!mounted) return;
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => MyHomePage()),
+            MaterialPageRoute(builder: (context) => const MyHomePage()),
             (route) => false,
           );
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: Colors.green,
               content: Text(
                 "Successfully logged in",
@@ -248,7 +258,6 @@ class AuthProvider with ChangeNotifier {
           setLoading(false);
         } else if (data['result'] == "failure") {
           Map<String, dynamic> error = data['errors'];
-          print(error);
           if (error.containsKey('email')) {
             login_email_error = error['email'];
             notifyListeners();
@@ -257,11 +266,12 @@ class AuthProvider with ChangeNotifier {
             notifyListeners();
           }
           if (error.containsKey("message")) {
+            if (!mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 backgroundColor: Colors.red,
                 content: Text(
                   error["message"],
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 )));
           }
           if (error.containsKey('password')) {
@@ -276,8 +286,8 @@ class AuthProvider with ChangeNotifier {
           notifyListeners();
         }
       } else {
-        print("failed");
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.red,
             content: Text(
               "check your password",
@@ -312,7 +322,10 @@ class AuthProvider with ChangeNotifier {
             'password': password,
             'name': name,
           });
+      print(response.statusCode);
+      print(response.body);
       var data = jsonDecode(response.body);
+
       if (data['status_code'] == 200) {
         email_error = null;
         mobile_error = null;
@@ -328,6 +341,7 @@ class AuthProvider with ChangeNotifier {
         await sharedPrefs.setString("number", num);
         await sharedPrefs.setBool("changepass", true);
         notifyListeners();
+
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green,
             content: Text(
@@ -364,7 +378,6 @@ class AuthProvider with ChangeNotifier {
       }
     } catch (e) {
       setLoading(false);
-      print("Some error");
       print(e.toString());
     }
   }
@@ -376,6 +389,7 @@ class AuthProvider with ChangeNotifier {
       required String name,
       required String password,
       required bool isInstructor,
+      bool mounted = true,
       File? document}) async {
     String num = countryCode + number;
 
@@ -402,8 +416,9 @@ class AuthProvider with ChangeNotifier {
         var data = await value.stream.toBytes();
         var body = String.fromCharCodes(data);
         var msg = jsonDecode(body);
-        var token = msg['token']['access_token'];
+
         if (msg["status_code"] == 200) {
+          var token = msg['token']['access_token'];
           email_error = null;
           mobile_error = null;
 
@@ -418,14 +433,15 @@ class AuthProvider with ChangeNotifier {
           await sharedPrefs.setString("number", num);
           await sharedPrefs.setBool("changepass", true);
           notifyListeners();
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: Colors.green,
               content: Text(
                 "User created successfully",
                 style: TextStyle(fontWeight: FontWeight.bold),
               )));
           Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => MyHomePage()),
+              MaterialPageRoute(builder: (context) => const MyHomePage()),
               (route) => false);
         } else if (msg["status_code"] == 400) {
           Map<String, dynamic> error_message = msg['message'];
@@ -458,8 +474,8 @@ class AuthProvider with ChangeNotifier {
   }
 
   void logOut(context) async {
-    SharedPreferences _shared = await SharedPreferences.getInstance();
-    var token = _shared.getString("access_token");
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    var token = shared.getString("access_token");
     String auth = "Bearer $token";
     var api = "http://learningapp.e8demo.com/api/logout/";
     var response = await http.get(
@@ -468,17 +484,17 @@ class AuthProvider with ChangeNotifier {
     );
 
     if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: Colors.green,
           content: Text(
             "Successfully logged out",
             style: TextStyle(fontWeight: FontWeight.bold),
           )));
-      _shared.clear();
+      shared.clear();
       selectedIndex.value = 0;
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
-            builder: (context) => LoginPage(),
+            builder: (context) => const LoginPage(),
           ),
           (route) => false);
     } else {
@@ -487,16 +503,14 @@ class AuthProvider with ChangeNotifier {
   }
 
   void deleteAccount(context) async {
-    print("entered");
-    SharedPreferences _shared = await SharedPreferences.getInstance();
-    String? token = _shared.getString("access_token");
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    String? token = shared.getString("access_token");
     String auth = "Bearer $token";
     var response = await http.delete(
         Uri.parse("http://learningapp.e8demo.com/api/delete-profile/"),
         headers: {"Authorization": auth});
-    print(response.body);
     if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: Colors.green,
           content: Text(
             "Account deleted",
@@ -504,7 +518,7 @@ class AuthProvider with ChangeNotifier {
           )));
       selectedIndex.value = 0;
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => LoginPage()),
+          MaterialPageRoute(builder: (context) => const LoginPage()),
           (route) => false);
     }
   }

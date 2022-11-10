@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
 import '../../../../constants/constants.dart';
 import '../../../../widgets/bestseller.dart';
 
@@ -14,8 +11,13 @@ class WhichlistPage extends StatelessWidget {
     final size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         centerTitle: true,
-        title: Text("My Whishlist"),
+        title: const Text("My Whishlist"),
       ),
       body: ListView.builder(
         physics: const BouncingScrollPhysics(),
@@ -35,7 +37,7 @@ class WhichlistPage extends StatelessWidget {
                       width: size * .192,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          image: DecorationImage(
+                          image: const DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(
                                   "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg"))),
@@ -46,25 +48,25 @@ class WhichlistPage extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               "Course name",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
                             ),
-                            KHeight5,
+                            kHeight5,
                             Text(
                               "Author name",
                               style: TextStyle(
                                   fontSize: 12, color: Colors.grey[300]),
                             ),
-                            KHeight5,
+                            kHeight5,
                             Row(
                               children: [
-                                Text(
+                                const Text(
                                   "4",
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.yellow),
@@ -72,7 +74,7 @@ class WhichlistPage extends StatelessWidget {
                                 RatingBarIndicator(
                                   unratedColor: Colors.grey,
                                   rating: 4,
-                                  itemBuilder: (context, index) => Icon(
+                                  itemBuilder: (context, index) => const Icon(
                                     Icons.star,
                                     color: Colors.yellow,
                                   ),
@@ -80,19 +82,19 @@ class WhichlistPage extends StatelessWidget {
                                   itemSize: 10.0,
                                   direction: Axis.horizontal,
                                 ),
-                                Text(
+                                const Text(
                                   " (3500)",
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.yellow),
                                 ),
                               ],
                             ),
-                            KHeight5,
-                            Text(
+                            kHeight5,
+                            const Text(
                               "₹200",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white),
@@ -101,9 +103,9 @@ class WhichlistPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                BestsellerWidget(),
+                                const BestsellerWidget(),
                                 IconButton(
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.favorite,
                                     color: Colors.red,
                                     size: 30,

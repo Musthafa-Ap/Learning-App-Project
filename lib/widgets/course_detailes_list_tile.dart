@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/course_detailed_page/course_detailed_page.dart';
-import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_model.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
-import 'package:nuox_project/pages/featured/widgets/big_item_card.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:provider/provider.dart';
-
 import '../constants/constants.dart';
 import 'big_cart_icon_button.dart';
 
@@ -22,8 +19,8 @@ class CourseDetailesListTile extends StatelessWidget {
   final double? rating;
   final int? variantID;
   CourseDetailesListTile({
-    this.isCartItem = false,
     Key? key,
+    this.isCartItem = false,
     required this.courseName,
     required this.authorName,
     required this.coursePrice,
@@ -94,10 +91,8 @@ class CourseDetailesListTile extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(right: 46),
                               child: GestureDetector(
-                                onTap: () {
-                                  print("hello");
-                                },
-                                child: Icon(
+                                onTap: () {},
+                                child: const Icon(
                                   Icons.favorite_border,
                                   size: 20,
                                   color: Colors.white,
@@ -106,24 +101,24 @@ class CourseDetailesListTile extends StatelessWidget {
                             )
                           ],
                         ),
-                        KHeight5,
+                        kHeight5,
                         Text(
                           authorName ?? "Author name",
                           style:
                               TextStyle(fontSize: 12, color: Colors.grey[300]),
                         ),
-                        KHeight5,
+                        kHeight5,
                         Row(
                           children: [
                             Text(
-                              "${rating} ",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.yellow),
+                              "$rating ",
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.yellow),
                             ),
                             RatingBarIndicator(
                               unratedColor: Colors.grey,
                               rating: rating ?? 4,
-                              itemBuilder: (context, index) => Icon(
+                              itemBuilder: (context, index) => const Icon(
                                 Icons.star,
                                 color: Colors.yellow,
                               ),
@@ -132,22 +127,22 @@ class CourseDetailesListTile extends StatelessWidget {
                               direction: Axis.horizontal,
                             ),
                             Text(
-                              " (${ratingCount})",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.yellow),
+                              " ($ratingCount)",
+                              style: const TextStyle(
+                                  fontSize: 12, color: Colors.yellow),
                             ),
                           ],
                         ),
-                        KHeight5,
+                        kHeight5,
                         isCartItem
                             ? Text(
                                 variant!,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                 ),
                               )
-                            : SizedBox(),
-                        KHeight5,
+                            : const SizedBox(),
+                        kHeight5,
                         Text(
                           "₹${coursePrice ?? "Course price"}",
                           maxLines: 2,
@@ -161,7 +156,9 @@ class CourseDetailesListTile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            isRecomended! ? BestsellerWidget() : SizedBox(),
+                            isRecomended!
+                                ? const BestsellerWidget()
+                                : const SizedBox(),
                             isCartItem
                                 ? Container(
                                     decoration: BoxDecoration(
@@ -177,7 +174,7 @@ class CourseDetailesListTile extends StatelessWidget {
                                               variantID: variantID,
                                               context: context);
                                         },
-                                        icon: Icon(Icons.delete)))
+                                        icon: const Icon(Icons.delete)))
                                 : BigCartIconButton(
                                     id: id!,
                                     price: coursePrice!.toInt(),

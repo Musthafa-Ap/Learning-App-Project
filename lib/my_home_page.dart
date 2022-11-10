@@ -11,13 +11,21 @@ import 'widgets/bottomNavBar.dart';
 ValueNotifier selectedIndex = ValueNotifier(0);
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   bool isGuest = false;
-  List<Widget> _pages = [Featured(), Search(), MyLearning(), Cart(), Account()];
+  List<Widget> _pages = const [
+    Featured(),
+    Search(),
+    MyLearning(),
+    Cart(),
+    Account()
+  ];
   @override
   void initState() {
     get();
@@ -25,10 +33,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void get() async {
-    SharedPreferences _shared = await SharedPreferences.getInstance();
-    bool? guest = _shared.getBool("guest");
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    bool? guest = shared.getBool("guest");
     if (guest == true) {
-      _pages = [Featured(), Search(), Test(), Test(), Test()];
+      _pages = const [Featured(), Search(), Test(), Test(), Test()];
     }
   }
 
@@ -36,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.black,
-        bottomNavigationBar: BottomNavBar(),
+        bottomNavigationBar: const BottomNavBar(),
         body: SafeArea(
           child: ValueListenableBuilder(
             valueListenable: selectedIndex,
@@ -62,7 +70,7 @@ class _TestState extends State<Test> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       selectedIndex.value = 0;
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => LoginPage()),
+        MaterialPageRoute(builder: (context) => const LoginPage()),
         (route) => false,
       );
     });
@@ -70,8 +78,8 @@ class _TestState extends State<Test> {
   }
 
   void get() async {
-    SharedPreferences _shared = await SharedPreferences.getInstance();
-    await _shared.clear();
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    await shared.clear();
   }
 
   @override

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.dart';
-import 'package:nuox_project/pages/my_learning/widgets/course_videos_page.dart';
 import 'package:provider/provider.dart';
-
 import '../../../constants/constants.dart';
 
 class MyLearningCard extends StatelessWidget {
@@ -62,7 +60,7 @@ class MyLearningCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
-                      KHeight5,
+                      kHeight5,
                       Text(
                         author ?? "Erich Andreas",
                         style: TextStyle(fontSize: 12, color: Colors.grey[300]),

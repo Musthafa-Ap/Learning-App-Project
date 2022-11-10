@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/my_home_page.dart';
-import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../constants/constants.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
 
@@ -60,32 +58,33 @@ class SmallItemCard extends StatelessWidget {
                             image: NetworkImage(image ??
                                 "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg"))),
                   ),
-                  KHeight5,
+                  kHeight5,
                   Text(
                     courseName ?? "Course name",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
-                  KHeight5,
+                  kHeight5,
                   Text(
                     authorName ?? "Author name",
                     style: TextStyle(fontSize: 12, color: Colors.grey[300]),
                   ),
-                  KHeight5,
+                  kHeight5,
                   Row(
                     children: [
                       Text(
                         "${rating ?? "2"} ",
-                        style: TextStyle(fontSize: 12, color: Colors.yellow),
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.yellow),
                       ),
                       RatingBarIndicator(
                         unratedColor: Colors.grey,
                         rating: rating ?? 4,
-                        itemBuilder: (context, index) => Icon(
+                        itemBuilder: (context, index) => const Icon(
                           Icons.star,
                           color: Colors.yellow,
                         ),
@@ -94,25 +93,28 @@ class SmallItemCard extends StatelessWidget {
                         direction: Axis.horizontal,
                       ),
                       Text(
-                        " (${ratingCount})",
-                        style: TextStyle(fontSize: 12, color: Colors.yellow),
+                        " ($ratingCount)",
+                        style:
+                            const TextStyle(fontSize: 12, color: Colors.yellow),
                       ),
                     ],
                   ),
-                  KHeight5,
+                  kHeight5,
                   Text(
                     "₹ ${coursePrice}",
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
-                  KHeight5,
+                  kHeight5,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      isRecomended == true ? BestsellerWidget() : SizedBox(),
+                      isRecomended == true
+                          ? const BestsellerWidget()
+                          : const SizedBox(),
                       Container(
                           decoration: BoxDecoration(
                               color: Colors.transparent,
@@ -136,16 +138,12 @@ class SmallItemCard extends StatelessWidget {
                                 } else {
                                   Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
-                                        builder: (context) => Test()),
+                                        builder: (context) => const Test()),
                                     (route) => false,
                                   );
-                                  // ScaffoldMessenger.of(context).showSnackBar(
-                                  //     SnackBar(
-                                  //         backgroundColor: Colors.red,
-                                  //         content: Text("Please register")));
                                 }
                               },
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.shopping_bag,
                                 color: Colors.white,
                                 size: 28,
@@ -162,15 +160,12 @@ class SmallItemCard extends StatelessWidget {
               child: Container(
                 height: 35,
                 width: 35,
-                decoration: BoxDecoration(
-                    //color: Color.fromARGB(255, 194, 193, 192),
-                    borderRadius: BorderRadius.circular(20)),
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: Center(
                     child: GestureDetector(
-                  onTap: () {
-                    print("hello");
-                  },
-                  child: Icon(
+                  onTap: () {},
+                  child: const Icon(
                     Icons.favorite_border,
                     size: 20,
                     color: Colors.white,

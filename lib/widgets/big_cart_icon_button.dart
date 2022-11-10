@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/my_home_page.dart';
-import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_model.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -25,9 +24,9 @@ class BigCartIconButton extends StatelessWidget {
         width: 70,
         child: IconButton(
             onPressed: () async {
-              SharedPreferences _Sharedpref =
+              SharedPreferences sharedpref =
                   await SharedPreferences.getInstance();
-              var token = _Sharedpref.getString("access_token");
+              var token = sharedpref.getString("access_token");
               if (token != null) {
                 courseDetailedProvider.addToCart(
                     courseID: id,
@@ -37,12 +36,12 @@ class BigCartIconButton extends StatelessWidget {
                     token: token);
               } else {
                 Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => Test()),
+                  MaterialPageRoute(builder: (context) => const Test()),
                   (route) => false,
                 );
               }
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.shopping_bag,
               color: Colors.white,
               size: 35,

@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:nuox_project/pages/account/account_services/account_provider.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../constants/constants.dart';
 
 class ChangePasswordPage extends StatefulWidget {
-  ChangePasswordPage({super.key});
+  const ChangePasswordPage({super.key});
 
   @override
   State<ChangePasswordPage> createState() => _ChangePasswordPageState();
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  TextEditingController _newPasswordController = TextEditingController();
-  TextEditingController _retypeNewPasswordController = TextEditingController();
-  TextEditingController _oldPasswordController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _retypeNewPasswordController =
+      TextEditingController();
+  final TextEditingController _oldPasswordController = TextEditingController();
   bool _obscureText = true;
   bool _obscureText1 = true;
   bool _obscureText2 = true;
@@ -27,13 +25,18 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     final accountProvider = Provider.of<AccountProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         centerTitle: true,
-        title: Text("Change password"),
+        title: const Text("Change password"),
       ),
       body: Form(
         key: _formKey,
         child: ListView(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           children: [
             SizedBox(
               height: MediaQuery.of(context).size.height * .1,
@@ -66,7 +69,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 hintText: "Old Password",
               ),
             ),
-            KHeight,
+            kHeight,
             TextFormField(
               style: const TextStyle(color: Colors.black),
               autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -95,7 +98,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 hintText: "New Password",
               ),
             ),
-            KHeight,
+            kHeight,
             TextFormField(
               obscureText: _obscureText1,
               style: const TextStyle(color: Colors.black),
@@ -121,7 +124,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   ? null
                   : "Password mismatch"),
             ),
-            KHeight,
+            kHeight,
             FlutterPwValidator(
               controller: _newPasswordController,
               minLength: 8,
@@ -130,13 +133,11 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               specialCharCount: 1,
               width: 400,
               height: 150,
-              onSuccess: () {
-                print("matched");
-              },
+              onSuccess: () {},
               // onFail: yourCallbackFunction),
             ),
-            KHeight15,
-            KHeight20,
+            kHeight15,
+            kheight20,
             ElevatedButton(
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all(
@@ -159,7 +160,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         retypeNewPass: retype_new,
                         context: context);
                   }
-                  ;
                 },
                 child: accountProvider.isChangePassLoading
                     ? const Center(

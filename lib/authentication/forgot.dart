@@ -4,13 +4,13 @@ import 'package:nuox_project/authentication/providers/widgets/top_image.dart';
 import 'package:nuox_project/authentication/signup.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
-
 import '../constants/constants.dart';
 
 class ForgotPassword extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-
   final _emailController = TextEditingController();
+
+  ForgotPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +30,7 @@ class ForgotPassword extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           children: [
             SizedBox(height: size * .15),
-            TopImage(),
-            // SizedBox(height: size * .1),
-            // const Text(
-            //   "Recieve an email to reset your password",
-            //   textAlign: TextAlign.center,
-            //   style: TextStyle(
-            //       fontSize: 25,
-            //       color: Colors.white,
-            //       fontWeight: FontWeight.bold),
-            // ),
+            const TopImage(),
             SizedBox(
               height: size * .2,
             ),
@@ -95,13 +86,14 @@ class ForgotPassword extends StatelessWidget {
               children: [
                 const Text(
                   "No account?",
-                  style: const TextStyle(color: Colors.white, fontSize: 17),
+                  style: TextStyle(color: Colors.white, fontSize: 17),
                 ),
-                KWidth5,
+                kWidth5,
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => SignUpWidget()),
+                      MaterialPageRoute(
+                          builder: (context) => const SignUpWidget()),
                       (route) => false,
                     );
                   },

@@ -1,18 +1,11 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:nuox_project/my_home_page.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_model.dart';
 import 'package:nuox_project/pages/cart/cart_services/checkout_model.dart';
 import 'package:nuox_project/pages/cart/cart_services/coupen_model.dart';
 import 'package:nuox_project/pages/cart/conform_page.dart/conform_page.dart';
-import 'package:nuox_project/pages/my_learning/myLearning.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../buy_all_page/buy_all_page.dart';
 
 class CartProvider with ChangeNotifier {
@@ -24,9 +17,8 @@ class CartProvider with ChangeNotifier {
   CheckoutModel? checkoutDetailes;
   CoupencodeModel? coupenDetailes;
   Future<void> getAllCartItems() async {
-    SharedPreferences _shared = await SharedPreferences.getInstance();
-    var token = _shared.getString("access_token");
-    print(token);
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    var token = shared.getString("access_token");
     String auth = "Bearer $token";
     var api = "http://learningapp.e8demo.com/api/add_to_cart/";
     var response = await http.get(
@@ -44,9 +36,10 @@ class CartProvider with ChangeNotifier {
   Future<void> deleteCartItem(
       {required courseID,
       required variantID,
-      required BuildContext context}) async {
-    SharedPreferences _shared = await SharedPreferences.getInstance();
-    var token = _shared.getString("access_token");
+      required BuildContext context,
+      bool mounted = true}) async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    var token = shared.getString("access_token");
     String auth = "Bearer $token";
 
     try {
@@ -56,7 +49,8 @@ class CartProvider with ChangeNotifier {
           body: jsonEncode({"course": courseID, "section": variantID}));
 
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
             content: Text(
               "Item removed from Bag",
@@ -70,8 +64,8 @@ class CartProvider with ChangeNotifier {
 
   void getCheckout(context) async {
     isLoading = true;
-    SharedPreferences _shared = await SharedPreferences.getInstance();
-    var token = _shared.getString("access_token");
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    var token = shared.getString("access_token");
     print(token);
     String auth = "Bearer $token";
     var api = "http://learningapp.e8demo.com/api/confirm_purchase/";
@@ -86,22 +80,19 @@ class CartProvider with ChangeNotifier {
       notifyListeners();
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => BuyAllPage()));
-      print(checkoutDetailes!.data!.paymentMethod.toString());
     }
   }
 
   void coupenApply({required String coupen, context}) async {
     isLoading = true;
     try {
-      SharedPreferences _shared = await SharedPreferences.getInstance();
-      var token = _shared.getString("access_token");
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
       String auth = "Bearer $token";
       var api = "http://learningapp.e8demo.com/api/apply_offer/";
       var response = await http.post(Uri.parse(api),
           headers: {"Authorization": auth}, body: {"promo_code": coupen});
-      print(response.statusCode);
       var data = jsonDecode(response.body);
-      print(data);
       if (response.statusCode == 200) {
         promo_code = data["promo_code"];
         isLoading = false;
@@ -109,7 +100,7 @@ class CartProvider with ChangeNotifier {
         isCoupenSuccess = true;
       } else {
         isLoading = false;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.white,
             content: Text(
               "Invalid coupen code",
@@ -127,8 +118,8 @@ class CartProvider with ChangeNotifier {
     required context,
   }) async {
     try {
-      SharedPreferences _shared = await SharedPreferences.getInstance();
-      var token = _shared.getString("access_token");
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
       String auth = "Bearer $token";
       var api = "http://learningapp.e8demo.com/api/confirm_purchase/";
       var response = await http.post(Uri.parse(api), headers: {
@@ -136,13 +127,10 @@ class CartProvider with ChangeNotifier {
       }, body: {
         "payment_method": paymentMode,
       });
-      print(response.body);
-      print(response.statusCode);
       Map<String, dynamic> data = jsonDecode(response.body);
-      print(response.statusCode);
       orderID = data['data']['order_id'];
       if (data['message'] == "success") {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
             content: Text(
               "Course ordered",
@@ -150,7 +138,8 @@ class CartProvider with ChangeNotifier {
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             )));
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => ConformPurchasePage()),
+            MaterialPageRoute(
+                builder: (context) => const ConformPurchasePage()),
             (route) => false);
       }
     } catch (e) {
@@ -163,11 +152,9 @@ class CartProvider with ChangeNotifier {
       required context,
       required String promocode}) async {
     try {
-      SharedPreferences _shared = await SharedPreferences.getInstance();
-      var token = _shared.getString("access_token");
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
       String auth = "Bearer $token";
-      print("promo = $promocode");
-      print("payment = $paymentMode");
       var api = "http://learningapp.e8demo.com/api/confirm_purchase/";
       var response = await http.post(Uri.parse(api),
           headers: {
@@ -179,7 +166,7 @@ class CartProvider with ChangeNotifier {
       Map<String, dynamic> data = jsonDecode(response.body);
       orderID = data['data']['order_id'];
       if (data["message"] == "success") {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
             content: Text(
               "Course ordered",
@@ -187,7 +174,8 @@ class CartProvider with ChangeNotifier {
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             )));
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => ConformPurchasePage()),
+            MaterialPageRoute(
+                builder: (context) => const ConformPurchasePage()),
             (route) => false);
       }
     } catch (e) {

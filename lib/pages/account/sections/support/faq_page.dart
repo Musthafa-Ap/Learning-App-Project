@@ -11,6 +11,11 @@ class FAQPage extends StatelessWidget {
     final accountProvider = Provider.of<AccountProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         centerTitle: true,
         title: const Text("FAQ"),
       ),
@@ -22,7 +27,7 @@ class FAQPage extends StatelessWidget {
             "Frequently Asked Questions",
             style: TextStyle(fontSize: 25, color: Colors.white),
           ),
-          KHeight20,
+          kheight20,
           Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
@@ -64,15 +69,15 @@ class QAndAWidget extends StatelessWidget {
           children: [
             Text(
               "Q : $question",
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
               ),
             ),
-            KHeight5,
+            kHeight5,
             Text(
               "A : $answer",
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color.fromARGB(233, 207, 203, 203),
                 fontSize: 16,
               ),

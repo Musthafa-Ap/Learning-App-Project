@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:nuox_project/pages/course_detailed_page/sections/review_page/review_model.dart';
@@ -17,12 +15,12 @@ class CourseDetailedProvider with ChangeNotifier {
   bool isCourseLoading = false;
   Future<void> getAll({required courseID}) async {
     isCourseLoading = true;
-    SharedPreferences _shared = await SharedPreferences.getInstance();
-    var token = _shared.getString("access_token");
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    var token = shared.getString("access_token");
     String auth = "Bearer $token";
     var api =
         "http://learningapp.e8demo.com/api/user-coursedetail/?coursedetail_id=$courseID";
-    var response;
+    http.Response response;
     if (token == null) {
       response = await http.get(Uri.parse(api));
     } else {
@@ -42,7 +40,8 @@ class CourseDetailedProvider with ChangeNotifier {
       required BuildContext context,
       required int variantID,
       required int price,
-      required String token}) async {
+      required String token,
+      bool mounted = true}) async {
     try {
       String auth = "Bearer $token";
       var response = await http.post(
@@ -52,14 +51,16 @@ class CourseDetailedProvider with ChangeNotifier {
               {"course": courseID, "variant": variantID, "price": price}));
       Map<String, dynamic> data = jsonDecode(response.body);
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
             content: Text(
               "Item added to the bag",
               style: TextStyle(fontWeight: FontWeight.bold),
             )));
       } else if (data["message"] == "Course is Already Purchased") {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.white,
             content: Text(
               "Course is already purchased",
@@ -74,8 +75,8 @@ class CourseDetailedProvider with ChangeNotifier {
   Future<void> getReview({required courseID}) async {
     try {
       isReviewLoading = true;
-      SharedPreferences _shared = await SharedPreferences.getInstance();
-      var token = _shared.getString("access_token");
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
       String auth = "Bearer $token";
       var api =
           "http://learningapp.e8demo.com/api/user-review/get_review/?course_id=$courseID";
@@ -98,8 +99,8 @@ class CourseDetailedProvider with ChangeNotifier {
   Future<void> addRatingWithoutReview(
       {required rating, required id, required context}) async {
     try {
-      SharedPreferences _shared = await SharedPreferences.getInstance();
-      var token = _shared.getString("access_token");
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
       String auth = "Bearer $token";
       var api = "http://learningapp.e8demo.com/api/user-review/add_review/";
       var response = await http.post(Uri.parse(api),
@@ -107,7 +108,7 @@ class CourseDetailedProvider with ChangeNotifier {
           body: {"rating": rating.toString(), "course_id": id.toString()});
       Map<String, dynamic> data = jsonDecode(response.body);
       if (data["status_code"] == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
             content: Text(
               "Rating added successfully",
@@ -122,8 +123,8 @@ class CourseDetailedProvider with ChangeNotifier {
   Future<void> addRatingWithReview(
       {required rating, required id, required context, required review}) async {
     try {
-      SharedPreferences _shared = await SharedPreferences.getInstance();
-      var token = _shared.getString("access_token");
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
       String auth = "Bearer $token";
       var api = "http://learningapp.e8demo.com/api/user-review/add_review/";
       var response = await http.post(Uri.parse(api), headers: {
@@ -135,7 +136,7 @@ class CourseDetailedProvider with ChangeNotifier {
       });
       Map<String, dynamic> data = jsonDecode(response.body);
       if (data["status_code"] == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
             content: Text(
               "Review added successfully",
@@ -149,8 +150,8 @@ class CourseDetailedProvider with ChangeNotifier {
 
   void getRecentlyViewed() async {
     try {
-      SharedPreferences _shared = await SharedPreferences.getInstance();
-      var token = _shared.getString("access_token");
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
       String auth = "Bearer $token";
       var response = await http.get(
           Uri.parse("http://learningapp.e8demo.com/api/recent-courses/"),

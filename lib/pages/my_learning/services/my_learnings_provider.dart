@@ -14,8 +14,8 @@ class MyLearningsProvider with ChangeNotifier {
   Future<void> getMyLearnings() async {
     try {
       isLoading = true;
-      SharedPreferences _shared = await SharedPreferences.getInstance();
-      var token = await _shared.getString("access_token");
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
       String auth = "Bearer $token";
       var api = "http://learningapp.e8demo.com/api/my-courses/";
       var response = await http.get(
@@ -28,15 +28,14 @@ class MyLearningsProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       isLoading = false;
-      print(e.toString());
     }
   }
 
   Future<void> getCourseDetailes({required courseID, required context}) async {
     try {
       isCourseLoading = true;
-      SharedPreferences _shared = await SharedPreferences.getInstance();
-      var token = await _shared.getString("access_token");
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
       String auth = "Bearer $token";
       var api =
           "http://learningapp.e8demo.com/api/topic_list/?course_id=$courseID";
@@ -49,22 +48,20 @@ class MyLearningsProvider with ChangeNotifier {
 
       if (response.statusCode == 200) {
         isCourseLoading = false;
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => CourseVideosPage()));
-        print("cousrse detailes === ${courseVideoList}");
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const CourseVideosPage()));
       } else {
         isCourseLoading = false;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.red,
             content: Text(
               courseVideoList!.status.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             )));
         // print(courseVideoList!.status);
       }
     } catch (e) {
       isCourseLoading = false;
-      print(e.toString());
     }
   }
 }

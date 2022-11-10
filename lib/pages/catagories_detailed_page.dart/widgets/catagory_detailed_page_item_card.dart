@@ -48,7 +48,7 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
                       image: NetworkImage(image ??
                           "http://learningapp.e8demo.com/media/thumbnail_img/4-physics.jpeg"))),
             ),
-            KHeight5,
+            kHeight5,
             Text(
               courseName ?? "Course name",
               maxLines: 2,
@@ -57,12 +57,12 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 18),
             ),
-            KHeight5,
+            kHeight5,
             Row(
               children: [
                 Text(
-                  "${rating} ",
-                  style: TextStyle(fontSize: 12, color: Colors.yellow),
+                  "$rating ",
+                  style: const TextStyle(fontSize: 12, color: Colors.yellow),
                 ),
                 RatingBarIndicator(
                   unratedColor: Colors.grey,
@@ -76,36 +76,36 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  " (${ratingCount})",
+                  " ($ratingCount)",
                   style: const TextStyle(fontSize: 12, color: Colors.yellow),
                 ),
               ],
             ),
-            KHeight5,
+            kHeight5,
             Row(
               children: [
                 Text(
-                  price.toString(),
+                  "₹$price",
                   style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 18),
                 ),
-                KWidth5,
-                Text(
-                  "7,499",
-                  style: const TextStyle(
+                kWidth5,
+                const Text(
+                  "₹10,000",
+                  style: TextStyle(
                       decoration: TextDecoration.lineThrough,
                       color: Colors.white),
                 ),
               ],
             ),
-            KHeight5,
+            kHeight5,
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                BestsellerWidget(),
+                const BestsellerWidget(),
                 SizedBox(
                   width: size * .436,
                 ),

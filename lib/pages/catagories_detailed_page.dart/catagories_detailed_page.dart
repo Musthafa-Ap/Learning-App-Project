@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
-import 'package:nuox_project/pages/catagories_detailed_page.dart/widgets/sub_catagories_detailed_page.dart';
-import 'package:nuox_project/pages/course_detailed_page/course_detailed_page.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/widgets/catagories_button.dart';
-import 'package:nuox_project/pages/featured/widgets/see_all_page_featured.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/course_detailes_list_tile.dart';
@@ -32,23 +29,14 @@ class CatagoriesDetailedPage extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
-        // actions: [
-        //   IconButton(onPressed: () async {}, icon: const Icon(Icons.sort))
-        // ],
       ),
       body: ListView(
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
         children: [
-          // Text(
-          //   "Development",
-          //   style: const TextStyle(
-          //       color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),
-          // ),
-          // KHeight15,
-          Text(
+          const Text(
             "Courses to get you started",
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
               fontSize: 25,
               fontWeight: FontWeight.bold,
@@ -65,7 +53,6 @@ class CatagoriesDetailedPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final datas =
                     catagoriesDetailedProvider.catagoriesDetailes?.data?[index];
-                print(datas.toString());
                 return CatagoryDetailedPageItemCard(
                   image: datas!.thumbnail!.fullSize.toString(),
                   courseName: datas.courseName.toString(),
@@ -77,9 +64,9 @@ class CatagoriesDetailedPage extends StatelessWidget {
               },
             ),
           ),
-          KHeight15,
+          kHeight15,
           const BoldHeading(heading: "Subcategories"),
-          KHeight,
+          kHeight,
           SizedBox(
             height: 60,
             child: ListView.builder(
@@ -94,16 +81,12 @@ class CatagoriesDetailedPage extends StatelessWidget {
                     navigatepage: "sub_catagories_detailed",
                     title: datas.subCatehoryName.toString(),
                     id: datas.id!.toInt());
-                // return CatagoriesButton(
-                //     title: data,
-                //     navigatepage: SeeAllPageFeatured(
-                //       fromSubCatagories: true,
-                //     ));
               },
             ),
           ),
-          KHeight15,
-          const BoldHeading(heading: "Recently viewed"), KHeight5,
+          kHeight15,
+          const BoldHeading(heading: "Recently viewed"),
+          kHeight5,
           SizedBox(
             height: size * .6,
             child: ListView.builder(
@@ -126,11 +109,11 @@ class CatagoriesDetailedPage extends StatelessWidget {
               },
             ),
           ),
-          KHeight15,
+          kHeight15,
           const BoldHeading(heading: "Recommendations"),
           ListView.builder(
             shrinkWrap: true,
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             itemCount:
                 recomendationProvider.recomendationsCourses!.data!.length,
             itemBuilder: (context, index) {

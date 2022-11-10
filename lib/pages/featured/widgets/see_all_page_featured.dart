@@ -32,12 +32,12 @@ class SeeAllPageFeatured extends StatelessWidget {
                       backgroundColor: Colors.white,
                       context: context,
                       builder: (BuildContext context) {
-                        return RangeClass();
+                        return const RangeClass();
                       },
                     );
                   },
                   icon: const Icon(Icons.sort, size: 28))
-              : SizedBox()
+              : const SizedBox()
         ],
       ),
       body: featuredProviders.sortedCourses == null ||
@@ -112,7 +112,7 @@ class _RangeClassState extends State<RangeClass> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            KHeight5,
+            kHeight5,
             Center(
               child: Container(
                 height: 5,
@@ -121,7 +121,7 @@ class _RangeClassState extends State<RangeClass> {
                     color: Colors.grey, borderRadius: BorderRadius.circular(5)),
               ),
             ),
-            KHeight15,
+            kHeight15,
             const Padding(
               padding: EdgeInsets.only(left: 8.0),
               child: Text(
@@ -163,7 +163,7 @@ class _RangeClassState extends State<RangeClass> {
                 ],
               ),
             ),
-            KHeight15,
+            kHeight15,
             const Padding(
               padding: EdgeInsets.only(left: 8.0),
               child: Text(
@@ -214,9 +214,6 @@ class _RangeClassState extends State<RangeClass> {
                               maxPrice: maxPrice.toString(),
                               catagoryID: catagoryNotifier.value.toString());
                         }
-                        print(
-                            "{min price == $minPrice and max price== $maxPrice}");
-                        print("catagory id == ${catagoryNotifier.value}");
                       },
                       child: const Text("Filter"),
                     ),

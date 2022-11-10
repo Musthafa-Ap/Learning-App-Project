@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nuox_project/my_home_page.dart';
+import 'package:flutter/cupertino.dart';
 
 class BottomNavBar extends StatelessWidget {
-  BottomNavBar({
-    Key? key,
+  const BottomNavBar({
+    super.key,
   });
 
   @override
@@ -19,10 +19,9 @@ class BottomNavBar extends StatelessWidget {
             backgroundColor: Colors.black,
             unselectedItemColor: Colors.white,
             selectedItemColor: Colors.white,
-            selectedIconTheme: IconThemeData(color: Colors.white),
+            selectedIconTheme: const IconThemeData(color: Colors.white),
             onTap: (value) {
               selectedIndex.value = value;
-              selectedIndex.notifyListeners();
             },
             currentIndex: selectedIndex.value,
             items: [

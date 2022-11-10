@@ -25,16 +25,4 @@ class CoupencodeModel {
     user = json['user'];
     promoCode = json['promo_code'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['message'] = this.message;
-    data['cart_id'] = this.cartId;
-    data['total_amount'] = this.totalAmount;
-    data['discount_amount'] = this.discountAmount;
-    data['grand_total'] = this.grandTotal;
-    data['user'] = this.user;
-    data['promo_code'] = this.promoCode;
-    return data;
-  }
 }

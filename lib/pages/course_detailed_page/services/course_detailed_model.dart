@@ -10,27 +10,15 @@ class CourseDetailedModel {
     if (json['data'] != null) {
       data = <Data>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(Data.fromJson(v));
       });
     }
     if (json['variant'] != null) {
       variant = <Variant>[];
       json['variant'].forEach((v) {
-        variant!.add(new Variant.fromJson(v));
+        variant!.add(Variant.fromJson(v));
       });
     }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['status'] = this.status;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    if (this.variant != null) {
-      data['variant'] = this.variant!.map((v) => v.toJson()).toList();
-    }
-    return data;
   }
 }
 
@@ -76,46 +64,20 @@ class Data {
     price = json['price'];
     offerPrice = json['offer_price'];
     subCategory = json['sub_category'] != null
-        ? new SubCategory.fromJson(json['sub_category'])
+        ? SubCategory.fromJson(json['sub_category'])
         : null;
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     featuredCourse = json['featured_course'];
     recommendedCourse = json['recommended_course'];
     thumbnail = json['thumbnail'] != null
-        ? new Thumbnail.fromJson(json['thumbnail'])
+        ? Thumbnail.fromJson(json['thumbnail'])
         : null;
     instructor = json['instructor'] != null
-        ? new Instructor.fromJson(json['instructor'])
+        ? Instructor.fromJson(json['instructor'])
         : null;
     introVideo = json['intro_video'];
     rating = json['rating'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['rating_count'] = this.ratingCount;
-    data['id'] = this.id;
-    data['course_name'] = this.courseName;
-    data['price'] = this.price;
-    data['description'] = this.description;
-    data['offer_price'] = this.offerPrice;
-    if (this.subCategory != null) {
-      data['sub_category'] = this.subCategory!.toJson();
-    }
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    data['featured_course'] = this.featuredCourse;
-    data['recommended_course'] = this.recommendedCourse;
-    if (this.thumbnail != null) {
-      data['thumbnail'] = this.thumbnail!.toJson();
-    }
-    if (this.instructor != null) {
-      data['instructor'] = this.instructor!.toJson();
-    }
-    data['intro_video'] = this.introVideo;
-    data['rating'] = this.rating;
-    return data;
   }
 }
 
@@ -131,14 +93,6 @@ class SubCategory {
     subCatehoryName = json['sub_catehory_name'];
     category = json['category'];
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['sub_catehory_name'] = this.subCatehoryName;
-    data['category'] = this.category;
-    return data;
-  }
 }
 
 class Thumbnail {
@@ -150,13 +104,6 @@ class Thumbnail {
   Thumbnail.fromJson(Map<String, dynamic> json) {
     fullSize = json['full_size'];
     thumbnail = json['thumbnail'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['full_size'] = this.fullSize;
-    data['thumbnail'] = this.thumbnail;
-    return data;
   }
 }
 
@@ -173,23 +120,11 @@ class Instructor {
   Instructor.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     profilePic = json['profile_pic'] != null
-        ? new Thumbnail.fromJson(json['profile_pic'])
+        ? Thumbnail.fromJson(json['profile_pic'])
         : null;
     phone = json['phone'];
     email = json['email'];
     details = json['details'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    if (this.profilePic != null) {
-      data['profile_pic'] = this.profilePic!.toJson();
-    }
-    data['phone'] = this.phone;
-    data['email'] = this.email;
-    data['details'] = this.details;
-    return data;
   }
 }
 
@@ -204,13 +139,5 @@ class Variant {
     id = json['id'];
     name = json['name'];
     amountPerc = json['amount_perc'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['amount_perc'] = this.amountPerc;
-    return data;
   }
 }

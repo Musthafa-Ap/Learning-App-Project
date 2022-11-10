@@ -7,7 +7,7 @@ import 'widgets/small_heading_account_page.dart';
 import 'sections/profile/user_detailes_section.dart';
 
 class Account extends StatefulWidget {
-  Account({super.key});
+  const Account({super.key});
 
   @override
   State<Account> createState() => _AccountState();
@@ -23,9 +23,9 @@ class _AccountState extends State<Account> {
   }
 
   void get() async {
-    SharedPreferences _shared = await SharedPreferences.getInstance();
+    SharedPreferences shared = await SharedPreferences.getInstance();
     setState(() {
-      isChangePass = _shared.getBool("changepass");
+      isChangePass = shared.getBool("changepass");
     });
   }
 
@@ -42,53 +42,53 @@ class _AccountState extends State<Account> {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(20),
         children: [
-          UserDetailesSection(),
-          KHeight20,
+          const UserDetailesSection(),
+          kheight20,
           const SmallHeading(heading: "Support"),
-          KHeight,
-          ListTileAccountPage(
+          kHeight,
+          const ListTileAccountPage(
             tiletitle: "Whishlist",
             index: 6,
           ),
-          KHeight,
-          ListTileAccountPage(
+          kHeight,
+          const ListTileAccountPage(
             tiletitle: "FAQ",
             index: 0,
           ),
-          KHeight15,
-          ListTileAccountPage(
+          kHeight15,
+          const ListTileAccountPage(
             tiletitle: "About App",
             index: 1,
           ),
-          KHeight15,
-          ListTileAccountPage(
+          kHeight15,
+          const ListTileAccountPage(
             tiletitle: "Share the app",
             index: 3,
           ),
-          KHeight15,
-          ListTileAccountPage(
+          kHeight15,
+          const ListTileAccountPage(
             tiletitle: "Report a problem",
             index: 5,
           ),
-          KHeight15,
-          ListTileAccountPage(
+          kHeight15,
+          const ListTileAccountPage(
             tiletitle: "Delete Account",
             index: 4,
           ),
-          KHeight15,
+          kHeight15,
           isChangePass == true
-              ? ListTileAccountPage(
+              ? const ListTileAccountPage(
                   tiletitle: "Change Password",
                   index: 2,
                 )
               : const SizedBox(),
-          KHeight20,
-          AccountPageButton(buttontitle: "Sign out"),
-          KHeight,
+          kheight20,
+          const AccountPageButton(buttontitle: "Sign out"),
+          kHeight,
           Center(
             child: Text(
               "Tutorial App $formate1 V1",
-              style: TextStyle(color: Colors.white, fontSize: 14),
+              style: const TextStyle(color: Colors.white, fontSize: 14),
             ),
           )
         ],

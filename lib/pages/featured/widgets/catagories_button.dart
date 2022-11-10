@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/catagories_detailed_page.dart';
-import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_model.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/widgets/sub_catagories_detailed_page.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +9,10 @@ class CatagoriesButton extends StatelessWidget {
   final String? title;
   final String? navigatepage;
   const CatagoriesButton(
-      {required this.navigatepage, required this.title, required this.id});
+      {super.key,
+      required this.navigatepage,
+      required this.title,
+      required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +23,17 @@ class CatagoriesButton extends StatelessWidget {
       child: ElevatedButton(
           style: ButtonStyle(
               padding: MaterialStateProperty.all(
-                  EdgeInsets.symmetric(horizontal: 20)),
+                  const EdgeInsets.symmetric(horizontal: 20)),
               backgroundColor: MaterialStateProperty.all(Colors.black),
               shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
-                  side: BorderSide(color: Colors.white)))),
+                  side: const BorderSide(color: Colors.white)))),
           onPressed: () async {
             if (navigatepage == "sub_catagories_detailed") {
               await catagoiresdetailesProvider.getSubCatagoriesDetailes(
                   subCatagoriesID: id);
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SubCatagoriesDetailedPage()));
+                  builder: (context) => const SubCatagoriesDetailedPage()));
             }
             if (navigatepage == "catagoriesDetailedPage") {
               await catagoiresdetailesProvider.getAll(
@@ -39,7 +41,7 @@ class CatagoriesButton extends StatelessWidget {
               );
               await catagoiresdetailesProvider.getAllSub(catagoriesID: id);
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CatagoriesDetailedPage()));
+                  builder: (context) => const CatagoriesDetailedPage()));
             }
           },
           child: Text(title ?? "Title of the course")),

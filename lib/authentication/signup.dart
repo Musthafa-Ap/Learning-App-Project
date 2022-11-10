@@ -19,6 +19,8 @@ ValueNotifier<bool> instructorOptionNotifier = ValueNotifier(false);
 final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
 class SignUpWidget extends StatefulWidget {
+  const SignUpWidget({super.key});
+
   @override
   State<SignUpWidget> createState() => _SignUpWidgetState();
 }
@@ -69,7 +71,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               SizedBox(
                 height: size * .05,
               ),
-              TopImage(),
+              const TopImage(),
               SizedBox(
                 height: size * .1,
               ),
@@ -93,17 +95,17 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     ? "Please enter your name"
                     : null),
               ),
-              KHeight,
+              kHeight,
 
               TextFormField(
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 inputFormatters: [LengthLimitingTextInputFormatter(10)],
                 keyboardType: TextInputType.number,
                 controller: _numberController,
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.only(top: 11, left: 1),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.only(top: 11, left: 1),
                     child: Text(
                       "  +91",
                       style: TextStyle(fontSize: 18),
@@ -121,7 +123,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     ? "Enter a valid mobile number"
                     : null),
               ),
-              KHeight,
+              kHeight,
               TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: _emailController,
@@ -138,7 +140,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       email != null && !EmailValidator.validate(email)
                           ? "Enter a valid email"
                           : null),
-              KHeight,
+              kHeight,
               TextFormField(
                 obscureText: _obscureText,
                 controller: _passwordController,
@@ -164,7 +166,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     ? "Enter min. 8 characters"
                     : null,
               ),
-              KHeight,
+              kHeight,
               FlutterPwValidator(
                 controller: _passwordController,
                 minLength: 8,
@@ -173,12 +175,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 specialCharCount: 1,
                 width: 400,
                 height: 150,
-                onSuccess: () {
-                  print("matched");
-                },
+                onSuccess: () {},
                 // onFail: yourCallbackFunction),
               ),
-              KHeight,
+              kHeight,
               ValueListenableBuilder(
                 valueListenable: instructorOptionNotifier,
                 builder: (context, newvValue, child) {
@@ -191,7 +191,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             fontWeight: FontWeight.bold,
                             fontSize: 18),
                       ),
-                      KWidth10,
+                      kWidth10,
                       const Text(
                         "Yes",
                         style: TextStyle(color: Colors.white),
@@ -231,22 +231,22 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                 await FilePicker.platform.pickFiles();
                             if (resultFile != null) {
                               PlatformFile file = resultFile.files.first;
-                              print(file.path);
                               setState(() {
                                 documentFile = File(file.path.toString());
-                                print("document name :${documentFile}");
                               });
 
                               isdocumentUploadedNotifier.value = true;
+                              if (!mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                       backgroundColor: Colors.green,
                                       content: Text(
                                           'Document updoaded successfully')));
                             } else {
                               isdocumentUploadedNotifier.value = false;
+                              if (!mounted) return;
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                       backgroundColor: Colors.red,
                                       content:
                                           Text('Please upload a document')));
@@ -284,7 +284,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       : const SizedBox();
                 },
               ),
-              KHeight,
+              kHeight,
               ElevatedButton(
                   style: ButtonStyle(
                       padding: MaterialStateProperty.all(
@@ -309,17 +309,17 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             password: _passwordController.text.toString());
                       } else {
                         if (isdocumentUploadedNotifier.value == false) {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text('Please upload a document')));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text('Please upload a document')));
                         } else {
                           if (documentFile == null) {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text('Please upload a document')));
-                            print("document is null");
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    backgroundColor: Colors.red,
+                                    content: Text('Please upload a document')));
                           } else {
-                            print("File is not null");
                             authProvider.instructorRegistration(
                                 isInstructor: true,
                                 document: documentFile,
@@ -331,7 +331,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                                 name: _nameController.text.toString(),
                                 password: _passwordController.text.toString());
                           }
-                          print("Logined with document");
                         }
                       }
                     }
@@ -346,7 +345,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold))),
 
-              KHeight,
+              kHeight,
               Row(
                 children: const [
                   Expanded(
@@ -367,7 +366,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   ))
                 ],
               ),
-              KHeight,
+              kHeight,
 
               SizedBox(
                 height: 50,
@@ -376,27 +375,27 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => MobileNumberverificationPage()));
                   },
+                  style: ButtonStyle(
+                      side: MaterialStateProperty.all(
+                          const BorderSide(color: Colors.white))),
                   child: Row(
                     children: [
-                      Spacer(),
-                      Container(
+                      const Spacer(),
+                      SizedBox(
                         width: 45,
                         child: Image.network(
                             "https://cdn5.vectorstock.com/i/1000x1000/93/64/telephone-receiver-line-icon-on-black-background-vector-26849364.jpg"),
                       ),
-                      Text(
+                      const Text(
                         "Log in with Mobile number",
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
-                      Spacer()
+                      const Spacer()
                     ],
                   ),
-                  style: ButtonStyle(
-                      side: MaterialStateProperty.all(
-                          const BorderSide(color: Colors.white))),
                 ),
               ),
-              KHeight20,
+              kheight20,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -412,8 +411,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   ),
                 ],
               ),
-              KHeight15,
-              KHeight20,
+              kHeight15,
+              kheight20,
               //////////
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -422,11 +421,11 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     "Already Registered?",
                     style: TextStyle(color: Colors.white, fontSize: 17),
                   ),
-                  KWidth5,
+                  kWidth5,
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => LoginPage()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const LoginPage()));
                     },
                     child: const Text(
                       "Sign in",
@@ -439,11 +438,11 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   )
                 ],
               ),
-              KHeight20,
+              kheight20,
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Join as a ",
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
@@ -453,14 +452,16 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                           await SharedPreferences.getInstance();
                       sharedPref.setBool("isLogged", true);
                       sharedPref.setBool("guest", true);
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           backgroundColor: Colors.green,
                           content: Text('Joined as a guest')));
                       Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                          MaterialPageRoute(
+                              builder: (context) => const MyHomePage()),
                           (route) => false);
                     },
-                    child: Text(
+                    child: const Text(
                       "Guest",
                       style: TextStyle(
                           decoration: TextDecoration.underline,

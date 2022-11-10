@@ -4,7 +4,6 @@ import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/search/services/search_provider.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
 import 'package:provider/provider.dart';
-
 import '../course_detailed_page/course_detailed_page.dart';
 import '../course_detailed_page/services/course_detailed_provider.dart';
 
@@ -60,20 +59,10 @@ class _SearchState extends State<Search> {
               ),
               style: const TextStyle(color: Colors.white),
             ),
-            KHeight,
+            kHeight,
             const BoldHeading(heading: "Browse Catagories"),
-            KHeight,
+            kHeight,
             Expanded(
-              // child: ListView.builder(
-              //   physics: const BouncingScrollPhysics(),
-              //   itemCount: _foundItems.length,
-              //   itemBuilder: (context, index) {
-              //     final data = _foundItems[index];
-              //     return SizedBox();
-              //     // return CatagoriesListTile(
-              //     //     title: data["title"], icon: data["icon"]);
-              //   },
-              // ),
               child: searchProvider.notFound != null
                   ? const Center(
                       child: Text(
@@ -135,8 +124,9 @@ class SearchCard extends StatelessWidget {
   final String? authorName;
   final String? image;
   final int id;
-  SearchCard(
-      {required this.image,
+  const SearchCard(
+      {super.key,
+      required this.image,
       required this.id,
       required this.courseName,
       required this.authorName,
@@ -150,8 +140,6 @@ class SearchCard extends StatelessWidget {
             .getAll(courseID: id);
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => CourseDetailedPage()));
-        // Navigator.of(context).push(
-        //     MaterialPageRoute(builder: (context) => ));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -169,7 +157,7 @@ class SearchCard extends StatelessWidget {
                     fit: BoxFit.fill),
               ),
             ),
-            KHeight5,
+            kHeight5,
             Text(
               courseName ?? "Course Name",
               overflow: TextOverflow.ellipsis,

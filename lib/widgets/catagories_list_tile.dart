@@ -6,8 +6,9 @@ class CatagoriesListTile extends StatelessWidget {
   final String title;
   final IconData icon;
   final Widget? navigatorpage;
-  CatagoriesListTile(
-      {this.navigatorpage,
+  const CatagoriesListTile(
+      {super.key,
+      this.navigatorpage,
       required this.title,
       required this.icon,
       required this.id});
@@ -16,8 +17,8 @@ class CatagoriesListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => CatagoriesDetailedPage()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const CatagoriesDetailedPage()));
       },
       leading: Icon(icon, color: Colors.white),
       title: Text(

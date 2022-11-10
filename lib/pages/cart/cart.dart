@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nuox_project/authentication/login_page.dart';
-import 'package:nuox_project/pages/cart/buy_all_page/buy_all_page.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
-import 'package:nuox_project/pages/featured/sections/catagories_section/see_all_catagories.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../constants/constants.dart';
 import '../../widgets/course_detailes_list_tile.dart';
 
 class Cart extends StatelessWidget {
-  bool? isGuest;
+  const Cart({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +21,7 @@ class Cart extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: cartProvider.cartItems == null ||
                 cartProvider.cartItems!.data!.cartItem!.isEmpty
-            ? Center(
+            ? const Center(
                 child: Text(
                 "Bag is Empty",
                 style: TextStyle(color: Colors.white, fontSize: 18),
@@ -58,7 +53,7 @@ class Cart extends StatelessWidget {
                     height: 50,
                     width: double.infinity,
                     child: cartProvider.cartItems!.data!.cartItem!.isEmpty
-                        ? SizedBox()
+                        ? const SizedBox()
                         : Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 5),
@@ -67,8 +62,11 @@ class Cart extends StatelessWidget {
                                 cartProvider.isCoupenSuccess = false;
                                 cartProvider.getCheckout(context);
                               },
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all(Colors.purple)),
                               child: cartProvider.isLoading
-                                  ? Center(
+                                  ? const Center(
                                       child: CircularProgressIndicator(),
                                     )
                                   : Text(
@@ -77,15 +75,12 @@ class Cart extends StatelessWidget {
                                               1
                                           ? "Buy Item"
                                           : "Buy All",
-                                      style: TextStyle(fontSize: 20),
+                                      style: const TextStyle(fontSize: 20),
                                     ),
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(Colors.purple)),
                             ),
                           ),
                   ),
-                  KHeight
+                  kHeight
                 ],
               ),
       ),

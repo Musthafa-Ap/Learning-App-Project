@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/account/account_services/account_provider.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +11,11 @@ class AboutAppPage extends StatelessWidget {
     final accountProvider = Provider.of<AccountProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         centerTitle: true,
         title: const Text("About App"),
       ),
@@ -25,20 +28,20 @@ class AboutAppPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(5)),
           child: Column(
             children: [
-              KHeight20,
+              kheight20,
               Text(
                 accountProvider.aboutApp!.data!.first.title.toString(),
-                style: TextStyle(
+                style: const TextStyle(
                     decoration: TextDecoration.underline,
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
               ),
-              KHeight15,
+              kHeight15,
               Expanded(
                 child: Text(
                   accountProvider.aboutApp!.data!.first.aboutApp.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white, fontSize: 18, wordSpacing: 3),
                 ),
               )

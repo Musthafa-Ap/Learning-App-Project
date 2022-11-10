@@ -29,12 +29,14 @@ void main() async {
     ChangeNotifierProvider(create: (_) => AccountProvider()),
     ChangeNotifierProvider(create: (_) => MyLearningsProvider()),
     ChangeNotifierProvider(create: (_) => SearchProvider())
-  ], child: MyApp()));
+  ], child: const MyApp()));
 }
 
 bool isLoggedIn = false;
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -55,12 +57,12 @@ class _MyAppState extends State<MyApp> {
               backgroundColor: Colors.black,
             )),
         debugShowCheckedModeBanner: false,
-        home: SplashScreen());
+        home: const SplashScreen());
   }
 
   void checkLoggedInorNot() async {
-    final _sharedPrefs = await SharedPreferences.getInstance();
-    bool? checkData = _sharedPrefs.getBool("isLogged");
+    final sharedPrefs = await SharedPreferences.getInstance();
+    bool? checkData = sharedPrefs.getBool("isLogged");
     if (checkData == null || checkData == false) {
       setState(() {
         isLoggedIn = false;
@@ -89,7 +91,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.black,
       body: Center(
         child: CircleAvatar(
@@ -104,11 +106,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> gotoNextPage(context) async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     isLoggedIn
         ? Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => MyHomePage()))
+            MaterialPageRoute(builder: (context) => const MyHomePage()))
         : Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => LoginPage()));
+            MaterialPageRoute(builder: (context) => const LoginPage()));
   }
 }

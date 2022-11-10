@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:nuox_project/authentication/moblie_number_otp_submission_page.dart';
-import 'package:nuox_project/authentication/otp_verification_page.dart';
 import 'package:nuox_project/authentication/providers/widgets/top_image.dart';
 import 'package:nuox_project/authentication/signup.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
-import 'package:nuox_project/widgets/oulined_text_field_widget.dart';
 import 'package:provider/provider.dart';
 
 class MobileNumberverificationPage extends StatelessWidget {
@@ -31,8 +26,7 @@ class MobileNumberverificationPage extends StatelessWidget {
           padding: const EdgeInsets.all(15),
           children: [
             SizedBox(height: size * .15),
-            TopImage(),
-            // SizedBox(height: size * .05),
+            const TopImage(),
             SizedBox(
               height: size * .2,
             ),
@@ -49,8 +43,8 @@ class MobileNumberverificationPage extends StatelessWidget {
               style: const TextStyle(color: Colors.black),
               controller: _numberController,
               decoration: InputDecoration(
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.only(top: 11, left: 1),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.only(top: 11, left: 1),
                     child: Text(
                       "  +91",
                       style: TextStyle(fontSize: 18),
@@ -63,7 +57,7 @@ class MobileNumberverificationPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   hintText: "Mobile number",
-                  hintStyle: TextStyle(color: Colors.black)),
+                  hintStyle: const TextStyle(color: Colors.black)),
             ),
             SizedBox(
               height: size * .1,
@@ -103,13 +97,14 @@ class MobileNumberverificationPage extends StatelessWidget {
               children: [
                 const Text(
                   "No account?",
-                  style: const TextStyle(color: Colors.white, fontSize: 17),
+                  style: TextStyle(color: Colors.white, fontSize: 17),
                 ),
-                KWidth5,
+                kWidth5,
                 GestureDetector(
                   onTap: () {
                     Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => SignUpWidget()),
+                      MaterialPageRoute(
+                          builder: (context) => const SignUpWidget()),
                       (route) => false,
                     );
                   },

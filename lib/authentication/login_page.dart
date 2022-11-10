@@ -14,6 +14,8 @@ import 'mobile_number_verification_page.dart';
 final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -33,9 +35,12 @@ class _LoginPageState extends State<LoginPage> {
     final authProvider = Provider.of<AuthProvider>(context);
     Future<void> signIn() async {
       try {
+        print("Entered");
         await _googleSignIn.signOut();
+        print("logout");
         _currentUser = await _googleSignIn.signIn();
         if (_currentUser != null) {
+          print("current user not null");
           authProvider.socialLogin(
               name: _currentUser!.displayName.toString(),
               context: context,
@@ -43,11 +48,10 @@ class _LoginPageState extends State<LoginPage> {
               email: _currentUser!.email.toString());
         }
         if (_currentUser == null) {
-          print("Current user is null");
           return;
         }
       } catch (e) {
-        print("Error signing in $e");
+        print(e.toString());
       }
     }
 
@@ -61,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(20),
               children: [
                 SizedBox(height: size * .15),
-                TopImage(),
+                const TopImage(),
                 SizedBox(height: size * .1),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
@@ -79,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                           ? "Enter a valid mail"
                           : null,
                 ),
-                KHeight,
+                kHeight,
                 TextFormField(
                   obscureText: _obscureText,
                   controller: _passwordController,
@@ -132,12 +136,12 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                     child: authProvider.isLoading
-                        ? Center(
+                        ? const Center(
                             child: CircularProgressIndicator(
                               color: Colors.black,
                             ),
                           )
-                        : Text("Login",
+                        : const Text("Login",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold))),
                 const SizedBox(
@@ -159,17 +163,16 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                 ),
-
-                KHeight,
+                kHeight,
                 Row(
-                  children: [
+                  children: const [
                     Expanded(
                         child: Divider(
                       thickness: 1,
                       color: Colors.white,
                     )),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: EdgeInsets.all(8.0),
                       child: Text("OR",
                           style: TextStyle(
                               color: Colors.white,
@@ -182,8 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                     ))
                   ],
                 ),
-                KHeight,
-
+                kHeight,
                 SizedBox(
                   height: 50,
                   child: OutlinedButton(
@@ -192,27 +194,27 @@ class _LoginPageState extends State<LoginPage> {
                           builder: (context) =>
                               MobileNumberverificationPage()));
                     },
+                    style: ButtonStyle(
+                        side: MaterialStateProperty.all(
+                            const BorderSide(color: Colors.white))),
                     child: Row(
                       children: [
-                        Spacer(),
-                        Container(
+                        const Spacer(),
+                        SizedBox(
                           width: 45,
                           child: Image.network(
                               "https://cdn5.vectorstock.com/i/1000x1000/93/64/telephone-receiver-line-icon-on-black-background-vector-26849364.jpg"),
                         ),
-                        Text(
+                        const Text(
                           "Log in with Mobile number",
                           style: TextStyle(color: Colors.white, fontSize: 20),
                         ),
-                        Spacer()
+                        const Spacer()
                       ],
                     ),
-                    style: ButtonStyle(
-                        side: MaterialStateProperty.all(
-                            const BorderSide(color: Colors.white))),
                   ),
                 ),
-                KHeight20,
+                kheight20,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -228,21 +230,20 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
-                KHeight15,
-                KHeight20,
-                //////////
+                kHeight15,
+                kheight20,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
                       "No account?",
-                      style: const TextStyle(color: Colors.white, fontSize: 17),
+                      style: TextStyle(color: Colors.white, fontSize: 17),
                     ),
-                    KWidth5,
+                    kWidth5,
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => SignUpWidget()));
+                            builder: (context) => const SignUpWidget()));
                       },
                       child: const Text(
                         "Sign up",
@@ -255,11 +256,11 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 ),
-                KHeight20,
+                kheight20,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       "Join as a ",
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
@@ -269,15 +270,17 @@ class _LoginPageState extends State<LoginPage> {
                             await SharedPreferences.getInstance();
                         sharedPref.setBool("isLogged", true);
                         sharedPref.setBool("guest", true);
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            backgroundColor: Colors.green,
-                            content: Text('Joined as a guest')));
+                        if (!mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text('Joined as a guest')));
                         Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                                builder: (context) => MyHomePage()),
+                                builder: (context) => const MyHomePage()),
                             (route) => false);
                       },
-                      child: Text(
+                      child: const Text(
                         "Guest",
                         style: TextStyle(
                             decoration: TextDecoration.underline,

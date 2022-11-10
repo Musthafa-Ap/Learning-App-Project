@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 
 class ReviewPage extends StatelessWidget {
   int id;
-  ReviewPage({required this.id});
-  ValueNotifier<int> _ratingNotifier = ValueNotifier(1);
-  TextEditingController _reviewController = TextEditingController();
+  ReviewPage({super.key, required this.id});
+  final ValueNotifier<int> _ratingNotifier = ValueNotifier(1);
+  final TextEditingController _reviewController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final courseDetailedProvider = Provider.of<CourseDetailedProvider>(context);
@@ -46,7 +46,7 @@ class ReviewPage extends StatelessWidget {
                         }),
                     Text(
                       _ratingNotifier.value.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
@@ -56,37 +56,34 @@ class ReviewPage extends StatelessWidget {
               );
             },
           ),
-          KHeight20,
+          kheight20,
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 color: Colors.black,
                 border: Border.all(color: Colors.white)),
             child: TextField(
               controller: _reviewController,
-              style: TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white),
               maxLines: 6,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                   border: InputBorder.none,
                   hintText: "Any suggestions...",
                   hintStyle: TextStyle(color: Colors.white)),
             ),
           ),
-          KHeight20,
+          kheight20,
           SizedBox(
             height: 50,
             child: ElevatedButton(
               onPressed: () async {
                 var rating = _ratingNotifier.value;
                 var review = _reviewController.text;
-                print(review);
-                print(rating);
                 if (review == null || review.isEmpty) {
                   courseDetailedProvider.addRatingWithoutReview(
                       context: context, rating: rating, id: id);
                   print(rating.toString());
-                  print("review is null");
                 } else {
                   await courseDetailedProvider.addRatingWithReview(
                       rating: rating, id: id, review: review, context: context);
@@ -99,8 +96,8 @@ class ReviewPage extends StatelessWidget {
                   backgroundColor: MaterialStateProperty.all(Colors.purple)),
             ),
           ),
-          KHeight20,
-          KHeight20,
+          kheight20,
+          kheight20,
           courseDetailedProvider.isReviewLoading
               ? const Center(
                   child: CircularProgressIndicator(),
@@ -131,12 +128,12 @@ class ReviewPage extends StatelessWidget {
 class ReviewCard extends StatelessWidget {
   String rating;
   String review;
-  ReviewCard({required this.rating, required this.review});
+  ReviewCard({super.key, required this.rating, required this.review});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       height: 60,
       decoration: BoxDecoration(
           border: Border.all(color: Colors.white),
@@ -150,26 +147,26 @@ class ReviewCard extends StatelessWidget {
             color: Colors.green,
           ),
           child: Row(children: [
-            Spacer(),
+            const Spacer(),
             Text(
               rating,
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.white),
             ),
-            Icon(
+            const Icon(
               Icons.star,
               size: 14,
               color: Colors.white,
             ),
-            Spacer(),
+            const Spacer(),
           ]),
         ),
-        KWidth10,
+        kWidth10,
         Expanded(
           child: Text(
             review,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
         )
       ]),
