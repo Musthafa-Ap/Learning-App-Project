@@ -55,6 +55,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
     Provider.of<CourseDetailedProvider>(context, listen: false)
         .getRecentlyViewed();
     Provider.of<FeaturedProvider>(context, listen: false).getNotifications();
+    Provider.of<FeaturedProvider>(context, listen: false).getWhishlist();
   }
 
   @override

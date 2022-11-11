@@ -6,29 +6,37 @@ import 'package:provider/provider.dart';
 
 class NotificationsPage extends StatelessWidget {
   NotificationsPage({super.key});
-  ValueNotifier<bool> toggleNotifier = ValueNotifier(true);
+
   @override
   Widget build(BuildContext context) {
     final featuredProvider = Provider.of<FeaturedProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        actions: [
-          Transform.scale(
-              scale: .8,
-              child: ValueListenableBuilder(
-                valueListenable: toggleNotifier,
-                builder: (context, value, child) {
-                  return CupertinoSwitch(
-                    trackColor: Colors.grey,
-                    value: value,
-                    onChanged: (newValue) {
-                      toggleNotifier.value = newValue;
-                    },
-                  );
-                },
-              )),
-          kWidth10
-        ],
+        // actions: [
+        //   Transform.scale(
+        //       scale: .8,
+        //       child: ValueListenableBuilder(
+        //         valueListenable: featuredProvider.toggleNotifier,
+        //         builder: (context, value, child) {
+        //           return CupertinoSwitch(
+        //             trackColor: Colors.grey,
+        //             value: value,
+        //             onChanged: (newValue) {
+        //               print(newValue);
+        //               featuredProvider.toggleNotifier.value = newValue;
+        //               if (newValue == true) {
+        //                 featuredProvider.disableNotificaton(
+        //                     disabled: "true", context: context);
+        //               } else if (newValue == false) {
+        //                 featuredProvider.disableNotificaton(
+        //                     disabled: "false", context: context);
+        //               }
+        //             },
+        //           );
+        //         },
+        //       )),
+        //   kWidth10
+        // ],
         centerTitle: true,
         title: const Text("Notifications"),
         leading: IconButton(

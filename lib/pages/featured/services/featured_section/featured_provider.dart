@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:nuox_project/pages/account/sections/whishlist/whishlist_model.dart';
 import 'package:nuox_project/pages/featured/sections/notifications_section/notification_model.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/sorted_course_model.dart';
 import 'package:nuox_project/pages/featured/widgets/no_course_found_page.dart';
@@ -9,6 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'featured_model.dart';
 
 class FeaturedProvider with ChangeNotifier {
+  ValueNotifier<bool> toggleNotifier = ValueNotifier(true);
+  bool? isWhishlistEmpty;
+  WhishlistModel? whishlist;
   NotificationModel? notificationList;
   bool? isCourseNotFound;
   SortedCourseModel? sortedCourses;
@@ -70,6 +74,119 @@ class FeaturedProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         notificationList = NotificationModel.fromJson(data);
         notifyListeners();
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void disableNotificaton({required String disabled, required context}) async {
+    try {
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
+      String auth = "Bearer $token";
+      var api = "http://learningapp.e8demo.com/api/notification/";
+      Response response = await post(Uri.parse(api),
+          headers: {"Authorization": auth}, body: {"is_active": disabled});
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        if (data["status"] == "true") {
+          toggleNotifier.value = true;
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.green,
+              content: Text(
+                data["data"],
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
+              )));
+        } else {
+          toggleNotifier.value = false;
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              backgroundColor: Colors.red,
+              content: Text(
+                data["data"],
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
+              )));
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void addToWhishlist(
+      {required id, required variant, required context, required price}) async {
+    try {
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
+      String auth = "Bearer $token";
+      var api = "http://learningapp.e8demo.com/api/wishlist/";
+      Response response = await post(Uri.parse(api), headers: {
+        "Authorization": auth
+      }, body: {
+        "course": id.toString(),
+        "variant": variant.toString(),
+        "price": price.toString()
+      });
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+              "Course added to the whishlist",
+              style:
+                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            )));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> getWhishlist() async {
+    isWhishlistEmpty = false;
+    try {
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
+      String auth = "Bearer $token";
+      var api = "http://learningapp.e8demo.com/api/wishlist/";
+      Response response = await get(
+        Uri.parse(api),
+        headers: {"Authorization": auth},
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = jsonDecode(response.body);
+
+        whishlist = WhishlistModel.fromJson(data);
+        notifyListeners();
+      } else {
+        isWhishlistEmpty = true;
+        notifyListeners();
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> deleteFromWhishlist(
+      {required String id, required context, required variant}) async {
+    try {
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
+      String auth = "Bearer $token";
+      var api = "http://learningapp.e8demo.com/api/wishlist/";
+      Response response = await put(Uri.parse(api),
+          headers: {"Authorization": auth},
+          body: {"course": id.toString(), "variant": variant.toString()});
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.white,
+            content: Text(
+              "Course removed from wishlist",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            )));
       }
     } catch (e) {
       print(e.toString());

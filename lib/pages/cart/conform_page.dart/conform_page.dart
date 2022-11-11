@@ -41,7 +41,17 @@ class ConformPurchasePage extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: size * .1,
+            height: size * .05,
+          ),
+          Center(
+              child: Text(
+            cartProvider.totalPrice == null
+                ? "Total price : ₹5000"
+                : "Total price : ₹${cartProvider.totalPrice}",
+            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w500),
+          )),
+          SizedBox(
+            height: size * .05,
           ),
           Center(
               child: Text(

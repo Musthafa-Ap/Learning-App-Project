@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../buy_all_page/buy_all_page.dart';
 
 class CartProvider with ChangeNotifier {
+  String? totalPrice;
   String? orderID;
   String? promo_code;
   bool isCoupenSuccess = false;
@@ -66,7 +67,6 @@ class CartProvider with ChangeNotifier {
     isLoading = true;
     SharedPreferences shared = await SharedPreferences.getInstance();
     var token = shared.getString("access_token");
-    print(token);
     String auth = "Bearer $token";
     var api = "http://learningapp.e8demo.com/api/confirm_purchase/";
     var response = await http.get(
@@ -92,6 +92,7 @@ class CartProvider with ChangeNotifier {
       var api = "http://learningapp.e8demo.com/api/apply_offer/";
       var response = await http.post(Uri.parse(api),
           headers: {"Authorization": auth}, body: {"promo_code": coupen});
+      print(response.body);
       var data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         promo_code = data["promo_code"];
@@ -128,7 +129,10 @@ class CartProvider with ChangeNotifier {
         "payment_method": paymentMode,
       });
       Map<String, dynamic> data = jsonDecode(response.body);
+
+      totalPrice = data['data']['grand_total'].toString();
       orderID = data['data']['order_id'];
+      notifyListeners();
       if (data['message'] == "success") {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
@@ -164,6 +168,7 @@ class CartProvider with ChangeNotifier {
           body: jsonEncode(
               {"payment_method": paymentMode, "promo_code": promocode}));
       Map<String, dynamic> data = jsonDecode(response.body);
+      totalPrice = data['data']['grand_total'].toString();
       orderID = data['data']['order_id'];
       if (data["message"] == "success") {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

@@ -5,6 +5,7 @@ import 'package:nuox_project/pages/account/sections/support/about_app_page.dart'
 import 'package:nuox_project/pages/account/sections/support/change_password.dart';
 import 'package:nuox_project/pages/account/sections/support/faq_page.dart';
 import 'package:nuox_project/pages/account/sections/support/report_page.dart';
+import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../my_home_page.dart';
@@ -36,6 +37,8 @@ class ListTileAccountPage extends StatelessWidget {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const ChangePasswordPage()));
           } else if (index == 6) {
+            await Provider.of<FeaturedProvider>(context, listen: false)
+                .getWhishlist();
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const WhichlistPage()));
           } else if (index == 3) {

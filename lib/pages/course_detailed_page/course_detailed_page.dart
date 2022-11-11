@@ -7,6 +7,7 @@ import 'package:nuox_project/pages/course_detailed_page/sections/author_detailes
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/sections/review_page/review_page.dart';
+import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/pages/featured/widgets/small_item_card.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
@@ -55,6 +56,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
 
   @override
   Widget build(BuildContext context) {
+    final featuredProvider = Provider.of<FeaturedProvider>(context);
     final isMuted = _controller.value.volume == 0;
     final courseDeailedProvider = Provider.of<CourseDetailedProvider>(context);
     final recomendationsProvider = Provider.of<RecomendationsProvider>(context);
@@ -533,6 +535,78 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                           ))),
                       label: const Text(
                         "Add to Bag",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                kHeight,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 75),
+                  child: SizedBox(
+                    height: 50,
+                    child: OutlinedButton.icon(
+                      icon: const Icon(
+                        Icons.favorite_outline,
+                        color: Colors.white,
+                      ),
+                      onPressed: () async {
+                        if (_selectedValue.value == "Beginner") {
+                          variant = 1;
+                        } else if (_selectedValue.value == "Intermediate") {
+                          variant = 2;
+                        } else {
+                          variant = 3;
+                        }
+                        SharedPreferences shared =
+                            await SharedPreferences.getInstance();
+                        var token = shared.getString("access_token");
+                        if (token == null) {
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => const Test()),
+                            (route) => false,
+                          );
+                        } else {
+                          if (variant == 1) {
+                            featuredProvider.addToWhishlist(
+                                id: courseDeailedProvider
+                                    .courseDetailes!.data!.first.id!
+                                    .toInt(),
+                                variant: variant,
+                                context: context,
+                                price: courseDeailedProvider
+                                    .courseDetailes!.data!.first.price!
+                                    .toInt());
+                          } else if (variant == 2) {
+                            featuredProvider.addToWhishlist(
+                                id: courseDeailedProvider
+                                    .courseDetailes!.data!.first.id!
+                                    .toInt(),
+                                variant: variant,
+                                context: context,
+                                price: inter_price!.toInt());
+                          } else {
+                            featuredProvider.addToWhishlist(
+                                id: courseDeailedProvider
+                                    .courseDetailes!.data!.first.id!
+                                    .toInt(),
+                                variant: variant,
+                                context: context,
+                                price: expert_price!.toInt());
+                          }
+                        }
+                      },
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(22))),
+                          side: MaterialStateProperty.all(const BorderSide(
+                            color: Colors.white,
+                          ))),
+                      label: const Text(
+                        "Add to whishlist",
                         style: TextStyle(color: Colors.white),
                       ),
                     ),

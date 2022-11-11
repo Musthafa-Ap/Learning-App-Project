@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/my_home_page.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
+import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,6 +32,7 @@ class SmallItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final featuredProvider = Provider.of<FeaturedProvider>(context);
     final courseDetailedProvider = Provider.of<CourseDetailedProvider>(context);
     var size = MediaQuery.of(context).size.width;
     return GestureDetector(
@@ -124,10 +126,10 @@ class SmallItemCard extends StatelessWidget {
                           width: 50,
                           child: IconButton(
                               onPressed: () async {
-                                SharedPreferences _Sharedpref =
+                                SharedPreferences sharedpref =
                                     await SharedPreferences.getInstance();
                                 var token =
-                                    _Sharedpref.getString("access_token");
+                                    sharedpref.getString("access_token");
                                 if (token != null) {
                                   courseDetailedProvider.addToCart(
                                       courseID: id ?? 1,
@@ -164,7 +166,24 @@ class SmallItemCard extends StatelessWidget {
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: Center(
                     child: GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    SharedPreferences shared =
+                        await SharedPreferences.getInstance();
+                    var token = shared.getString("access_token");
+                    if (token == null) {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => const Test()),
+                        (route) => false,
+                      );
+                    } else {
+                      featuredProvider.addToWhishlist(
+                        id: id,
+                        variant: 1,
+                        context: context,
+                        price: coursePrice!.toInt(),
+                      );
+                    }
+                  },
                   child: const Icon(
                     Icons.favorite_border,
                     size: 20,

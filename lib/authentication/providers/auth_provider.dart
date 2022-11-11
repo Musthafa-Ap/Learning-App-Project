@@ -59,13 +59,14 @@ class AuthProvider with ChangeNotifier {
               MaterialPageRoute(builder: (context) => const MyHomePage()),
               (route) => false);
         }
-      } else if (data["result"] == "failure") {
-        print(data["errors"].toString());
+      }
+      if (data["result"] == "failure") {
+        print("social login error ${data["errors"]}");
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.red,
             content: Text(
-              "Your account is blocked",
+              "Your account blocked, please send enquiry to support",
               style: TextStyle(fontWeight: FontWeight.bold),
             )));
       }
@@ -227,17 +228,20 @@ class AuthProvider with ChangeNotifier {
       var response = await http.post(
           Uri.parse("http://learningapp.e8demo.com/api/user-login/"),
           body: {'email': email, 'password': password});
-      print(response.body);
+
       if (response.statusCode == 200) {
         login_email_error = null;
         login_pass_error = null;
         notifyListeners();
-        print(response.body);
+
         var data = jsonDecode(response.body);
+
         if (data['result'] == "success") {
+          var mobile = data["mobile"];
           final sharedPrefs = await SharedPreferences.getInstance();
           //  await sharedPrefs!.clear();
           await sharedPrefs.setBool("isLogged", true);
+          await sharedPrefs.setString("number", mobile);
           await sharedPrefs.setString("email", email);
           var accessToken = data['token']['access_token'].toString();
           await sharedPrefs.setString("access_token", accessToken);

@@ -19,7 +19,7 @@ class BigCartIconButton extends StatelessWidget {
     return Container(
         decoration: BoxDecoration(
             color: Colors.transparent, borderRadius: BorderRadius.circular(5)),
-        margin: const EdgeInsets.only(right: 20),
+        margin: const EdgeInsets.only(right: 0),
         height: 35,
         width: 70,
         child: IconButton(

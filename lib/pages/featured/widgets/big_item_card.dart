@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants/constants.dart';
+import '../../../my_home_page.dart';
 import '../../../widgets/bestseller.dart';
 import '../../../widgets/big_cart_icon_button.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
@@ -30,6 +33,7 @@ class BigItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final featuredProvider = Provider.of<FeaturedProvider>(context);
     var size = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () async {
@@ -139,7 +143,23 @@ class BigItemCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(20)),
                 child: Center(
                     child: GestureDetector(
-                  onTap: () {},
+                  onTap: () async {
+                    SharedPreferences shared =
+                        await SharedPreferences.getInstance();
+                    var token = shared.getString("access_token");
+                    if (token == null) {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => const Test()),
+                        (route) => false,
+                      );
+                    } else {
+                      featuredProvider.addToWhishlist(
+                          id: id,
+                          variant: 1,
+                          context: context,
+                          price: coursePrice);
+                    }
+                  },
                   child: const Icon(
                     Icons.favorite_border,
                     size: 25,

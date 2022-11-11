@@ -3,9 +3,12 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/course_detailed_page/course_detailed_page.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
+import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/constants.dart';
+import '../my_home_page.dart';
 import 'big_cart_icon_button.dart';
 
 class CourseDetailesListTile extends StatelessWidget {
@@ -35,6 +38,7 @@ class CourseDetailesListTile extends StatelessWidget {
   String? variant;
   @override
   Widget build(BuildContext context) {
+    final featuredProvider = Provider.of<FeaturedProvider>(context);
     if (variantID == 1) {
       variant = "Beginner";
     } else if (variantID == 2) {
@@ -89,9 +93,26 @@ class CourseDetailesListTile extends StatelessWidget {
                                   color: Colors.white),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(right: 46),
+                              padding: const EdgeInsets.only(right: 26),
                               child: GestureDetector(
-                                onTap: () {},
+                                onTap: () async {
+                                  SharedPreferences shared =
+                                      await SharedPreferences.getInstance();
+                                  var token = shared.getString("access_token");
+                                  if (token == null) {
+                                    Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) => const Test()),
+                                      (route) => false,
+                                    );
+                                  } else {
+                                    featuredProvider.addToWhishlist(
+                                        id: id,
+                                        variant: 1,
+                                        context: context,
+                                        price: coursePrice);
+                                  }
+                                },
                                 child: const Icon(
                                   Icons.favorite_border,
                                   size: 20,

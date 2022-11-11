@@ -89,6 +89,9 @@ class ReviewPage extends StatelessWidget {
                       rating: rating, id: id, review: review, context: context);
                   _reviewController.text = "";
                 }
+                courseDetailedProvider.getReview(
+                    courseID:
+                        courseDetailedProvider.courseDetailes!.data!.first.id);
                 //Navigator.of(context).pop();
               },
               child: Text("Submit"),
@@ -98,27 +101,36 @@ class ReviewPage extends StatelessWidget {
           ),
           kheight20,
           kheight20,
-          courseDetailedProvider.isReviewLoading
+          courseDetailedProvider.getReviewList == null ||
+                  courseDetailedProvider.getReviewList!.data!.isEmpty
               ? const Center(
-                  child: CircularProgressIndicator(),
+                  child: Text(
+                    "No review",
+                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  ),
                 )
-              : ListView.separated(
-                  padding: const EdgeInsets.all(5),
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: courseDetailedProvider.getReviewList!.data!.length,
-                  itemBuilder: (context, index) {
-                    final datas =
-                        courseDetailedProvider.getReviewList!.data![index];
-                    return ReviewCard(
-                      rating: datas.rating.toString(),
-                      review: datas.review.toString(),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return const Divider();
-                  },
-                ),
+              : courseDetailedProvider.isReviewLoading
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.separated(
+                      padding: const EdgeInsets.all(5),
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount:
+                          courseDetailedProvider.getReviewList!.data!.length,
+                      itemBuilder: (context, index) {
+                        final datas =
+                            courseDetailedProvider.getReviewList!.data![index];
+                        return ReviewCard(
+                          rating: datas.rating.toString(),
+                          review: datas.review.toString(),
+                        );
+                      },
+                      separatorBuilder: (context, index) {
+                        return const Divider();
+                      },
+                    ),
         ],
       ),
     );
