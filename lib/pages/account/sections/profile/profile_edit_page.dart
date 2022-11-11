@@ -396,19 +396,12 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
-      String path = image.path;
       File? img = File(image.path);
       setState(() {
         _image = img;
-        // SharedPreferences _sharedpref = await SharedPreferences.getInstance();
-        // _sharedpref.setString("image", path);
-        // print(_image);
-        print(_image!.path);
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
             content: Text('Image updoaded successfully')));
-
-        //  Navigator.pop(context);
       });
     } catch (e) {
       print(e.toString());

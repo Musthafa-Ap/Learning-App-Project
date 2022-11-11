@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nuox_project/authentication/providers/auth_provider.dart';
 import 'package:nuox_project/pages/account/sections/profile/profile_edit_page.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../constants/constants.dart';
 
@@ -22,9 +20,8 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
   String? name;
   String? email;
   String? image;
+  @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-
     return Column(
       children: [
         Container(
@@ -44,7 +41,7 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
             GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (Context) => const ProfileEditPage()));
+                      builder: (ctx) => const ProfileEditPage()));
                 },
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,

@@ -13,7 +13,7 @@ import 'big_cart_icon_button.dart';
 
 class CourseDetailesListTile extends StatelessWidget {
   final int? ratingCount;
-  bool? isRecomended;
+  final bool? isRecomended;
   final int? id;
   final String? courseName;
   final String? authorName;
@@ -52,8 +52,9 @@ class CourseDetailesListTile extends StatelessWidget {
       onTap: () async {
         await Provider.of<CourseDetailedProvider>(context, listen: false)
             .getAll(courseID: id);
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => CourseDetailedPage()));
+        // ignore: use_build_context_synchronously
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const CourseDetailedPage()));
       },
       child: Container(
           padding: const EdgeInsets.symmetric(vertical: 5),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/authentication/login_page.dart';
 import 'package:nuox_project/pages/featured/featured.dart';
-import 'package:nuox_project/pages/my_learning/myLearning.dart';
+import 'package:nuox_project/pages/my_learning/my_learning.dart';
 import 'package:nuox_project/pages/cart/cart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'pages/account/account.dart';
 import 'pages/search/search.dart';
-import 'widgets/bottomNavBar.dart';
+import 'widgets/bottom_nav_bar.dart';
 
 ValueNotifier selectedIndex = ValueNotifier(0);
 

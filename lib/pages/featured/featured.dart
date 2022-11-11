@@ -21,7 +21,7 @@ class Featured extends StatefulWidget {
 
 class _FeaturedState extends State<Featured> {
   late Timer _timer;
-  PageController _pageController = PageController(
+  final PageController _pageController = PageController(
     initialPage: 0,
   );
   @override

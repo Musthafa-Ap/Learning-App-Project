@@ -35,12 +35,9 @@ class _LoginPageState extends State<LoginPage> {
     final authProvider = Provider.of<AuthProvider>(context);
     Future<void> signIn() async {
       try {
-        print("Entered");
         await _googleSignIn.signOut();
-        print("logout");
         _currentUser = await _googleSignIn.signIn();
         if (_currentUser != null) {
-          print("current user not null");
           authProvider.socialLogin(
               name: _currentUser!.displayName.toString(),
               context: context,

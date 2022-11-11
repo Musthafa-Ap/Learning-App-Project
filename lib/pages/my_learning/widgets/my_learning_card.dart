@@ -19,7 +19,9 @@ class MyLearningCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final myLearningsProvider = Provider.of<MyLearningsProvider>(context);
-    return GestureDetector(
+    return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
       onTap: () async {
         if (id != null) {
           await myLearningsProvider.getCourseDetailes(

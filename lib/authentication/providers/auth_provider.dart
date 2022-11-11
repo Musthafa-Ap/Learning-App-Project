@@ -34,8 +34,6 @@ class AuthProvider with ChangeNotifier {
           Uri.parse("http://learningapp.e8demo.com/api/social_login/"),
           body: {'email': email, 'name': name, 'user_social_id': id});
       Map<String, dynamic> data = jsonDecode(response.body);
-      print(data["result"]);
-      print(response.body);
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.body);
         if (data['result'] == "success") {
@@ -61,7 +59,6 @@ class AuthProvider with ChangeNotifier {
         }
       }
       if (data["result"] == "failure") {
-        print("social login error ${data["errors"]}");
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.red,
@@ -128,10 +125,8 @@ class AuthProvider with ChangeNotifier {
               "http://learningapp.e8demo.com/api/user-mobileotp/MobileNumberOtp/"),
           body: {'mobile': num});
       Map<String, dynamic> data = jsonDecode(response.body);
-      //  print(data.toString());
       if (data['status'] == 200) {
         setLoading(false);
-        //  print("datas = $data");
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green, content: Text(data['message'])));
         Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -140,7 +135,6 @@ class AuthProvider with ChangeNotifier {
                 )));
       } else {
         setLoading(false);
-        //  print(data['message']);
         number_error = data['message'];
         notifyListeners();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -156,7 +150,7 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  void EmailOTPSubmission(
+  void emailOTPSubmission(
       {required otp, context, required email, required newPassword}) async {
     try {
       setLoading(true);
@@ -170,7 +164,7 @@ class AuthProvider with ChangeNotifier {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             backgroundColor: Colors.green, content: Text(data['message'])));
         Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => LoginPage()));
+            MaterialPageRoute(builder: (context) => const LoginPage()));
       } else if (data['status'] == false) {
         setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -326,8 +320,6 @@ class AuthProvider with ChangeNotifier {
             'password': password,
             'name': name,
           });
-      print(response.statusCode);
-      print(response.body);
       var data = jsonDecode(response.body);
 
       if (data['status_code'] == 200) {
@@ -346,14 +338,14 @@ class AuthProvider with ChangeNotifier {
         await sharedPrefs.setBool("changepass", true);
         notifyListeners();
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
             content: Text(
               "User created successfully",
               style: TextStyle(fontWeight: FontWeight.bold),
             )));
         Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => MyHomePage()),
+            MaterialPageRoute(builder: (context) => const MyHomePage()),
             (route) => false);
       } else if (data['status_code'] == 400) {
         setLoading(false);

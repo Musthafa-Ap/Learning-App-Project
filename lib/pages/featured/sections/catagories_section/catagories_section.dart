@@ -21,7 +21,7 @@ class CatagoriesSection extends StatelessWidget {
               child: const SeeAllWidget(),
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => SeeAllCatagories()));
+                    builder: (context) => const SeeAllCatagories()));
               },
             )
           ],

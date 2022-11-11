@@ -92,8 +92,8 @@ class RangeClass extends StatefulWidget {
 }
 
 class _RangeClassState extends State<RangeClass> {
-  RangeValues values = RangeValues(500, 30000);
-  RangeLabels labels = RangeLabels('500', '30000');
+  RangeValues values = const RangeValues(500, 30000);
+  RangeLabels labels = const RangeLabels('500', '30000');
   int minPrice = 500;
   int maxPrice = 30000;
   @override

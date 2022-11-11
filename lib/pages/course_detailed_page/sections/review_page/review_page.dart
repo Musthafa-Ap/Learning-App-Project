@@ -77,13 +77,14 @@ class ReviewPage extends StatelessWidget {
           SizedBox(
             height: 50,
             child: ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.purple)),
               onPressed: () async {
                 var rating = _ratingNotifier.value;
                 var review = _reviewController.text;
-                if (review == null || review.isEmpty) {
+                if (review.isEmpty) {
                   courseDetailedProvider.addRatingWithoutReview(
                       context: context, rating: rating, id: id);
-                  print(rating.toString());
                 } else {
                   await courseDetailedProvider.addRatingWithReview(
                       rating: rating, id: id, review: review, context: context);
@@ -94,9 +95,7 @@ class ReviewPage extends StatelessWidget {
                         courseDetailedProvider.courseDetailes!.data!.first.id);
                 //Navigator.of(context).pop();
               },
-              child: Text("Submit"),
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.purple)),
+              child: const Text("Submit"),
             ),
           ),
           kheight20,

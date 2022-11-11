@@ -154,7 +154,6 @@ class FeaturedProvider with ChangeNotifier {
         Uri.parse(api),
         headers: {"Authorization": auth},
       );
-      print(response.body);
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.body);
 

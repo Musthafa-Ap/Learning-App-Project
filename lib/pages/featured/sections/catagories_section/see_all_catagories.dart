@@ -4,14 +4,8 @@ import 'package:nuox_project/widgets/catagories_list_tile.dart';
 import 'package:provider/provider.dart';
 
 class SeeAllCatagories extends StatelessWidget {
-  SeeAllCatagories({super.key});
-  final List<Map<String, dynamic>> _tileDetailes = [
-    {"title": "Development", "icon": Icons.person},
-    {"title": "Business", "icon": Icons.business},
-    {"title": "Photography", "icon": Icons.photo_camera},
-    {"title": "IT & Software", "icon": Icons.computer_outlined},
-    {"title": "Office Productivity", "icon": Icons.build},
-  ];
+  const SeeAllCatagories({super.key});
+
   @override
   Widget build(BuildContext context) {
     final catagoriesProvider =

@@ -142,7 +142,7 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                     )),
                 onPressed: () {
                   if (_globalKey.currentState!.validate()) {
-                    authProvider.EmailOTPSubmission(
+                    authProvider.emailOTPSubmission(
                         context: context,
                         otp: _otpController.text.toString(),
                         email: widget.mailid,

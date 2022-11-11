@@ -103,7 +103,7 @@ class SmallItemCard extends StatelessWidget {
                   ),
                   kHeight5,
                   Text(
-                    "₹ ${coursePrice}",
+                    "₹ $coursePrice",
                     style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

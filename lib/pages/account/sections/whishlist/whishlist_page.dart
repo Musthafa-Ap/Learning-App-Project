@@ -39,7 +39,7 @@ class WhichlistPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final datas =
                     featuerdProvider.whishlist!.data!.wishlist![index];
-                return Container(
+                return SizedBox(
                     //padding: const EdgeInsets.symmetric(vertical: 5),
                     height: size * .425,
                     child: Padding(

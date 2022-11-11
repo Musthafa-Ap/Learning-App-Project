@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/account/account_services/account_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../constants/constants.dart';
 
 class ReportPage extends StatelessWidget {
@@ -59,7 +58,7 @@ class ReportPage extends StatelessWidget {
                         "Email id is not available.Please update your profile")));
                 return;
               }
-              if (report == null || report.isEmpty) {
+              if (report.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     backgroundColor: Colors.red,
                     content: Text("Please type your problem")));

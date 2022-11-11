@@ -86,7 +86,7 @@ class AccountProvider with ChangeNotifier {
 
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
-              builder: (context) => MyHomePage(),
+              builder: (context) => const MyHomePage(),
             ),
             (route) => false,
           );

@@ -84,8 +84,6 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
   @override
   Widget build(BuildContext context) {
     final myLearningsProvider = Provider.of<MyLearningsProvider>(context);
-
-    print(myLearningsProvider.courseVideoList!.data!.first.thumbnail);
     final size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(

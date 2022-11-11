@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:provider/provider.dart';
 
 class NotificationsPage extends StatelessWidget {
-  NotificationsPage({super.key});
+  const NotificationsPage({super.key});
 
   @override
   Widget build(BuildContext context) {

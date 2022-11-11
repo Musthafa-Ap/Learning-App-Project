@@ -22,7 +22,9 @@ class ListTileAccountPage extends StatelessWidget {
     final authProvider = Provider.of<AuthProvider>(context);
     return SizedBox(
       height: 40,
-      child: GestureDetector(
+      child: InkWell(
+        highlightColor: Colors.transparent,
+        splashColor: Colors.transparent,
         onTap: () async {
           if (index == 0) {
             Navigator.of(context)

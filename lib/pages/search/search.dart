@@ -7,28 +7,8 @@ import 'package:provider/provider.dart';
 import '../course_detailed_page/course_detailed_page.dart';
 import '../course_detailed_page/services/course_detailed_provider.dart';
 
-class Search extends StatefulWidget {
+class Search extends StatelessWidget {
   const Search({super.key});
-
-  @override
-  State<Search> createState() => _SearchState();
-}
-
-class _SearchState extends State<Search> {
-  final List<Map<String, dynamic>> _tileDetailes = [
-    {"title": "Development", "icon": Icons.developer_mode},
-    {"title": "Business", "icon": Icons.business},
-    {"title": "Photography", "icon": Icons.photo_camera},
-    {"title": "IT & Software", "icon": Icons.computer_outlined},
-    {"title": "Office Productivity", "icon": Icons.build},
-  ];
-
-  List<Map<String, dynamic>> _foundItems = [];
-  @override
-  void initState() {
-    _foundItems = _tileDetailes;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +21,8 @@ class _SearchState extends State<Search> {
           children: [
             CupertinoSearchTextField(
               onChanged: (value) {
-                //  searchProvider.searchList == null;
-
                 searchProvider.getSearchItems(key: value);
                 searchProvider.searchList;
-
-                //dynamic aayi search cheythath =  _runFilter(value);
               },
               backgroundColor: Colors.grey.withOpacity(.4),
               prefixIcon: const Icon(
@@ -100,22 +76,6 @@ class _SearchState extends State<Search> {
       ),
     );
   }
-
-  void _runFilter(String enteredKeyword) {
-    List<Map<String, dynamic>> results = [];
-    if (enteredKeyword.isEmpty) {
-      results = _tileDetailes;
-    } else {
-      results = _tileDetailes
-          .where((item) => item["title"]
-              .toLowerCase()
-              .contains(enteredKeyword.toLowerCase()))
-          .toList();
-    }
-    setState(() {
-      _foundItems = results;
-    });
-  }
 }
 
 class SearchCard extends StatelessWidget {
@@ -138,8 +98,8 @@ class SearchCard extends StatelessWidget {
       onTap: () async {
         await Provider.of<CourseDetailedProvider>(context, listen: false)
             .getAll(courseID: id);
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => CourseDetailedPage()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const CourseDetailedPage()));
       },
       child: Container(
         decoration: BoxDecoration(

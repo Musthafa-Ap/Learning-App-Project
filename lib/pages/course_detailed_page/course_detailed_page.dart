@@ -18,23 +18,21 @@ import 'package:video_player/video_player.dart';
 import '../../widgets/course_detailes_list_tile.dart';
 
 class CourseDetailedPage extends StatefulWidget {
-  CourseDetailedPage({super.key});
+  const CourseDetailedPage({super.key});
 
   @override
   State<CourseDetailedPage> createState() => _CourseDetailedPageState();
 }
 
 class _CourseDetailedPageState extends State<CourseDetailedPage> {
-  ValueNotifier _selectedValue = ValueNotifier("Beginner");
+  final ValueNotifier _selectedValue = ValueNotifier("Beginner");
   late VideoPlayerController _controller;
-  var _items = ["Beginner", "Intermediate", "Expert"];
+  final List _items = ["Beginner", "Intermediate", "Expert"];
   int currentIndex = 0;
   @override
   void initState() {
     final courseDeailedProviders =
         Provider.of<CourseDetailedProvider>(context, listen: false);
-    print(
-        "video link ==== ${courseDeailedProviders.courseDetailes?.data?.first.introVideo}");
 
     super.initState();
     _controller = VideoPlayerController.network(courseDeailedProviders
@@ -60,8 +58,6 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
     final isMuted = _controller.value.volume == 0;
     final courseDeailedProvider = Provider.of<CourseDetailedProvider>(context);
     final recomendationsProvider = Provider.of<RecomendationsProvider>(context);
-    // final cartProvider = Provider.of<CartProvider>(context);
-    //  bool alreadyAdded = false;
     var size = MediaQuery.of(context).size.width;
     int variant = 1;
     int? expert_price;
@@ -474,9 +470,9 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                         color: Colors.white,
                       ),
                       onPressed: () async {
-                        SharedPreferences _Sharedpref =
+                        SharedPreferences sharedpref =
                             await SharedPreferences.getInstance();
-                        var token = _Sharedpref.getString("access_token");
+                        var token = sharedpref.getString("access_token");
                         if (_selectedValue.value == "Beginner") {
                           variant = 1;
                         } else if (_selectedValue.value == "Intermediate") {
@@ -619,7 +615,6 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                     ? const SizedBox()
                     : const BoldHeading(heading: "Recently viewed"),
                 kHeight5,
-                //  ivide thalkaalam oru cardundaakki vechathaanh.api kittiyaal small item card thanne call cheythaal mathi
                 courseDeailedProvider.recentlyViewedList == null ||
                         courseDeailedProvider
                             .recentlyViewedList!.data!.data!.isEmpty
