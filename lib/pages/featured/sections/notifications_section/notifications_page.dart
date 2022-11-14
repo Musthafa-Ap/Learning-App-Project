@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class NotificationsPage extends StatelessWidget {
+class NotificationsPage extends StatefulWidget {
   const NotificationsPage({super.key});
+
+  @override
+  State<NotificationsPage> createState() => _NotificationsPageState();
+}
+
+class _NotificationsPageState extends State<NotificationsPage> {
+  @override
+  void initState() {
+    get();
+    super.initState();
+  }
+
+  String? access;
+  void get() async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    access = shared.getString("access_token");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +62,8 @@ class NotificationsPage extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios)),
       ),
       body: featuredProvider.notificationList == null ||
-              featuredProvider.notificationList!.data!.isEmpty
+              featuredProvider.notificationList!.data!.isEmpty ||
+              access == null
           ? const Center(
               child: Text(
                 "No notifications",

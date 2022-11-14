@@ -58,7 +58,11 @@ class AuthorDetailesPage extends StatelessWidget {
               style: const TextStyle(color: Colors.white, fontSize: 16),
             ),
           ),
-          kheight20,
+          kHeight,
+          const Divider(
+            color: Colors.grey,
+          ),
+          kHeight,
           Text(
             courseDeailedProvider
                 .courseDetailes!.data!.first.instructor!.details

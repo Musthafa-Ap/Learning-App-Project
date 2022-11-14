@@ -61,6 +61,18 @@ class _AccountState extends State<Account> {
             index: 1,
           ),
           kHeight15,
+          isChangePass == true
+              ? Column(
+                  children: const [
+                    ListTileAccountPage(
+                      tiletitle: "Change Password",
+                      index: 2,
+                    ),
+                    kHeight15,
+                  ],
+                )
+              : Container(),
+
           const ListTileAccountPage(
             tiletitle: "Share the app",
             index: 3,
@@ -76,13 +88,8 @@ class _AccountState extends State<Account> {
             index: 4,
           ),
           kHeight15,
-          isChangePass == true
-              ? const ListTileAccountPage(
-                  tiletitle: "Change Password",
-                  index: 2,
-                )
-              : const SizedBox(),
-          kheight20,
+
+          //kheight20,
           const AccountPageButton(buttontitle: "Sign out"),
           kHeight,
           Center(

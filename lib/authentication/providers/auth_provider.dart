@@ -80,7 +80,7 @@ class AuthProvider with ChangeNotifier {
           Uri.parse(
               "http://learningapp.e8demo.com/api/user-mobileotp/MobileNumberOtpVerification/"),
           body: {'mobile': number, 'otp': otp});
-
+      print(response.body);
       Map<String, dynamic> data = jsonDecode(response.body);
       if (data['status'] == false) {
         setLoading(false);
@@ -95,10 +95,12 @@ class AuthProvider with ChangeNotifier {
         String token = data['token']['access_token'];
         final sharedPrefs = await SharedPreferences.getInstance();
         //  await sharedPrefs!.clear();
+        var email = data['email'];
         await sharedPrefs.setBool("isLogged", true);
         await sharedPrefs.setString("access_token", token);
         await sharedPrefs.setString("number", number);
         await sharedPrefs.setBool("changepass", false);
+        await sharedPrefs.setString("email", email);
         //  <String, dynamic> checking = data['token'];
 
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

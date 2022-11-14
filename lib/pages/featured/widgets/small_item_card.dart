@@ -121,7 +121,7 @@ class SmallItemCard extends StatelessWidget {
                           decoration: BoxDecoration(
                               color: Colors.transparent,
                               borderRadius: BorderRadius.circular(5)),
-                          margin: const EdgeInsets.only(right: 20),
+                          //  margin: const EdgeInsets.only(right: 5),
                           height: 30,
                           width: 50,
                           child: IconButton(

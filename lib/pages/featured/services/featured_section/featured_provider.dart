@@ -77,6 +77,7 @@ class FeaturedProvider with ChangeNotifier {
       var api = "http://learningapp.e8demo.com/api/notification/";
       Response response =
           await get(Uri.parse(api), headers: {"Authorization": auth});
+      print(response.body);
       Map<String, dynamic> data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         notificationList = NotificationModel.fromJson(data);
