@@ -57,7 +57,7 @@ class TopCoursesSection extends StatelessWidget {
                     Provider.of<FeaturedProvider>(context, listen: false)
                         .sortedCourses = null;
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SeeAllPageTopCourses()));
+                        builder: (context) => const SeeAllPageTopCourses()));
                   },
                 ),
                 kWidth30

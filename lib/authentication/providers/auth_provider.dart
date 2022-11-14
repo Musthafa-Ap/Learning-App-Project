@@ -222,7 +222,7 @@ class AuthProvider with ChangeNotifier {
       var response = await http.post(
           Uri.parse("http://learningapp.e8demo.com/api/user-login/"),
           body: {'email': email, 'password': password});
-
+      print(response.body);
       if (response.statusCode == 200) {
         login_email_error = null;
         login_pass_error = null;

@@ -14,6 +14,11 @@ class ReviewPage extends StatelessWidget {
     final courseDetailedProvider = Provider.of<CourseDetailedProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         centerTitle: true,
         title: const Text("Add Review"),
       ),

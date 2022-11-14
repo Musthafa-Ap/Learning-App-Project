@@ -40,8 +40,8 @@ class BigItemCard extends StatelessWidget {
         if (id != null) {
           await Provider.of<CourseDetailedProvider>(context, listen: false)
               .getAll(courseID: id);
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => CourseDetailedPage()));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const CourseDetailedPage()));
         }
       },
       child: Stack(

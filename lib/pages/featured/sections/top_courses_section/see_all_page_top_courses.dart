@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../../widgets/see_all_page_featured.dart';
 
 class SeeAllPageTopCourses extends StatelessWidget {
-  SeeAllPageTopCourses({super.key});
+  const SeeAllPageTopCourses({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class SeeAllPageTopCourses extends StatelessWidget {
                     );
                   },
                   icon: const Icon(Icons.sort, size: 28))
-              : SizedBox()
+              : const SizedBox()
         ],
       ),
       body: ListView.builder(

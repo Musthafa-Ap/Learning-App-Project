@@ -11,6 +11,7 @@ import '../constants/constants.dart';
 import '../my_home_page.dart';
 import 'big_cart_icon_button.dart';
 
+// ignore: must_be_immutable
 class CourseDetailesListTile extends StatelessWidget {
   final int? ratingCount;
   final bool? isRecomended;

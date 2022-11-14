@@ -175,6 +175,7 @@ class WhichlistPage extends StatelessWidget {
                                                                         context);
                                                             await featuerdProvider
                                                                 .getWhishlist();
+                                                            // ignore: use_build_context_synchronously
                                                             Navigator.pop(
                                                                 context);
                                                           },

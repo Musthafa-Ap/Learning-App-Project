@@ -76,7 +76,7 @@ class _FeaturedState extends State<Featured> {
                   Provider.of<FeaturedProvider>(context, listen: false)
                       .getNotifications();
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => NotificationsPage()));
+                      builder: (context) => const NotificationsPage()));
                 },
                 icon: const Icon(Icons.notifications_outlined))
           ],
