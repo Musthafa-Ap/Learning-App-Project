@@ -43,6 +43,7 @@ class TopCoursesSection extends StatelessWidget {
                             id: datas?.id?.toInt(),
                             rating: datas?.rating?.toDouble(),
                             image: datas?.thumbnail?.fullSize.toString(),
+                            isWishList: datas?.isWishList,
                             courseName: datas?.courseName.toString(),
                             ratingCount: datas?.ratingCount?.toInt(),
                             coursePrice: datas?.price?.toInt(),
@@ -56,6 +57,8 @@ class TopCoursesSection extends StatelessWidget {
                   onTap: () {
                     Provider.of<FeaturedProvider>(context, listen: false)
                         .sortedCourses = null;
+                    Provider.of<TopCoursesProvider>(context, listen: false)
+                        .getAll();
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => const SeeAllPageTopCourses()));
                   },

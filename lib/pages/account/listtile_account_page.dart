@@ -9,6 +9,7 @@ import 'package:nuox_project/pages/featured/services/featured_section/featured_p
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../my_home_page.dart';
+import 'account_services/account_provider.dart';
 import 'sections/whishlist/whishlist_page.dart';
 
 class ListTileAccountPage extends StatelessWidget {
@@ -27,6 +28,7 @@ class ListTileAccountPage extends StatelessWidget {
         splashColor: Colors.transparent,
         onTap: () async {
           if (index == 0) {
+            await Provider.of<AccountProvider>(context, listen: false).getFAQ();
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => const FAQPage()));
           } else if (index == 1) {

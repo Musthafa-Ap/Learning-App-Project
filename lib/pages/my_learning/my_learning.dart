@@ -40,8 +40,9 @@ class MyLearning extends StatelessWidget {
                 return MyLearningCard(
                   author: datas?.instructorName.toString(),
                   courseName: datas?.courseName.toString(),
-                  id: datas?.course_id?.toInt(),
+                  id: datas?.courseId?.toInt(),
                   img: datas?.courseThumbnail.toString(),
+                  variant: datas?.variant.toString(),
                 );
               },
             ),

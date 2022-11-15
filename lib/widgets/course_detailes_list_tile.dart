@@ -4,6 +4,7 @@ import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/course_detailed_page/course_detailed_page.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
+import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,7 +13,8 @@ import '../my_home_page.dart';
 import 'big_cart_icon_button.dart';
 
 // ignore: must_be_immutable
-class CourseDetailesListTile extends StatelessWidget {
+class CourseDetailesListTile extends StatefulWidget {
+  final bool? isWishlist;
   final int? ratingCount;
   final bool? isRecomended;
   final int? id;
@@ -34,15 +36,35 @@ class CourseDetailesListTile extends StatelessWidget {
     this.variantID,
     this.isRecomended = false,
     required this.ratingCount,
+    this.isWishlist,
   }) : super(key: key);
   final bool isCartItem;
+
+  @override
+  State<CourseDetailesListTile> createState() => _CourseDetailesListTileState();
+}
+
+class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
+  @override
+  void initState() {
+    get();
+    super.initState();
+  }
+
+  String? token;
+  void get() async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    token = shared.getString("access_token");
+  }
+
   String? variant;
+
   @override
   Widget build(BuildContext context) {
     final featuredProvider = Provider.of<FeaturedProvider>(context);
-    if (variantID == 1) {
+    if (widget.variantID == 1) {
       variant = "Beginner";
-    } else if (variantID == 2) {
+    } else if (widget.variantID == 2) {
       variant = "Intermediate";
     } else {
       variant = "Expert";
@@ -52,7 +74,7 @@ class CourseDetailesListTile extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         await Provider.of<CourseDetailedProvider>(context, listen: false)
-            .getAll(courseID: id);
+            .getAll(courseID: widget.id);
         // ignore: use_build_context_synchronously
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => const CourseDetailedPage()));
@@ -72,7 +94,7 @@ class CourseDetailesListTile extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(image ??
+                          image: NetworkImage(widget.image ??
                               "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg"))),
                 ),
                 Expanded(
@@ -86,7 +108,7 @@ class CourseDetailesListTile extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              courseName ?? "Course name",
+                              widget.courseName ?? "Course name",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
@@ -109,24 +131,36 @@ class CourseDetailesListTile extends StatelessWidget {
                                     );
                                   } else {
                                     featuredProvider.addToWhishlist(
-                                        id: id,
+                                        id: widget.id,
                                         variant: 1,
                                         context: context,
-                                        price: coursePrice);
+                                        price: widget.coursePrice);
+                                    Provider.of<FeaturedProvider>(context,
+                                            listen: false)
+                                        .sample();
+                                    Provider.of<TopCoursesProvider>(context,
+                                            listen: false)
+                                        .getAll();
                                   }
                                 },
-                                child: const Icon(
-                                  Icons.favorite_border,
-                                  size: 20,
-                                  color: Colors.white,
-                                ),
+                                child: token == null
+                                    ? const SizedBox()
+                                    : Icon(
+                                        widget.isWishlist == true
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
+                                        size: 20,
+                                        color: widget.isWishlist == true
+                                            ? Colors.red
+                                            : Colors.white,
+                                      ),
                               ),
                             )
                           ],
                         ),
                         kHeight5,
                         Text(
-                          authorName ?? "Author name",
+                          widget.authorName ?? "Author name",
                           style:
                               TextStyle(fontSize: 12, color: Colors.grey[300]),
                         ),
@@ -134,13 +168,13 @@ class CourseDetailesListTile extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              "$rating ",
+                              "${widget.rating} ",
                               style: const TextStyle(
                                   fontSize: 12, color: Colors.yellow),
                             ),
                             RatingBarIndicator(
                               unratedColor: Colors.grey,
-                              rating: rating ?? 4,
+                              rating: widget.rating ?? 4,
                               itemBuilder: (context, index) => const Icon(
                                 Icons.star,
                                 color: Colors.yellow,
@@ -150,14 +184,14 @@ class CourseDetailesListTile extends StatelessWidget {
                               direction: Axis.horizontal,
                             ),
                             Text(
-                              " ($ratingCount)",
+                              " (${widget.ratingCount})",
                               style: const TextStyle(
                                   fontSize: 12, color: Colors.yellow),
                             ),
                           ],
                         ),
                         kHeight5,
-                        isCartItem
+                        widget.isCartItem
                             ? Text(
                                 variant!,
                                 style: const TextStyle(
@@ -167,7 +201,7 @@ class CourseDetailesListTile extends StatelessWidget {
                             : const SizedBox(),
                         kHeight5,
                         Text(
-                          "₹${coursePrice ?? "Course price"}",
+                          "₹${widget.coursePrice ?? "Course price"}",
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -179,10 +213,10 @@ class CourseDetailesListTile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            isRecomended!
+                            widget.isRecomended!
                                 ? const BestsellerWidget()
                                 : const SizedBox(),
-                            isCartItem
+                            widget.isCartItem
                                 ? Container(
                                     decoration: BoxDecoration(
                                         color: Colors.white,
@@ -193,14 +227,14 @@ class CourseDetailesListTile extends StatelessWidget {
                                     child: IconButton(
                                         onPressed: () {
                                           cartProvider.deleteCartItem(
-                                              courseID: id,
-                                              variantID: variantID,
+                                              courseID: widget.id,
+                                              variantID: widget.variantID,
                                               context: context);
                                         },
                                         icon: const Icon(Icons.delete)))
                                 : BigCartIconButton(
-                                    id: id!,
-                                    price: coursePrice!.toInt(),
+                                    id: widget.id!,
+                                    price: widget.coursePrice!.toInt(),
                                   )
                           ],
                         )

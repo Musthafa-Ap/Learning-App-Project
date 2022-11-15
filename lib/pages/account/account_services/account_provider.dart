@@ -15,7 +15,7 @@ class AccountProvider with ChangeNotifier {
   bool isLoading = false;
   bool isChangePassLoading = false;
   FAQModel? faqList;
-  void getFAQ() async {
+  Future<void> getFAQ() async {
     var response = await http
         .get(Uri.parse("http://learningapp.e8demo.com/api/faq_list/"));
     if (response.statusCode == 200) {

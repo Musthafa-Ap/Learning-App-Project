@@ -4,8 +4,23 @@ import 'package:provider/provider.dart';
 import '../../constants/constants.dart';
 import '../../widgets/course_detailes_list_tile.dart';
 
-class Cart extends StatelessWidget {
+class Cart extends StatefulWidget {
   const Cart({super.key});
+
+  @override
+  State<Cart> createState() => _CartState();
+}
+
+class _CartState extends State<Cart> {
+  @override
+  void initState() {
+    get();
+    super.initState();
+  }
+
+  void get() async {
+    await Provider.of<CartProvider>(context, listen: false).getAllCartItems();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +35,8 @@ class Cart extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: cartProvider.cartItems == null ||
-                cartProvider.cartItems!.data!.cartItem!.isEmpty
+                cartProvider.cartItems!.data!.cartItem!.isEmpty ||
+                cartProvider.cartEmpty == true
             ? const Center(
                 child: Text(
                 "Bag is Empty",

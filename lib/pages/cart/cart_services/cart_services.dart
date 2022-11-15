@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../buy_all_page/buy_all_page.dart';
 
 class CartProvider with ChangeNotifier {
+  bool cartEmpty = false;
   String? totalPrice;
   String? orderID;
   String? promo_code;
@@ -27,10 +28,13 @@ class CartProvider with ChangeNotifier {
       headers: {"Authorization": auth},
     );
     if (response.statusCode == 200) {
+      cartEmpty = false;
       var data = jsonDecode(response.body);
       cartItems = CartModel.fromJson(data);
 
       notifyListeners();
+    } else {
+      cartEmpty = true;
     }
   }
 

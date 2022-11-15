@@ -215,10 +215,14 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                 width: size * .25,
                               ),
                               kWidth10,
-                              Text(
-                                datas.topicName.toString(),
-                                style: const TextStyle(
-                                    fontSize: 18, color: Colors.white),
+                              Expanded(
+                                child: Text(
+                                  datas.topicName.toString(),
+                                  style: const TextStyle(
+                                      //overflow: TextOverflow.ellipsis,
+                                      fontSize: 18,
+                                      color: Colors.white),
+                                ),
                               )
                             ],
                           ),

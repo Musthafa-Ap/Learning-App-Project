@@ -43,11 +43,25 @@ class MobileNumberverificationPage extends StatelessWidget {
               style: const TextStyle(color: Colors.black),
               controller: _numberController,
               decoration: InputDecoration(
-                  prefixIcon: const Padding(
-                    padding: EdgeInsets.only(top: 11, left: 1),
-                    child: Text(
-                      "  +91",
-                      style: TextStyle(fontSize: 18),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.only(right: 2, left: 8),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 40,
+                          width: 30,
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/1200px-Flag_of_India.svg.png"))),
+                        ),
+                        const Text(
+                          "  +91",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
                     ),
                   ),
                   errorText: authProvider.number_error,

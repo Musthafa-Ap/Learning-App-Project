@@ -49,6 +49,7 @@ class SeeAllPageTopCourses extends StatelessWidget {
           return CourseDetailesListTile(
             authorName: datas.instructor!.name.toString(),
             courseName: datas.courseName.toString(),
+            isWishlist: datas.isWishList,
             coursePrice: datas.price!.toDouble(),
             image: datas.thumbnail!.fullSize.toString(),
             ratingCount: datas.ratingCount,

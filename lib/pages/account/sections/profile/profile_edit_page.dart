@@ -190,10 +190,25 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     decoration: InputDecoration(
                         prefixIcon: Container(
                           // alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(top: 11, left: 1),
-                          child: const Text(
-                            "  +91",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                          padding: const EdgeInsets.only(right: 2, left: 8),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                height: 40,
+                                width: 30,
+                                decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/1200px-Flag_of_India.svg.png"))),
+                              ),
+                              const Text(
+                                "  +91",
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.white),
+                              ),
+                            ],
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -223,9 +238,23 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           color: Colors.white,
                         ),
                         borderRadius: BorderRadius.circular(5)),
-                    child: Text(
-                      _mobile!,
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: const EdgeInsets.only(right: 8),
+                          height: 40,
+                          width: 30,
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      "https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/1200px-Flag_of_India.svg.png"))),
+                        ),
+                        Text(
+                          _mobile!,
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16),
+                        ),
+                      ],
                     ),
                   ),
 

@@ -9,7 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants/constants.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
 
-class SmallItemCard extends StatelessWidget {
+class SmallItemCard extends StatefulWidget {
+  final bool? isWishlist;
   final bool? isRecomended;
   final int? id;
   final String? courseName;
@@ -20,6 +21,7 @@ class SmallItemCard extends StatelessWidget {
   final int? ratingCount;
   const SmallItemCard({
     Key? key,
+    this.isWishlist,
     required this.courseName,
     required this.authorName,
     required this.coursePrice,
@@ -31,6 +33,26 @@ class SmallItemCard extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<SmallItemCard> createState() => _SmallItemCardState();
+}
+
+class _SmallItemCardState extends State<SmallItemCard> {
+  @override
+  void initState() {
+    get();
+    super.initState();
+  }
+
+  String? token;
+  void get() async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    setState(() {
+      token = shared.getString("access_token");
+      print(token);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final featuredProvider = Provider.of<FeaturedProvider>(context);
     final courseDetailedProvider = Provider.of<CourseDetailedProvider>(context);
@@ -38,7 +60,7 @@ class SmallItemCard extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         await Provider.of<CourseDetailedProvider>(context, listen: false)
-            .getAll(courseID: id);
+            .getAll(courseID: widget.id);
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => const CourseDetailedPage()));
       },
@@ -57,12 +79,12 @@ class SmallItemCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                         image: DecorationImage(
                             fit: BoxFit.fill,
-                            image: NetworkImage(image ??
+                            image: NetworkImage(widget.image ??
                                 "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg"))),
                   ),
                   kHeight5,
                   Text(
-                    courseName ?? "Course name",
+                    widget.courseName ?? "Course name",
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -72,20 +94,20 @@ class SmallItemCard extends StatelessWidget {
                   ),
                   kHeight5,
                   Text(
-                    authorName ?? "Author name",
+                    widget.authorName ?? "Author name",
                     style: TextStyle(fontSize: 12, color: Colors.grey[300]),
                   ),
                   kHeight5,
                   Row(
                     children: [
                       Text(
-                        "${rating ?? "2"} ",
+                        "${widget.rating ?? "2"} ",
                         style:
                             const TextStyle(fontSize: 12, color: Colors.yellow),
                       ),
                       RatingBarIndicator(
                         unratedColor: Colors.grey,
-                        rating: rating ?? 4,
+                        rating: widget.rating ?? 4,
                         itemBuilder: (context, index) => const Icon(
                           Icons.star,
                           color: Colors.yellow,
@@ -95,7 +117,7 @@ class SmallItemCard extends StatelessWidget {
                         direction: Axis.horizontal,
                       ),
                       Text(
-                        " ($ratingCount)",
+                        " (${widget.ratingCount})",
                         style:
                             const TextStyle(fontSize: 12, color: Colors.yellow),
                       ),
@@ -103,7 +125,7 @@ class SmallItemCard extends StatelessWidget {
                   ),
                   kHeight5,
                   Text(
-                    "₹ $coursePrice",
+                    "₹ ${widget.coursePrice}",
                     style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -114,7 +136,7 @@ class SmallItemCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      isRecomended == true
+                      widget.isRecomended == true
                           ? const BestsellerWidget()
                           : const SizedBox(),
                       Container(
@@ -132,10 +154,10 @@ class SmallItemCard extends StatelessWidget {
                                     sharedpref.getString("access_token");
                                 if (token != null) {
                                   courseDetailedProvider.addToCart(
-                                      courseID: id ?? 1,
+                                      courseID: widget.id ?? 1,
                                       context: context,
                                       variantID: 1,
-                                      price: coursePrice!.toInt(),
+                                      price: widget.coursePrice!.toInt(),
                                       token: token);
                                 } else {
                                   Navigator.of(context).pushAndRemoveUntil(
@@ -145,7 +167,7 @@ class SmallItemCard extends StatelessWidget {
                                   );
                                 }
                               },
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.shopping_bag,
                                 color: Colors.white,
                                 size: 28,
@@ -166,30 +188,39 @@ class SmallItemCard extends StatelessWidget {
                     BoxDecoration(borderRadius: BorderRadius.circular(20)),
                 child: Center(
                     child: GestureDetector(
-                  onTap: () async {
-                    SharedPreferences shared =
-                        await SharedPreferences.getInstance();
-                    var token = shared.getString("access_token");
-                    if (token == null) {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => const Test()),
-                        (route) => false,
-                      );
-                    } else {
-                      featuredProvider.addToWhishlist(
-                        id: id,
-                        variant: 1,
-                        context: context,
-                        price: coursePrice!.toInt(),
-                      );
-                    }
-                  },
-                  child: const Icon(
-                    Icons.favorite_border,
-                    size: 20,
-                    color: Colors.white,
-                  ),
-                )),
+                        onTap: () async {
+                          SharedPreferences shared =
+                              await SharedPreferences.getInstance();
+                          var token = shared.getString("access_token");
+                          if (token == null) {
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const Test()),
+                              (route) => false,
+                            );
+                          } else {
+                            featuredProvider.addToWhishlist(
+                              id: widget.id,
+                              variant: 1,
+                              context: context,
+                              price: widget.coursePrice!.toInt(),
+                            );
+                            Provider.of<FeaturedProvider>(context,
+                                    listen: false)
+                                .sample();
+                          }
+                        },
+                        child: token != null
+                            ? Icon(
+                                widget.isWishlist == true
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                size: 20,
+                                color: widget.isWishlist == true
+                                    ? Colors.red
+                                    : Colors.white,
+                              )
+                            : const SizedBox())),
               )),
         ],
       ),

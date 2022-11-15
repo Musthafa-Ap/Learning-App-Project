@@ -16,23 +16,26 @@ class MyLearningsModel {
 }
 
 class Data {
-  int? course_id;
+  int? courseId;
   double? itemTotal;
   int? order;
   String? instructorName;
   String? courseName;
   String? courseThumbnail;
+  String? variant;
 
   Data(
-      {this.course_id,
+      {this.courseId,
       this.itemTotal,
       this.order,
       this.instructorName,
       this.courseName,
-      this.courseThumbnail});
+      this.courseThumbnail,
+      this.variant});
 
   Data.fromJson(Map<String, dynamic> json) {
-    course_id = json['course_id'];
+    variant = json["section_id"];
+    courseId = json['course_id'];
     itemTotal = json['item_total'];
     order = json['order'];
     instructorName = json['instructor_name'];

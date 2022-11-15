@@ -9,8 +9,10 @@ import '../../../widgets/bestseller.dart';
 import '../../../widgets/big_cart_icon_button.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
 import '../../course_detailed_page/services/course_detailed_provider.dart';
+import '../services/top_courses_section/top_courses_provider.dart';
 
-class BigItemCard extends StatelessWidget {
+class BigItemCard extends StatefulWidget {
+  final bool? isWishList;
   final int? ratingCount;
   final bool? isRecomended;
   final int? id;
@@ -29,7 +31,27 @@ class BigItemCard extends StatelessWidget {
     required this.id,
     this.isRecomended = true,
     required this.ratingCount,
+    this.isWishList,
   }) : super(key: key);
+
+  @override
+  State<BigItemCard> createState() => _BigItemCardState();
+}
+
+class _BigItemCardState extends State<BigItemCard> {
+  @override
+  void initState() {
+    get();
+    super.initState();
+  }
+
+  String? token;
+  void get() async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    setState(() {
+      token = shared.getString("access_token");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +59,9 @@ class BigItemCard extends StatelessWidget {
     var size = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () async {
-        if (id != null) {
+        if (widget.id != null) {
           await Provider.of<CourseDetailedProvider>(context, listen: false)
-              .getAll(courseID: id);
+              .getAll(courseID: widget.id);
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => const CourseDetailedPage()));
         }
@@ -59,12 +81,12 @@ class BigItemCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                         image: DecorationImage(
                             fit: BoxFit.fill,
-                            image: NetworkImage(image ??
+                            image: NetworkImage(widget.image ??
                                 "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg"))),
                   ),
                   kHeight5,
                   Text(
-                    courseName ?? "Course name",
+                    widget.courseName ?? "Course name",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -74,20 +96,20 @@ class BigItemCard extends StatelessWidget {
                   ),
                   kHeight5,
                   Text(
-                    authorName ?? "Instructor",
+                    widget.authorName ?? "Instructor",
                     style: TextStyle(fontSize: 12, color: Colors.grey[300]),
                   ),
                   kHeight5,
                   Row(
                     children: [
                       Text(
-                        "${rating ?? "4"} ",
+                        "${widget.rating ?? "4"} ",
                         style:
                             const TextStyle(fontSize: 12, color: Colors.yellow),
                       ),
                       RatingBarIndicator(
                         unratedColor: Colors.grey,
-                        rating: rating ?? 3,
+                        rating: widget.rating ?? 3,
                         itemBuilder: (context, index) => const Icon(
                           Icons.star,
                           color: Colors.yellow,
@@ -97,7 +119,9 @@ class BigItemCard extends StatelessWidget {
                         direction: Axis.horizontal,
                       ),
                       Text(
-                        ratingCount != null ? " ($ratingCount)" : " (36,000)",
+                        widget.ratingCount != null
+                            ? " (${widget.ratingCount})"
+                            : " (36,000)",
                         style:
                             const TextStyle(fontSize: 12, color: Colors.yellow),
                       ),
@@ -105,7 +129,7 @@ class BigItemCard extends StatelessWidget {
                   ),
                   kHeight5,
                   Text(
-                    "₹ ${coursePrice ?? "Course price"}",
+                    "₹ ${widget.coursePrice ?? "Course price"}",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -120,10 +144,10 @@ class BigItemCard extends StatelessWidget {
                     children: [
                       // isRecomended! ? BestsellerWidget() : SizedBox(),
                       const BestsellerWidget(),
-                      id != null
+                      widget.id != null
                           ? BigCartIconButton(
-                              id: id!.toInt(),
-                              price: coursePrice!.toInt(),
+                              id: widget.id!.toInt(),
+                              price: widget.coursePrice!.toInt(),
                             )
                           : const SizedBox()
                     ],
@@ -154,17 +178,25 @@ class BigItemCard extends StatelessWidget {
                       );
                     } else {
                       featuredProvider.addToWhishlist(
-                          id: id,
+                          id: widget.id,
                           variant: 1,
                           context: context,
-                          price: coursePrice);
+                          price: widget.coursePrice);
+                      Provider.of<TopCoursesProvider>(context, listen: false)
+                          .getAll();
                     }
                   },
-                  child: const Icon(
-                    Icons.favorite_border,
-                    size: 25,
-                    color: Colors.white,
-                  ),
+                  child: token != null
+                      ? Icon(
+                          widget.isWishList == true
+                              ? Icons.favorite
+                              : Icons.favorite_border,
+                          size: 25,
+                          color: widget.isWishList == true
+                              ? Colors.red
+                              : Colors.white,
+                        )
+                      : const SizedBox(),
                 )),
               )),
         ],

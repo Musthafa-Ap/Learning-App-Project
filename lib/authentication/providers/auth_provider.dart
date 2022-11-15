@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:nuox_project/authentication/moblie_number_otp_submission_page.dart';
 import 'package:nuox_project/authentication/otp_verification_page.dart';
+import 'package:nuox_project/authentication/signup.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../login_page.dart';
@@ -309,7 +310,7 @@ class AuthProvider with ChangeNotifier {
     required String password,
   }) async {
     String num = countryCode + number;
-
+    print("hi");
     setLoading(true);
     try {
       email_error = null;
@@ -323,7 +324,7 @@ class AuthProvider with ChangeNotifier {
             'name': name,
           });
       var data = jsonDecode(response.body);
-
+      print(response.body);
       if (data['status_code'] == 200) {
         email_error = null;
         mobile_error = null;
@@ -393,6 +394,7 @@ class AuthProvider with ChangeNotifier {
 
     setLoading(true);
     try {
+      print("hiiiiiiiiiii");
       email_error = null;
       mobile_error = null;
       var response = http.MultipartRequest(
@@ -450,7 +452,14 @@ class AuthProvider with ChangeNotifier {
             email_error = null;
             notifyListeners();
           }
-
+          if (error_message.containsKey("non_field_errors")) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                backgroundColor: Colors.red,
+                content: Text(
+                  "Only images and PDF files allowed",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )));
+          }
           if (error_message.containsKey("mobile")) {
             mobile_error = "Mobile number already exist";
             notifyListeners();
@@ -490,6 +499,7 @@ class AuthProvider with ChangeNotifier {
           )));
       shared.clear();
       selectedIndex.value = 0;
+
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(
             builder: (context) => const LoginPage(),

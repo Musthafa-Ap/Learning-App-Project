@@ -44,10 +44,10 @@ class _AccountState extends State<Account> {
         children: [
           const UserDetailesSection(),
           kheight20,
-          const SmallHeading(heading: "Support"),
-          kHeight,
+          // const SmallHeading(heading: "Support"),
+          //kHeight,
           const ListTileAccountPage(
-            tiletitle: "Whishlist",
+            tiletitle: "Wishlist",
             index: 6,
           ),
           kHeight,

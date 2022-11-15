@@ -128,7 +128,7 @@ class _FeaturedState extends State<Featured> {
                                     .getAll(courseID: datas.actionId);
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
-                                        CourseDetailedPage()));
+                                        const CourseDetailedPage()));
                               },
                               child: Container(
                                 decoration: BoxDecoration(

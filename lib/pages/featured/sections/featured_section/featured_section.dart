@@ -90,6 +90,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
                               featuredProvider.auto[index];
                           return SmallItemCard(
                             id: data?.id,
+                            isWishlist: data?.isWishList,
                             rating: data?.rating?.toDouble(),
                             image: data?.thumbnail?.full_size.toString(),
                             authorName: data?.instructor?.name.toString(),

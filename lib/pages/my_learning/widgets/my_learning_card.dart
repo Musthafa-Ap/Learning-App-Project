@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../constants/constants.dart';
 
 class MyLearningCard extends StatelessWidget {
+  final String? variant;
   final int? id;
   final String? courseName;
   final String? author;
@@ -14,6 +15,7 @@ class MyLearningCard extends StatelessWidget {
     required this.courseName,
     required this.author,
     required this.img,
+    required this.variant,
   }) : super(key: key);
 
   @override
@@ -65,6 +67,11 @@ class MyLearningCard extends StatelessWidget {
                       kHeight5,
                       Text(
                         author ?? "Erich Andreas",
+                        style: TextStyle(fontSize: 12, color: Colors.grey[300]),
+                      ),
+                      kHeight5,
+                      Text(
+                        variant ?? "Beginner",
                         style: TextStyle(fontSize: 12, color: Colors.grey[300]),
                       ),
                     ],

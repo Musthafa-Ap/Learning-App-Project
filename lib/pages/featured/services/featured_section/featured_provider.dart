@@ -21,8 +21,20 @@ class FeaturedProvider with ChangeNotifier {
   Future<void> sample() async {
     try {
       isLoading = true;
-      Response response = await get(
-          Uri.parse("http://learningapp.e8demo.com/api/featured-course/"));
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      Response response;
+      String? token = shared.getString("access_token");
+      if (token == null) {
+        response = await get(
+          Uri.parse("http://learningapp.e8demo.com/api/featured-course/"),
+        );
+      } else {
+        response = await get(
+          Uri.parse(
+              "http://learningapp.e8demo.com/api/featured-course/?auth_token=$token"),
+        );
+      }
+      print(response.body);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         auto = (data['data'] as List)
@@ -36,7 +48,6 @@ class FeaturedProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       isLoading = false;
-      print("no data in featured section");
       print(e.toString());
     }
   }
@@ -77,7 +88,6 @@ class FeaturedProvider with ChangeNotifier {
       var api = "http://learningapp.e8demo.com/api/notification/";
       Response response =
           await get(Uri.parse(api), headers: {"Authorization": auth});
-      print(response.body);
       Map<String, dynamic> data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         notificationList = NotificationModel.fromJson(data);

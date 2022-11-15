@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/my_home_page.dart';
-import 'package:nuox_project/pages/course_detailed_page/sections/author_detailes_page/author_detailes.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/sections/review_page/review_page.dart';
@@ -270,18 +269,29 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                     alignment: Alignment.centerLeft, child: BestsellerWidget()),
                 kHeight,
                 GestureDetector(
-                  onTap: () {
-                    if (courseDeailedProvider.courseDetailes?.data?.first.id !=
-                        null) {
-                      courseDeailedProvider.getReview(
-                          courseID: courseDeailedProvider
-                              .courseDetailes!.data!.first.id);
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ReviewPage(
-                                id: courseDeailedProvider
-                                    .courseDetailes!.data!.first.id!
-                                    .toInt(),
-                              )));
+                  onTap: () async {
+                    SharedPreferences shared =
+                        await SharedPreferences.getInstance();
+                    var token = shared.getString("access_token");
+                    if (token != null) {
+                      if (courseDeailedProvider
+                              .courseDetailes?.data?.first.id !=
+                          null) {
+                        courseDeailedProvider.getReview(
+                            courseID: courseDeailedProvider
+                                .courseDetailes!.data!.first.id);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ReviewPage(
+                                  id: courseDeailedProvider
+                                      .courseDetailes!.data!.first.id!
+                                      .toInt(),
+                                )));
+                      }
+                    } else {
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(builder: (context) => const Test()),
+                        (route) => false,
+                      );
                     }
                   },
                   child: Row(
@@ -436,14 +446,14 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        if (courseDeailedProvider
-                                .courseDetailes?.data?.first.instructor?.name
-                                .toString() !=
-                            null) {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  const AuthorDetailesPage()));
-                        }
+                        // if (courseDeailedProvider
+                        //         .courseDetailes?.data?.first.instructor?.name
+                        //         .toString() !=
+                        //     null) {
+                        //   Navigator.of(context).push(MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           const AuthorDetailesPage()));
+                        // }
                       },
                       child: Text(
                         courseDeailedProvider

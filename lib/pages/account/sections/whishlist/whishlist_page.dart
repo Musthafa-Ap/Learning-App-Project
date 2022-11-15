@@ -23,14 +23,14 @@ class WhichlistPage extends StatelessWidget {
             },
             icon: const Icon(Icons.arrow_back_ios)),
         centerTitle: true,
-        title: const Text("My Whishlist"),
+        title: const Text("My Wishlist"),
       ),
       body: featuerdProvider.whishlist == null ||
               featuerdProvider.whishlist!.data!.wishlist!.isEmpty ||
               featuerdProvider.isWhishlistEmpty == true
           ? const Center(
               child: Text(
-                "Whishlist is empty",
+                "Wishlist is empty",
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             )

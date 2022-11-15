@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';
+import 'package:nuox_project/authentication/signup.dart';
 import 'package:provider/provider.dart';
 
 class AccountPageButton extends StatelessWidget {
-  final buttontitle;
+  final String buttontitle;
   const AccountPageButton({super.key, required this.buttontitle});
 
   @override
@@ -16,6 +17,7 @@ class AccountPageButton extends StatelessWidget {
             backgroundColor:
                 MaterialStateProperty.all(const Color.fromARGB(0, 40, 39, 39))),
         onPressed: () {
+          isdocumentUploadedNotifier.value = false;
           authProvider.logOut(context);
         },
         child: Text(

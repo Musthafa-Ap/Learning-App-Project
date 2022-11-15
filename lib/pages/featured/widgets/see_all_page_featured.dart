@@ -51,6 +51,7 @@ class SeeAllPageFeatured extends StatelessWidget {
                 return CourseDetailesListTile(
                   authorName: data!.instructor!.name.toString(),
                   courseName: data.courseName.toString(),
+                  isWishlist: data.isWishList,
                   image: data.thumbnail!.full_size.toString(),
                   ratingCount: data.ratingCount,
                   coursePrice: data.price!,
@@ -68,6 +69,7 @@ class SeeAllPageFeatured extends StatelessWidget {
                 final datas = featuredProviders.sortedCourses!.data![index];
                 return CourseDetailesListTile(
                   authorName: datas.instructor!.name.toString(),
+                  isWishlist: datas.isWishlist,
                   courseName: datas.courseName.toString(),
                   image: datas.thumbnail!.fullSize.toString(),
                   coursePrice: datas.price,

@@ -25,10 +25,12 @@ class AuthorDetailesPage extends StatelessWidget {
         child: ListView(padding: const EdgeInsets.all(10), children: [
           kHeight15,
           const CircleAvatar(
-              backgroundColor: Colors.transparent,
-              radius: 80,
-              backgroundImage: NetworkImage(
-                  "https://images.ctfassets.net/kvf8rpi09wgk/2FAVdt4PCl8SMmd6PFD9yR/69937dcdf4032e741307878928d3198f/Phil_Kulp_Headshot.jpg?w=400&q=50&h=400&fit=thumb")),
+            backgroundColor: Colors.transparent,
+            radius: 80,
+            backgroundImage: NetworkImage(
+              "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg",
+            ),
+          ),
           kHeight15,
           Center(
             child: Text(
