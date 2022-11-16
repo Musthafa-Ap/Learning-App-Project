@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/my_home_page.dart';
+import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
@@ -62,7 +63,10 @@ class _SmallItemCardState extends State<SmallItemCard> {
         await Provider.of<CourseDetailedProvider>(context, listen: false)
             .getAll(courseID: widget.id);
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const CourseDetailedPage()));
+            builder: (context) => CourseDetailedPage(
+                  refesh: true,
+                  id: widget.id,
+                )));
       },
       child: Stack(
         children: [
@@ -205,9 +209,18 @@ class _SmallItemCardState extends State<SmallItemCard> {
                               context: context,
                               price: widget.coursePrice!.toInt(),
                             );
-                            Provider.of<FeaturedProvider>(context,
+                            await Provider.of<FeaturedProvider>(context,
                                     listen: false)
                                 .sample();
+                            await Provider.of<CourseDetailedProvider>(context,
+                                    listen: false)
+                                .getRecentlyViewed();
+                            await Provider.of<RecomendationsProvider>(context,
+                                    listen: false)
+                                .getAll();
+                            // await Provider.of<CourseDetailedProvider>(context,
+                            //         listen: false)
+                            //     .getAll(courseID: widget.id);
                           }
                         },
                         child: token != null

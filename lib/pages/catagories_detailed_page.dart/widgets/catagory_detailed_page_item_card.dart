@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_model.dart';
+import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/widgets/big_cart_icon_button.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +14,8 @@ import '../../../widgets/bestseller.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
 import '../../course_detailed_page/services/course_detailed_provider.dart';
 
-class CatagoryDetailedPageItemCard extends StatelessWidget {
+class CatagoryDetailedPageItemCard extends StatefulWidget {
+  final bool? isWishlist;
   final int id;
   final String? courseName;
   final int? rating;
@@ -25,7 +30,29 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
     required this.image,
     required this.id,
     required this.ratingCount,
+    required this.isWishlist,
   }) : super(key: key);
+
+  @override
+  State<CatagoryDetailedPageItemCard> createState() =>
+      _CatagoryDetailedPageItemCardState();
+}
+
+class _CatagoryDetailedPageItemCardState
+    extends State<CatagoryDetailedPageItemCard> {
+  @override
+  void initState() {
+    get();
+    super.initState();
+  }
+
+  String? token;
+  void get() async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    setState(() {
+      token = shared.getString("access_token");
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +61,11 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         await Provider.of<CourseDetailedProvider>(context, listen: false)
-            .getAll(courseID: id);
+            .getAll(courseID: widget.id);
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const CourseDetailedPage()));
+            builder: (context) => CourseDetailedPage(
+                  id: widget.id,
+                )));
       },
       child: Stack(
         children: [
@@ -51,12 +80,12 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
                   decoration: BoxDecoration(
                       image: DecorationImage(
                           fit: BoxFit.fill,
-                          image: NetworkImage(image ??
+                          image: NetworkImage(widget.image ??
                               "http://learningapp.e8demo.com/media/thumbnail_img/4-physics.jpeg"))),
                 ),
                 kHeight5,
                 Text(
-                  courseName ?? "Course name",
+                  widget.courseName ?? "Course name",
                   maxLines: 2,
                   style: const TextStyle(
                       color: Colors.white,
@@ -67,13 +96,13 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "$rating ",
+                      "${widget.rating} ",
                       style:
                           const TextStyle(fontSize: 12, color: Colors.yellow),
                     ),
                     RatingBarIndicator(
                       unratedColor: Colors.grey,
-                      rating: rating?.toDouble() ?? 4.toDouble(),
+                      rating: widget.rating?.toDouble() ?? 4.toDouble(),
                       itemCount: 5,
                       itemSize: 10,
                       direction: Axis.horizontal,
@@ -83,7 +112,7 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      " ($ratingCount)",
+                      " (${widget.ratingCount})",
                       style:
                           const TextStyle(fontSize: 12, color: Colors.yellow),
                     ),
@@ -93,7 +122,7 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "₹$price",
+                      "₹${widget.price}",
                       style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -118,46 +147,61 @@ class CatagoryDetailedPageItemCard extends StatelessWidget {
                       width: size * .436,
                     ),
                     BigCartIconButton(
-                      id: id,
-                      price: price!,
+                      id: widget.id,
+                      price: widget.price!,
                     )
                   ],
                 )
               ],
             ),
           ),
-          Positioned(
-              right: 10,
-              top: 8,
-              child: Container(
-                height: 35,
-                width: 35,
-                decoration: BoxDecoration(
-                    //color: Color.fromARGB(255, 194, 193, 192),
-                    borderRadius: BorderRadius.circular(20)),
-                child: Center(
-                    child: GestureDetector(
-                  onTap: () async {
-                    SharedPreferences shared =
-                        await SharedPreferences.getInstance();
-                    var token = shared.getString("access_token");
-                    if (token == null) {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(builder: (context) => const Test()),
-                        (route) => false,
-                      );
-                    } else {
-                      featuredProvider.addToWhishlist(
-                          id: id, variant: 1, context: context, price: price);
-                    }
-                  },
-                  child: const Icon(
-                    Icons.favorite_border,
-                    size: 25,
-                    color: Colors.white,
-                  ),
-                )),
-              )),
+          token == null
+              ? const SizedBox()
+              : const SizedBox() //favoriteIcon thalkaalam disable cheythu.i know its a udayipp
+          // : Positioned(
+          //     right: 10,
+          //     top: 8,
+          //     child: Container(
+          //       height: 35,
+          //       width: 35,
+          //       decoration: BoxDecoration(
+          //           //color: Color.fromARGB(255, 194, 193, 192),
+          //           borderRadius: BorderRadius.circular(20)),
+          //       child: Center(
+          //           child: GestureDetector(
+          //         onTap: () async {
+          //           SharedPreferences shared =
+          //               await SharedPreferences.getInstance();
+          //           var token = shared.getString("access_token");
+          //           if (token == null) {
+          //             Navigator.of(context).pushAndRemoveUntil(
+          //               MaterialPageRoute(
+          //                   builder: (context) => const Test()),
+          //               (route) => false,
+          //             );
+          //           } else {
+          //             featuredProvider.addToWhishlist(
+          //                 id: widget.id,
+          //                 variant: 1,
+          //                 context: context,
+          //                 price: widget.price);
+          //             await Provider.of<CatagoriesDetailedProvider>(context,
+          //                     listen: false)
+          //                 .getAll(catagoriesID: widget.id);
+          //             log("passed");
+          //           }
+          //         },
+          //         child: Icon(
+          //           widget.isWishlist == true
+          //               ? Icons.favorite
+          //               : Icons.favorite_border,
+          //           size: 25,
+          //           color: widget.isWishlist == true
+          //               ? Colors.red
+          //               : Colors.white,
+          //         ),
+          //       )),
+          //     )),
         ],
       ),
     );

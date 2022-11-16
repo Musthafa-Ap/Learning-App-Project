@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:nuox_project/pages/course_detailed_page/sections/review_page/review_model.dart';
@@ -18,14 +19,15 @@ class CourseDetailedProvider with ChangeNotifier {
     SharedPreferences shared = await SharedPreferences.getInstance();
     var token = shared.getString("access_token");
     String auth = "Bearer $token";
-    var api =
-        "http://learningapp.e8demo.com/api/user-coursedetail/?coursedetail_id=$courseID";
     http.Response response;
     if (token == null) {
-      response = await http.get(Uri.parse(api));
+      response = await http.get(Uri.parse(
+          "http://learningapp.e8demo.com/api/user-coursedetail/?coursedetail_id=$courseID"));
     } else {
-      response =
-          await http.get(Uri.parse(api), headers: {"Authorization": auth});
+      response = await http.get(
+          Uri.parse(
+              "http://learningapp.e8demo.com/api/user-coursedetail/?coursedetail_id=$courseID&auth_token=$token"),
+          headers: {"Authorization": auth});
     }
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
@@ -148,13 +150,14 @@ class CourseDetailedProvider with ChangeNotifier {
     }
   }
 
-  void getRecentlyViewed() async {
+  Future<void> getRecentlyViewed() async {
     try {
       SharedPreferences shared = await SharedPreferences.getInstance();
       var token = shared.getString("access_token");
       String auth = "Bearer $token";
       var response = await http.get(
-          Uri.parse("http://learningapp.e8demo.com/api/recent-courses/"),
+          Uri.parse(
+              "http://learningapp.e8demo.com/api/recent-courses/?auth_token=$token"),
           headers: {"Authorization": auth});
       // print(response.statusCode);
       // print(response.body);

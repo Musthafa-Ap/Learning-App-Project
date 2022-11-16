@@ -1,3 +1,5 @@
+import 'package:nuox_project/pages/account/sections/whishlist/whishlist_model.dart';
+
 class RecomendationsModel {
   String? message;
   List<Data>? data;
@@ -30,9 +32,11 @@ class Data {
   String? introVideo;
   int? rating;
   int? ratingCount;
+  bool? isWishlist;
 
   Data(
-      {this.id,
+      {this.isWishlist,
+      this.id,
       this.courseName,
       this.price,
       this.offerPrice,
@@ -48,6 +52,7 @@ class Data {
       this.ratingCount});
 
   Data.fromJson(Map<String, dynamic> json) {
+    isWishlist = json['wish_list'];
     ratingCount = json['rating_count'];
     id = json['id'];
     courseName = json['course_name'];

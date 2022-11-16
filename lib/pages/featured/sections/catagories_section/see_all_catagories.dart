@@ -3,6 +3,8 @@ import 'package:nuox_project/pages/featured/services/catagories_section/catagori
 import 'package:nuox_project/widgets/catagories_list_tile.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../my_home_page.dart';
+
 class SeeAllCatagories extends StatelessWidget {
   const SeeAllCatagories({super.key});
 
@@ -15,7 +17,9 @@ class SeeAllCatagories extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const MyHomePage()),
+                  (route) => false);
             },
             icon: const Icon(Icons.arrow_back_ios)),
       ),

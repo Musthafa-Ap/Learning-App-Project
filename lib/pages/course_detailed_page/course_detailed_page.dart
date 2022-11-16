@@ -7,6 +7,7 @@ import 'package:nuox_project/pages/course_detailed_page/recomendations_services/
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/sections/review_page/review_page.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
+import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:nuox_project/pages/featured/widgets/small_item_card.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
@@ -17,19 +18,28 @@ import 'package:video_player/video_player.dart';
 import '../../widgets/course_detailes_list_tile.dart';
 
 class CourseDetailedPage extends StatefulWidget {
-  const CourseDetailedPage({super.key});
+  final bool refesh;
+  final int? id;
+  const CourseDetailedPage({super.key, this.id, this.refesh = false});
 
   @override
   State<CourseDetailedPage> createState() => _CourseDetailedPageState();
 }
 
 class _CourseDetailedPageState extends State<CourseDetailedPage> {
+  String? token;
+  void get() async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    token = shared.getString("access_token");
+  }
+
   final ValueNotifier _selectedValue = ValueNotifier("Beginner");
   late VideoPlayerController _controller;
   final List _items = ["Beginner", "Intermediate", "Expert"];
   int currentIndex = 0;
   @override
   void initState() {
+    get();
     final courseDeailedProviders =
         Provider.of<CourseDetailedProvider>(context, listen: false);
 
@@ -80,8 +90,24 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
               icon: const Icon(CupertinoIcons.share))
         ],
         leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
+            onPressed: () async {
+              await Provider.of<TopCoursesProvider>(
+                context,
+                listen: false,
+              ).getAll();
+              await Provider.of<FeaturedProvider>(context, listen: false)
+                  .sample();
+              await Provider.of<RecomendationsProvider>(context, listen: false)
+                  .getAll();
+              await Provider.of<CourseDetailedProvider>(context, listen: false)
+                  .getRecentlyViewed();
+              selectedIndex.value = 0;
+              widget.refesh == false
+                  ? Navigator.pop(context)
+                  : Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => const MyHomePage()),
+                      (route) => false);
             },
             icon: const Icon(Icons.arrow_back_ios)),
       ),
@@ -547,77 +573,100 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                   ),
                 ),
                 kHeight,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 75),
-                  child: SizedBox(
-                    height: 50,
-                    child: OutlinedButton.icon(
-                      icon: const Icon(
-                        Icons.favorite_outline,
-                        color: Colors.white,
+                token == null
+                    ? const SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 75),
+                        child: SizedBox(
+                          height: 50,
+                          child: OutlinedButton.icon(
+                            icon: Icon(
+                              courseDeailedProvider.courseDetailes!.data!.first
+                                          .isWislist ==
+                                      true
+                                  ? Icons.favorite
+                                  : Icons.favorite_outline,
+                              color: courseDeailedProvider.courseDetailes!.data!
+                                          .first.isWislist ==
+                                      true
+                                  ? Colors.red
+                                  : Colors.white,
+                            ),
+                            onPressed: () async {
+                              if (_selectedValue.value == "Beginner") {
+                                variant = 1;
+                              } else if (_selectedValue.value ==
+                                  "Intermediate") {
+                                variant = 2;
+                              } else {
+                                variant = 3;
+                              }
+                              SharedPreferences shared =
+                                  await SharedPreferences.getInstance();
+                              var token = shared.getString("access_token");
+                              if (token == null) {
+                                Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => const Test()),
+                                  (route) => false,
+                                );
+                              } else {
+                                if (variant == 1) {
+                                  featuredProvider.addToWhishlist(
+                                      id: courseDeailedProvider
+                                          .courseDetailes!.data!.first.id!
+                                          .toInt(),
+                                      variant: variant,
+                                      context: context,
+                                      price: courseDeailedProvider
+                                          .courseDetailes!.data!.first.price!
+                                          .toInt());
+                                } else if (variant == 2) {
+                                  featuredProvider.addToWhishlist(
+                                      id: courseDeailedProvider
+                                          .courseDetailes!.data!.first.id!
+                                          .toInt(),
+                                      variant: variant,
+                                      context: context,
+                                      price: inter_price!.toInt());
+                                } else {
+                                  featuredProvider.addToWhishlist(
+                                      id: courseDeailedProvider
+                                          .courseDetailes!.data!.first.id!
+                                          .toInt(),
+                                      variant: variant,
+                                      context: context,
+                                      price: expert_price!.toInt());
+                                }
+                                if (widget.id != null) {
+                                  print("Entered");
+                                  Provider.of<CourseDetailedProvider>(context,
+                                          listen: false)
+                                      .getAll(courseID: widget.id);
+                                  Provider.of<TopCoursesProvider>(
+                                    context,
+                                    listen: false,
+                                  ).getAll();
+                                }
+                              }
+                            },
+                            style: ButtonStyle(
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(22))),
+                                side:
+                                    MaterialStateProperty.all(const BorderSide(
+                                  color: Colors.white,
+                                ))),
+                            label: const Text(
+                              "Add to whishlist",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
                       ),
-                      onPressed: () async {
-                        if (_selectedValue.value == "Beginner") {
-                          variant = 1;
-                        } else if (_selectedValue.value == "Intermediate") {
-                          variant = 2;
-                        } else {
-                          variant = 3;
-                        }
-                        SharedPreferences shared =
-                            await SharedPreferences.getInstance();
-                        var token = shared.getString("access_token");
-                        if (token == null) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => const Test()),
-                            (route) => false,
-                          );
-                        } else {
-                          if (variant == 1) {
-                            featuredProvider.addToWhishlist(
-                                id: courseDeailedProvider
-                                    .courseDetailes!.data!.first.id!
-                                    .toInt(),
-                                variant: variant,
-                                context: context,
-                                price: courseDeailedProvider
-                                    .courseDetailes!.data!.first.price!
-                                    .toInt());
-                          } else if (variant == 2) {
-                            featuredProvider.addToWhishlist(
-                                id: courseDeailedProvider
-                                    .courseDetailes!.data!.first.id!
-                                    .toInt(),
-                                variant: variant,
-                                context: context,
-                                price: inter_price!.toInt());
-                          } else {
-                            featuredProvider.addToWhishlist(
-                                id: courseDeailedProvider
-                                    .courseDetailes!.data!.first.id!
-                                    .toInt(),
-                                variant: variant,
-                                context: context,
-                                price: expert_price!.toInt());
-                          }
-                        }
-                      },
-                      style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(22))),
-                          side: MaterialStateProperty.all(const BorderSide(
-                            color: Colors.white,
-                          ))),
-                      label: const Text(
-                        "Add to whishlist",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ),
                 kHeight15,
                 courseDeailedProvider.recentlyViewedList == null ||
                         courseDeailedProvider
@@ -644,6 +693,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                 courseName: datas?.courseName,
                                 authorName: datas?.instructorName,
                                 coursePrice: datas?.coursePrice,
+                                isWishlist: datas?.isWishlist,
                                 image: datas?.courseThumbnail.toString(),
                                 rating: datas?.rating?.toDouble(),
                                 id: datas?.id,
@@ -668,6 +718,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                       image: datas?.thumbnail?.fullSize.toString(),
                       ratingCount: datas?.ratingCount,
                       rating: datas?.rating?.toDouble(),
+                      isWishlist: datas?.isWishlist,
                       id: datas?.id?.toInt(),
                       isRecomended: datas?.recommendedCourse,
                     );

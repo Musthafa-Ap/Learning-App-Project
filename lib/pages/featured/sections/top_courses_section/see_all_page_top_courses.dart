@@ -4,6 +4,7 @@ import 'package:nuox_project/pages/featured/services/top_courses_section/top_cou
 import 'package:nuox_project/widgets/course_detailes_list_tile.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../my_home_page.dart';
 import '../../widgets/see_all_page_featured.dart';
 
 class SeeAllPageTopCourses extends StatelessWidget {
@@ -19,7 +20,9 @@ class SeeAllPageTopCourses extends StatelessWidget {
         title: const Text("Top courses in mobile development"),
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const MyHomePage()),
+                  (route) => false);
             },
             icon: const Icon(Icons.arrow_back_ios)),
         automaticallyImplyLeading: false,

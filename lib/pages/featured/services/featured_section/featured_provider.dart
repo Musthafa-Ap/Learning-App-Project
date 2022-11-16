@@ -34,7 +34,6 @@ class FeaturedProvider with ChangeNotifier {
               "http://learningapp.e8demo.com/api/featured-course/?auth_token=$token"),
         );
       }
-      print(response.body);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         auto = (data['data'] as List)

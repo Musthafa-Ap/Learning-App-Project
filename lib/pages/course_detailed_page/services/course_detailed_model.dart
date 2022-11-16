@@ -38,9 +38,11 @@ class Data {
   String? introVideo;
   int? rating;
   int? ratingCount;
+  bool? isWislist;
 
   Data(
-      {this.id,
+      {this.isWislist,
+      this.id,
       this.description,
       this.courseName,
       this.price,
@@ -57,6 +59,7 @@ class Data {
       this.ratingCount});
 
   Data.fromJson(Map<String, dynamic> json) {
+    isWislist = json['wish_list'];
     ratingCount = json['rating_count'];
     id = json['id'];
     description = json['description'];

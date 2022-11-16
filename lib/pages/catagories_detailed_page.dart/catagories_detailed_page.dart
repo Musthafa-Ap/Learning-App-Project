@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/constants/constants.dart';
+import 'package:nuox_project/my_home_page.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
@@ -25,7 +26,9 @@ class CatagoriesDetailedPage extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const MyHomePage()),
+                (route) => false);
           },
           icon: const Icon(Icons.arrow_back_ios),
         ),
@@ -55,6 +58,7 @@ class CatagoriesDetailedPage extends StatelessWidget {
                     catagoriesDetailedProvider.catagoriesDetailes?.data?[index];
                 return CatagoryDetailedPageItemCard(
                   image: datas!.thumbnail!.fullSize.toString(),
+                  isWishlist: datas.isWishlist,
                   courseName: datas.courseName.toString(),
                   price: datas.price!.toInt(),
                   ratingCount: datas.ratingCount!.toInt(),
@@ -101,6 +105,7 @@ class CatagoriesDetailedPage extends StatelessWidget {
                 return SmallItemCard(
                     courseName: datas.courseName,
                     authorName: datas.instructorName,
+                    isWishlist: datas.isWishlist,
                     coursePrice: datas.coursePrice,
                     image: datas.courseThumbnail.toString(),
                     rating: datas.rating!.toDouble(),
@@ -125,6 +130,7 @@ class CatagoriesDetailedPage extends StatelessWidget {
                 coursePrice: datas?.price?.toDouble(),
                 image: datas?.thumbnail?.fullSize.toString(),
                 ratingCount: datas?.ratingCount,
+                isWishlist: datas?.isWishlist,
                 rating: datas?.rating?.toDouble(),
                 id: datas?.id?.toInt(),
                 isRecomended: datas?.recommendedCourse,

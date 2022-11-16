@@ -34,9 +34,11 @@ class Datas {
   bool? bestSeller;
   int? rating;
   int? ratingCount;
+  bool? isWishlist;
 
   Datas(
-      {this.id,
+      {this.isWishlist,
+      this.id,
       this.instructorName,
       this.courseName,
       this.courseThumbnail,
@@ -46,6 +48,7 @@ class Datas {
       this.ratingCount});
 
   Datas.fromJson(Map<String, dynamic> json) {
+    isWishlist = json['wish_list'];
     id = json['id'];
     instructorName = json['instructor_name'];
     courseName = json['course_name'];

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/course_detailed_page/course_detailed_page.dart';
+import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
@@ -77,7 +78,9 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
             .getAll(courseID: widget.id);
         // ignore: use_build_context_synchronously
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const CourseDetailedPage()));
+            builder: (context) => CourseDetailedPage(
+                  id: widget.id,
+                )));
       },
       child: Container(
           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -135,25 +138,35 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                                         variant: 1,
                                         context: context,
                                         price: widget.coursePrice);
-                                    Provider.of<FeaturedProvider>(context,
+                                    await Provider.of<FeaturedProvider>(context,
                                             listen: false)
                                         .sample();
-                                    Provider.of<TopCoursesProvider>(context,
+                                    await Provider.of<TopCoursesProvider>(
+                                            context,
                                             listen: false)
                                         .getAll();
+                                    await Provider.of<RecomendationsProvider>(
+                                            context,
+                                            listen: false)
+                                        .getAll();
+                                    await Provider.of<CourseDetailedProvider>(
+                                            context,
+                                            listen: false)
+                                        .getRecentlyViewed();
                                   }
                                 },
-                                child: token == null
-                                    ? const SizedBox()
-                                    : Icon(
-                                        widget.isWishlist == true
-                                            ? Icons.favorite
-                                            : Icons.favorite_border,
-                                        size: 20,
-                                        color: widget.isWishlist == true
-                                            ? Colors.red
-                                            : Colors.white,
-                                      ),
+                                child:
+                                    token == null || widget.isCartItem == true
+                                        ? const SizedBox()
+                                        : Icon(
+                                            widget.isWishlist == true
+                                                ? Icons.favorite
+                                                : Icons.favorite_border,
+                                            size: 20,
+                                            color: widget.isWishlist == true
+                                                ? Colors.red
+                                                : Colors.white,
+                                          ),
                               ),
                             )
                           ],
@@ -200,22 +213,18 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                               )
                             : const SizedBox(),
                         kHeight5,
-                        Text(
-                          "₹${widget.coursePrice ?? "Course price"}",
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            widget.isRecomended!
-                                ? const BestsellerWidget()
-                                : const SizedBox(),
+                            Text(
+                              "₹${widget.coursePrice ?? "Course price"}",
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
                             widget.isCartItem
                                 ? Container(
                                     decoration: BoxDecoration(
@@ -232,6 +241,33 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                                               context: context);
                                         },
                                         icon: const Icon(Icons.delete)))
+                                : const SizedBox()
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            widget.isRecomended!
+                                ? const BestsellerWidget()
+                                : const SizedBox(),
+                            widget.isCartItem
+                                ? const SizedBox()
+                                // ? Container(
+                                //     decoration: BoxDecoration(
+                                //         color: Colors.white,
+                                //         borderRadius: BorderRadius.circular(5)),
+                                //     margin: const EdgeInsets.only(right: 20),
+                                //     height: 35,
+                                //     width: 45,
+                                //     child: IconButton(
+                                //         onPressed: () {
+                                //           cartProvider.deleteCartItem(
+                                //               courseID: widget.id,
+                                //               variantID: widget.variantID,
+                                //               context: context);
+                                //         },
+                                //         icon: const Icon(Icons.delete)))
                                 : BigCartIconButton(
                                     id: widget.id!,
                                     price: widget.coursePrice!.toInt(),

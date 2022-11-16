@@ -4,6 +4,7 @@ import 'package:http/http.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_model.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/sub_catagoies_model.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/sub_catagories_detailed_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CatagoriesDetailedProvider with ChangeNotifier {
   CatagoriesDetailedModel? catagoriesDetailes;
@@ -11,10 +12,20 @@ class CatagoriesDetailedProvider with ChangeNotifier {
   SubCatagoriesDetailedModel? subCatagoriesDetailes;
   bool isCatagoryDetailedLoading = false;
   Future<void> getAll({required catagoriesID}) async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    var token = shared.getString("access_token");
     isCatagoryDetailedLoading = true;
-    var api =
-        "http://learningapp.e8demo.com/api/course_list/?cate_id=$catagoriesID";
-    Response response = await get(Uri.parse(api));
+    Response response;
+    // var api =
+    //     "http://learningapp.e8demo.com/api/course_list/?cate_id=$catagoriesID";
+    if (token == null) {
+      response = await get(Uri.parse(
+          "http://learningapp.e8demo.com/api/course_list/?cate_id=$catagoriesID"));
+    } else {
+      print("--------------------");
+      response = await get(Uri.parse(
+          "http://learningapp.e8demo.com/api/course_list/?cate_id=$catagoriesID&auth_token=$token"));
+    }
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       catagoriesDetailes = CatagoriesDetailedModel.fromJson(data);

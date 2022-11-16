@@ -213,7 +213,18 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                             datas!.thumbnail.toString()))),
                                 height: size * .21,
                                 width: size * .25,
+                                child: const Center(
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    child: Icon(
+                                      Icons.play_arrow,
+                                      color: Colors.black,
+                                      size: 40,
+                                    ),
+                                  ),
+                                ),
                               ),
+                              const Icon(Icons.play_arrow),
                               kWidth10,
                               Expanded(
                                 child: Text(

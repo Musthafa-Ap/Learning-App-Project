@@ -5,6 +5,8 @@ import 'package:nuox_project/pages/featured/services/featured_section/featured_p
 import 'package:nuox_project/widgets/course_detailes_list_tile.dart';
 import 'package:provider/provider.dart';
 
+import '../../../my_home_page.dart';
+
 class SeeAllPageFeatured extends StatelessWidget {
   final bool fromSubCatagories;
   const SeeAllPageFeatured({super.key, this.fromSubCatagories = false});
@@ -19,7 +21,9 @@ class SeeAllPageFeatured extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const MyHomePage()),
+                  (route) => false);
             },
             icon: const Icon(Icons.arrow_back_ios)),
         automaticallyImplyLeading: false,

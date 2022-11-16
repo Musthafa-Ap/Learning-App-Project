@@ -55,7 +55,7 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
         kheight20,
         Center(
           child: Text(
-            name == null ? "Username" : name.toString(),
+            name == null || name!.isEmpty ? "Username" : name.toString(),
             style: const TextStyle(color: Colors.white, fontSize: 23),
           ),
         ),
@@ -71,8 +71,24 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
             Text(
               email == null ? "E-mail" : email.toString(),
               style: const TextStyle(color: Colors.white),
-            )
+            ),
           ],
+        ),
+        kHeight,
+        Container(
+          height: 20,
+          width: 120,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(3),
+            color: Colors.purple,
+          ),
+          child: const Center(
+              child: Text(
+            "Instructor",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1),
+          )),
         ),
       ],
     );

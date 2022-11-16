@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:nuox_project/authentication/moblie_number_otp_submission_page.dart';
 import 'package:nuox_project/authentication/otp_verification_page.dart';
-import 'package:nuox_project/authentication/signup.dart';
+import 'package:nuox_project/authentication/registration_otp_submission_page.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../login_page.dart';
 import '../../my_home_page.dart';
 
 class AuthProvider with ChangeNotifier {
+  bool emailotpLoading = false;
   var mobile_error;
   var email_error;
   var name_error;
@@ -81,7 +82,6 @@ class AuthProvider with ChangeNotifier {
           Uri.parse(
               "http://learningapp.e8demo.com/api/user-mobileotp/MobileNumberOtpVerification/"),
           body: {'mobile': number, 'otp': otp});
-      print(response.body);
       Map<String, dynamic> data = jsonDecode(response.body);
       if (data['status'] == false) {
         setLoading(false);
@@ -102,6 +102,7 @@ class AuthProvider with ChangeNotifier {
         await sharedPrefs.setString("number", number);
         await sharedPrefs.setBool("changepass", false);
         await sharedPrefs.setString("email", email);
+        await sharedPrefs.setString("name", '');
         //  <String, dynamic> checking = data['token'];
 
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -225,7 +226,6 @@ class AuthProvider with ChangeNotifier {
       var response = await http.post(
           Uri.parse("http://learningapp.e8demo.com/api/user-login/"),
           body: {'email': email, 'password': password});
-      print(response.body);
       if (response.statusCode == 200) {
         login_email_error = null;
         login_pass_error = null;
@@ -243,6 +243,7 @@ class AuthProvider with ChangeNotifier {
           var accessToken = data['token']['access_token'].toString();
           await sharedPrefs.setString("access_token", accessToken);
           await sharedPrefs.setBool("changepass", true);
+          await sharedPrefs.setString("name", '');
 
           notifyListeners();
           if (!mounted) return;
@@ -310,7 +311,6 @@ class AuthProvider with ChangeNotifier {
     required String password,
   }) async {
     String num = countryCode + number;
-    print("hi");
     setLoading(true);
     try {
       email_error = null;
@@ -332,24 +332,16 @@ class AuthProvider with ChangeNotifier {
         setLoading(false);
         notifyListeners();
         final sharedPrefs = await SharedPreferences.getInstance();
-        await sharedPrefs.setBool("isLogged", true);
-        var accessToken = data["token"]["access_token"];
+
         await sharedPrefs.setString("name", name);
-        await sharedPrefs.setString("email", email);
-        await sharedPrefs.setString("access_token", accessToken);
-        await sharedPrefs.setString("number", num);
-        await sharedPrefs.setBool("changepass", true);
+
         notifyListeners();
 
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            backgroundColor: Colors.green,
-            content: Text(
-              "User created successfully",
-              style: TextStyle(fontWeight: FontWeight.bold),
-            )));
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const MyHomePage()),
-            (route) => false);
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) =>
+                  RegistrationOTPSubmissionPage(email: email)),
+        );
       } else if (data['status_code'] == 400) {
         setLoading(false);
         Map<String, dynamic> error_message = data['message'];
@@ -381,7 +373,56 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  instructorRegistration(
+  void registrationOTPSubmission(
+      {required email, required otp, required context}) async {
+    try {
+      emailotpLoading = true;
+      var response = await http.post(
+          Uri.parse(
+              "http://learningapp.e8demo.com/api/user-email-verification/"),
+          body: {"email": email, "otp": otp});
+      print(response.body);
+      var data = jsonDecode(response.body);
+      if (data["status"] == "failure") {
+        emailotpLoading = false;
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(
+              data["message"],
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            )));
+        print(data["message"]);
+      }
+      if (data['result'] == "success") {
+        emailotpLoading = false;
+        var mobile = data["mobile"];
+        var email = data["email"];
+        var token = data["token"]["access_token"];
+        final sharedPrefs = await SharedPreferences.getInstance();
+        await sharedPrefs.setString("email", email);
+
+        await sharedPrefs.setString("number", mobile);
+        await sharedPrefs.setBool("changepass", true);
+        await sharedPrefs.setBool("isLogged", true);
+        await sharedPrefs.setString("access_token", token);
+
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const MyHomePage()),
+            (route) => false);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+              "Successfully registered",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )));
+      }
+    } catch (e) {
+      emailotpLoading = false;
+      print(e.toString());
+    }
+  }
+
+  void instructorRegistration(
       {required BuildContext context,
       required String email,
       required String number,
@@ -394,7 +435,6 @@ class AuthProvider with ChangeNotifier {
 
     setLoading(true);
     try {
-      print("hiiiiiiiiiii");
       email_error = null;
       mobile_error = null;
       var response = http.MultipartRequest(
@@ -416,33 +456,21 @@ class AuthProvider with ChangeNotifier {
         var data = await value.stream.toBytes();
         var body = String.fromCharCodes(data);
         var msg = jsonDecode(body);
-
+        print(body);
         if (msg["status_code"] == 200) {
-          var token = msg['token']['access_token'];
           email_error = null;
           mobile_error = null;
-
           setLoading(false);
           notifyListeners();
           final sharedPrefs = await SharedPreferences.getInstance();
           //   await sharedPrefs!.clear();
-          await sharedPrefs.setBool("isLogged", true);
           await sharedPrefs.setString("name", name);
-          await sharedPrefs.setString("email", email);
-          await sharedPrefs.setString("access_token", token);
-          await sharedPrefs.setString("number", num);
-          await sharedPrefs.setBool("changepass", true);
           notifyListeners();
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              backgroundColor: Colors.green,
-              content: Text(
-                "User created successfully",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              )));
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => const MyHomePage()),
-              (route) => false);
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) =>
+                    RegistrationOTPSubmissionPage(email: email)),
+          );
         } else if (msg["status_code"] == 400) {
           Map<String, dynamic> error_message = msg['message'];
           if (error_message.containsKey("email")) {

@@ -63,7 +63,10 @@ class _BigItemCardState extends State<BigItemCard> {
           await Provider.of<CourseDetailedProvider>(context, listen: false)
               .getAll(courseID: widget.id);
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const CourseDetailedPage()));
+              builder: (context) => CourseDetailedPage(
+                    refesh: true,
+                    id: widget.id,
+                  )));
         }
       },
       child: Stack(
