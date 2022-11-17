@@ -6,9 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:nuox_project/my_home_page.dart';
 import 'package:nuox_project/pages/account/account_services/about_app_model.dart';
 import 'package:nuox_project/pages/account/account_services/faq_model.dart';
+import 'package:nuox_project/pages/account/account_services/order_detailes_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountProvider with ChangeNotifier {
+  bool isDocumentUploadLoading = false;
+  String? document;
+  bool noOrders = false;
+  OrderDetailesModel? orderDetailes;
   AboutAppModel? aboutApp;
   String? new_pass_error;
   String? old_pass_error;
@@ -181,6 +186,98 @@ class AccountProvider with ChangeNotifier {
         Navigator.of(context).pop();
       }
     } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void getOrderDetailes() async {
+    try {
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      String? token = shared.getString("access_token");
+      String auth = "Bearer $token";
+      var response = await http.get(
+          Uri.parse("http://learningapp.e8demo.com/api/order_history/"),
+          headers: {"Authorization": auth});
+      if (response.statusCode == 200) {
+        noOrders = false;
+        var data = jsonDecode(response.body);
+        orderDetailes = OrderDetailesModel.fromJson(data);
+        notifyListeners();
+      }
+      if (response.statusCode == 400) {
+        noOrders = true;
+        notifyListeners();
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> getDocument() async {
+    try {
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      String? token = shared.getString("access_token");
+      String auth = "Bearer $token";
+      var response = await http.get(
+          Uri.parse("http://learningapp.e8demo.com/api/instructor-document/"),
+          headers: {"Authorization": auth});
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        document = data['data'].first["instructor_docs"];
+        notifyListeners();
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> replaceDocument({required File? image, required context}) async {
+    try {
+      isDocumentUploadLoading = true;
+      notifyListeners();
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      String? token = shared.getString("access_token");
+      String auth = "Bearer $token";
+      var response = http.MultipartRequest(
+        "PUT",
+        Uri.parse("http://learningapp.e8demo.com/api/instructor-document/"),
+      );
+      response.headers["Authorization"] = auth.toString();
+      if (image != null) {
+        response.files.add(
+            await http.MultipartFile.fromPath('instructor_docs', image.path));
+      }
+      response.send().then((value) async {
+        var data = await value.stream.toBytes();
+        var body = String.fromCharCodes(data);
+        Map<String, dynamic> msg = jsonDecode(body);
+        if (msg["status_code"] == 200) {
+          document = msg['data']['instructor_docs'];
+          isDocumentUploadLoading = false;
+          notifyListeners();
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Colors.green,
+              content: Text(
+                'Document replaced successfully',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              )));
+        }
+        if (msg["status_code"] == 400) {
+          isDocumentUploadLoading = false;
+          notifyListeners();
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              backgroundColor: Colors.green,
+              content: Text(
+                '"Only images files allowed"',
+                style:
+                    TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              )));
+        }
+      });
+    } catch (e) {
+      isDocumentUploadLoading = false;
+      notifyListeners();
       print(e.toString());
     }
   }

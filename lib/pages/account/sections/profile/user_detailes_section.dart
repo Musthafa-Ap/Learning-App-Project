@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:nuox_project/pages/account/account_services/account_provider.dart';
 import 'package:nuox_project/pages/account/sections/profile/profile_edit_page.dart';
+import 'package:nuox_project/pages/account/sections/support/instructor_document_page.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../constants/constants.dart';
 
@@ -17,6 +20,7 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
     super.initState();
   }
 
+  bool? instructor;
   String? name;
   String? email;
   String? image;
@@ -75,21 +79,33 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
           ],
         ),
         kHeight,
-        Container(
-          height: 20,
-          width: 120,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3),
-            color: Colors.purple,
-          ),
-          child: const Center(
-              child: Text(
-            "Instructor",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 16, letterSpacing: 1),
-          )),
-        ),
+        instructor == true
+            ? Container(
+                height: 20,
+                width: 120,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(3),
+                  color: Colors.purple,
+                ),
+                child: Center(
+                    child: GestureDetector(
+                  onTap: () async {
+                    await Provider.of<AccountProvider>(context, listen: false)
+                        .getDocument();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const InstructorDocumentPage()));
+                  },
+                  child: const Text(
+                    "Instructor",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        letterSpacing: 1),
+                  ),
+                )),
+              )
+            : const SizedBox()
       ],
     );
   }
@@ -100,6 +116,7 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
       name = sharedPref.getString("name");
       email = sharedPref.getString("email");
       image = sharedPref.getString("image");
+      instructor = sharedPref.getBool("instructor");
     });
   }
 }

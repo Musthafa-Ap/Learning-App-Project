@@ -97,17 +97,31 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 _pickImage();
               },
               child: _image == null
-                  ? CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      radius: 90,
-                      backgroundImage: NetworkImage(_profileimage == null
-                          ? "https://cdn2.vectorstock.com/i/1000x1000/20/76/man-avatar-profile-vector-21372076.jpg"
-                          : _profileimage!),
+                  ? Align(
+                      child: CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        radius: 90,
+                        backgroundImage: NetworkImage(_profileimage == null
+                            ? "https://cdn2.vectorstock.com/i/1000x1000/20/76/man-avatar-profile-vector-21372076.jpg"
+                            : _profileimage!),
+                        child: const Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.purple,
+                              child: Icon(Icons.edit),
+                            ),
+                          ),
+                        ),
+                      ),
                     )
-                  : CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      radius: 90,
-                      backgroundImage: FileImage(_image!),
+                  : Align(
+                      child: CircleAvatar(
+                        backgroundColor: Colors.transparent,
+                        radius: 90,
+                        backgroundImage: FileImage(_image!),
+                      ),
                     ),
             ),
             kheight20,

@@ -46,6 +46,7 @@ class SubCatagoriesDetailedPage extends StatelessWidget {
                 courseName: datas?.courseName.toString(),
                 coursePrice: datas?.price?.toDouble(),
                 id: datas?.id?.toInt(),
+                isWishlist: false,
                 ratingCount: datas?.ratingCount,
                 image: datas?.thumbnail?.fullSize.toString(),
                 rating: datas?.rating?.toDouble(),

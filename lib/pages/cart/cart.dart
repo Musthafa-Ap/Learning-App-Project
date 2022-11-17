@@ -55,6 +55,7 @@ class _CartState extends State<Cart> {
                           variantID: datas.section!.id!.toInt(),
                           courseName: datas.courseName.toString(),
                           authorName: datas.autherName.toString(),
+                          isWishlist: false,
                           coursePrice: datas.price!.toDouble(),
                           ratingCount: 100,
                           image: datas.courseimage.toString(),

@@ -123,7 +123,6 @@ class CartProvider with ChangeNotifier {
     required context,
   }) async {
     try {
-      print("payment mode ======= $paymentMode");
       SharedPreferences shared = await SharedPreferences.getInstance();
       var token = shared.getString("access_token");
       String auth = "Bearer $token";

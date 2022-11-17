@@ -5,9 +5,11 @@ import 'package:provider/provider.dart';
 import '../constants/constants.dart';
 
 class RegistrationOTPSubmissionPage extends StatelessWidget {
+  final bool instructor;
   final _formKey = GlobalKey<FormState>();
   final String email;
-  RegistrationOTPSubmissionPage({super.key, required this.email});
+  RegistrationOTPSubmissionPage(
+      {super.key, required this.email, this.instructor = false});
   final _otpController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -64,6 +66,7 @@ class RegistrationOTPSubmissionPage extends StatelessWidget {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         authProvider.registrationOTPSubmission(
+                            instructor: instructor,
                             email: email,
                             otp: _otpController.text,
                             context: context);

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -43,6 +44,7 @@ class AuthProvider with ChangeNotifier {
           notifyListeners();
           var token = data['token']['access_token'];
           await sharedPrefs.setBool("isLogged", true);
+          await sharedPrefs.setBool('instructor', false);
           await sharedPrefs.setString("name", name);
           await sharedPrefs.setString("email", email);
           await sharedPrefs.setString("access_token", token);
@@ -92,9 +94,12 @@ class AuthProvider with ChangeNotifier {
               style: const TextStyle(fontWeight: FontWeight.bold),
             )));
       } else if (data.containsKey("token")) {
+        bool instructor = data['is_instructor'];
+        log(instructor.toString());
         setLoading(false);
         String token = data['token']['access_token'];
         final sharedPrefs = await SharedPreferences.getInstance();
+        await sharedPrefs.setBool('instructor', instructor);
         //  await sharedPrefs!.clear();
         var email = data['email'];
         await sharedPrefs.setBool("isLogged", true);
@@ -226,6 +231,7 @@ class AuthProvider with ChangeNotifier {
       var response = await http.post(
           Uri.parse("http://learningapp.e8demo.com/api/user-login/"),
           body: {'email': email, 'password': password});
+
       if (response.statusCode == 200) {
         login_email_error = null;
         login_pass_error = null;
@@ -234,10 +240,12 @@ class AuthProvider with ChangeNotifier {
         var data = jsonDecode(response.body);
 
         if (data['result'] == "success") {
+          bool instructor = data["is_instructor"];
           var mobile = data["mobile"];
           final sharedPrefs = await SharedPreferences.getInstance();
           //  await sharedPrefs!.clear();
           await sharedPrefs.setBool("isLogged", true);
+          await sharedPrefs.setBool('instructor', instructor);
           await sharedPrefs.setString("number", mobile);
           await sharedPrefs.setString("email", email);
           var accessToken = data['token']['access_token'].toString();
@@ -374,7 +382,10 @@ class AuthProvider with ChangeNotifier {
   }
 
   void registrationOTPSubmission(
-      {required email, required otp, required context}) async {
+      {required email,
+      required otp,
+      required context,
+      bool instructor = false}) async {
     try {
       emailotpLoading = true;
       var response = await http.post(
@@ -400,7 +411,11 @@ class AuthProvider with ChangeNotifier {
         var token = data["token"]["access_token"];
         final sharedPrefs = await SharedPreferences.getInstance();
         await sharedPrefs.setString("email", email);
-
+        if (instructor == true) {
+          await sharedPrefs.setBool('instructor', true);
+        } else {
+          await sharedPrefs.setBool('instructor', false);
+        }
         await sharedPrefs.setString("number", mobile);
         await sharedPrefs.setBool("changepass", true);
         await sharedPrefs.setBool("isLogged", true);
@@ -468,8 +483,10 @@ class AuthProvider with ChangeNotifier {
           notifyListeners();
           Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) =>
-                    RegistrationOTPSubmissionPage(email: email)),
+                builder: (context) => RegistrationOTPSubmissionPage(
+                      email: email,
+                      instructor: true,
+                    )),
           );
         } else if (msg["status_code"] == 400) {
           Map<String, dynamic> error_message = msg['message'];

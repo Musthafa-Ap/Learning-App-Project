@@ -116,7 +116,7 @@ class Thumbnail {
 
 class Instructor {
   String? name;
-  Thumbnail? profilePic;
+  String? profilePic;
   String? phone;
   String? email;
   String? details;
@@ -126,9 +126,7 @@ class Instructor {
 
   Instructor.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    profilePic = json['profile_pic'] != null
-        ? Thumbnail.fromJson(json['profile_pic'])
-        : null;
+    profilePic = json['profile_pic'];
     phone = json['phone'];
     email = json['email'];
     details = json['details'];

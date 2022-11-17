@@ -25,7 +25,7 @@ class CourseDetailesListTile extends StatefulWidget {
   final String? image;
   final double? rating;
   final int? variantID;
-  CourseDetailesListTile({
+  const CourseDetailesListTile({
     Key? key,
     this.isCartItem = false,
     required this.courseName,
@@ -37,7 +37,7 @@ class CourseDetailesListTile extends StatefulWidget {
     this.variantID,
     this.isRecomended = false,
     required this.ratingCount,
-    this.isWishlist,
+    required this.isWishlist,
   }) : super(key: key);
   final bool isCartItem;
 
@@ -63,24 +63,28 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
   @override
   Widget build(BuildContext context) {
     final featuredProvider = Provider.of<FeaturedProvider>(context);
-    if (widget.variantID == 1) {
-      variant = "Beginner";
-    } else if (widget.variantID == 2) {
-      variant = "Intermediate";
-    } else {
-      variant = "Expert";
+    if (widget.variantID != null) {
+      if (widget.variantID == 1) {
+        variant = "Beginner";
+      } else if (widget.variantID == 2) {
+        variant = "Intermediate";
+      } else {
+        variant = "Expert";
+      }
     }
     final cartProvider = Provider.of<CartProvider>(context);
     final size = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () async {
-        await Provider.of<CourseDetailedProvider>(context, listen: false)
-            .getAll(courseID: widget.id);
-        // ignore: use_build_context_synchronously
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CourseDetailedPage(
-                  id: widget.id,
-                )));
+        if (widget.id != null) {
+          await Provider.of<CourseDetailedProvider>(context, listen: false)
+              .getAll(courseID: widget.id);
+          // ignore: use_build_context_synchronously
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => CourseDetailedPage(
+                    id: widget.id,
+                  )));
+        }
       },
       child: Container(
           padding: const EdgeInsets.symmetric(vertical: 5),
@@ -133,40 +137,45 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                                       (route) => false,
                                     );
                                   } else {
-                                    featuredProvider.addToWhishlist(
-                                        id: widget.id,
-                                        variant: 1,
-                                        context: context,
-                                        price: widget.coursePrice);
-                                    await Provider.of<FeaturedProvider>(context,
-                                            listen: false)
-                                        .sample();
-                                    await Provider.of<TopCoursesProvider>(
-                                            context,
-                                            listen: false)
-                                        .getAll();
-                                    await Provider.of<RecomendationsProvider>(
-                                            context,
-                                            listen: false)
-                                        .getAll();
-                                    await Provider.of<CourseDetailedProvider>(
-                                            context,
-                                            listen: false)
-                                        .getRecentlyViewed();
+                                    if (widget.id != null ||
+                                        widget.coursePrice != null) {
+                                      featuredProvider.addToWhishlist(
+                                          id: widget.id,
+                                          variant: 1,
+                                          context: context,
+                                          price: widget.coursePrice);
+                                      await Provider.of<FeaturedProvider>(
+                                              context,
+                                              listen: false)
+                                          .sample();
+                                      await Provider.of<TopCoursesProvider>(
+                                              context,
+                                              listen: false)
+                                          .getAll();
+                                      await Provider.of<RecomendationsProvider>(
+                                              context,
+                                              listen: false)
+                                          .getAll();
+                                      await Provider.of<CourseDetailedProvider>(
+                                              context,
+                                              listen: false)
+                                          .getRecentlyViewed();
+                                    }
                                   }
                                 },
-                                child:
-                                    token == null || widget.isCartItem == true
-                                        ? const SizedBox()
-                                        : Icon(
-                                            widget.isWishlist == true
-                                                ? Icons.favorite
-                                                : Icons.favorite_border,
-                                            size: 20,
-                                            color: widget.isWishlist == true
-                                                ? Colors.red
-                                                : Colors.white,
-                                          ),
+                                child: token == null ||
+                                        widget.isCartItem == true ||
+                                        widget.isWishlist == null
+                                    ? const SizedBox()
+                                    : Icon(
+                                        widget.isWishlist == true
+                                            ? Icons.favorite
+                                            : Icons.favorite_border,
+                                        size: 20,
+                                        color: widget.isWishlist == true
+                                            ? Colors.red
+                                            : Colors.white,
+                                      ),
                               ),
                             )
                           ],
@@ -181,7 +190,7 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                         Row(
                           children: [
                             Text(
-                              "${widget.rating} ",
+                              "${widget.rating ?? "4"} ",
                               style: const TextStyle(
                                   fontSize: 12, color: Colors.yellow),
                             ),
@@ -197,7 +206,7 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                               direction: Axis.horizontal,
                             ),
                             Text(
-                              " (${widget.ratingCount})",
+                              " (${widget.ratingCount ?? "0"})",
                               style: const TextStyle(
                                   fontSize: 12, color: Colors.yellow),
                             ),
@@ -206,7 +215,7 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                         kHeight5,
                         widget.isCartItem
                             ? Text(
-                                variant!,
+                                variant.toString(),
                                 style: const TextStyle(
                                   color: Colors.white,
                                 ),
@@ -235,10 +244,13 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                                     width: 45,
                                     child: IconButton(
                                         onPressed: () {
-                                          cartProvider.deleteCartItem(
-                                              courseID: widget.id,
-                                              variantID: widget.variantID,
-                                              context: context);
+                                          if (widget.id != null ||
+                                              widget.variantID != null) {
+                                            cartProvider.deleteCartItem(
+                                                courseID: widget.id,
+                                                variantID: widget.variantID,
+                                                context: context);
+                                          }
                                         },
                                         icon: const Icon(Icons.delete)))
                                 : const SizedBox()
@@ -248,10 +260,12 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            widget.isRecomended!
+                            widget.isRecomended != null
                                 ? const BestsellerWidget()
                                 : const SizedBox(),
-                            widget.isCartItem
+                            widget.isCartItem == true ||
+                                    widget.id == null ||
+                                    widget.coursePrice == null
                                 ? const SizedBox()
                                 // ? Container(
                                 //     decoration: BoxDecoration(

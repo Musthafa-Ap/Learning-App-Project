@@ -3,7 +3,6 @@ import 'package:nuox_project/constants/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'listtile_account_page.dart';
 import 'widgets/account_page_button.dart';
-import 'widgets/small_heading_account_page.dart';
 import 'sections/profile/user_detailes_section.dart';
 
 class Account extends StatefulWidget {
@@ -49,6 +48,11 @@ class _AccountState extends State<Account> {
           const ListTileAccountPage(
             tiletitle: "Wishlist",
             index: 6,
+          ),
+          kHeight,
+          const ListTileAccountPage(
+            tiletitle: "Orders",
+            index: 7,
           ),
           kHeight,
           const ListTileAccountPage(
