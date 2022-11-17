@@ -4,26 +4,26 @@ import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.da
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
-class Video {
-  final String name;
-  final String url;
-  final String thumbnail;
+// class Video {
+//   final String name;
+//   final String url;
+//   final String thumbnail;
 
-  Video({required this.name, required this.url, required this.thumbnail});
-}
+//   Video({required this.name, required this.url, required this.thumbnail});
+// }
 
-final videos = [
-  Video(
-      name: "Python",
-      thumbnail:
-          "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg",
-      url: "http://learningapp.e8demo.com/media/videos/1-python-basics.mp4"),
-  Video(
-      name: "Java",
-      thumbnail:
-          "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg",
-      url: "http://learningapp.e8demo.com/media/videos/1-python-basics.mp4")
-];
+// final videos = [
+//   Video(
+//       name: "Python",
+//       thumbnail:
+//           "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg",
+//       url: "http://learningapp.e8demo.com/media/videos/1-python-basics.mp4"),
+//   Video(
+//       name: "Java",
+//       thumbnail:
+//           "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg",
+//       url: "http://learningapp.e8demo.com/media/videos/1-python-basics.mp4")
+// ];
 
 class CourseVideosPage extends StatefulWidget {
   const CourseVideosPage({super.key});
@@ -78,6 +78,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
       ..initialize().then((value) {
         _controller.play();
         _controller.setVolume(1);
+        _controller.setLooping(false);
       });
   }
 
@@ -109,14 +110,52 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                       child: _controller.value.isInitialized
                           ? Column(
                               children: [
-                                SizedBox(
-                                  height: size * .501,
-                                  child: VideoPlayer(_controller),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _controller.value.isPlaying
+                                          ? _controller.pause()
+                                          : _controller.play();
+                                    });
+                                  },
+                                  child: Stack(
+                                    children: [
+                                      SizedBox(
+                                        height: size * .501,
+                                        child: VideoPlayer(_controller),
+                                      ),
+                                      // _controller.value.isPlaying
+                                      //     ? const SizedBox()
+                                      //     : Positioned(
+                                      //         left: 0,
+                                      //         right: 0,
+                                      //         bottom: 0,
+                                      //         top: 0,
+                                      //         child: IconButton(
+                                      //             onPressed: () {
+                                      //               setState(() {
+                                      //                 _controller.play();
+                                      //               });
+                                      //             },
+                                      //             icon: const CircleAvatar(
+                                      //               backgroundColor:
+                                      //                   Colors.white,
+                                      //               child: Center(
+                                      //                 child: Icon(
+                                      //                   Icons.play_arrow,
+                                      //                   color: Colors.black,
+                                      //                   size: 40,
+                                      //                 ),
+                                      //               ),
+                                      //             )),
+                                      //       ),
+                                    ],
+                                  ),
                                 ),
                                 kHeight,
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5.0),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -148,19 +187,54 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                     ],
                                   ),
                                 ),
-                                IconButton(
-                                    onPressed: () {
-                                      _controller.value.isPlaying
-                                          ? _controller.pause()
-                                          : _controller.play();
-                                    },
-                                    icon: Icon(
-                                      _controller.value.isPlaying
-                                          ? Icons.pause
-                                          : Icons.play_arrow,
-                                      color: Colors.white,
-                                      size: 40,
-                                    ))
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                        onPressed: () async {
+                                          await _controller.seekTo(Duration(
+                                              seconds: _controller.value
+                                                      .position.inSeconds -
+                                                  10));
+                                        },
+                                        icon: const Icon(
+                                          Icons.skip_previous,
+                                          size: 40,
+                                          color: Colors.white,
+                                        )),
+                                    const SizedBox(
+                                      width: 30,
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          _controller.value.isPlaying
+                                              ? _controller.pause()
+                                              : _controller.play();
+                                        },
+                                        icon: Icon(
+                                          _controller.value.isPlaying
+                                              ? Icons.pause
+                                              : Icons.play_arrow,
+                                          color: Colors.white,
+                                          size: 40,
+                                        )),
+                                    const SizedBox(
+                                      width: 30,
+                                    ),
+                                    IconButton(
+                                        onPressed: () async {
+                                          await _controller.seekTo(Duration(
+                                              seconds: _controller.value
+                                                      .position.inSeconds +
+                                                  10));
+                                        },
+                                        icon: const Icon(
+                                          Icons.skip_next,
+                                          size: 40,
+                                          color: Colors.white,
+                                        )),
+                                  ],
+                                )
                               ],
                             )
                           : const Center(

@@ -94,7 +94,108 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
             kHeight,
             GestureDetector(
               onTap: () {
-                _pickImage();
+                //   _pickImage();
+                showModalBottomSheet(
+                  backgroundColor: Colors.white,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 8.0, horizontal: 15),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          kHeight,
+                          GestureDetector(
+                            onTap: () {
+                              _pickImage(ImageSource.gallery);
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.black,
+                              ),
+                              height: 55,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(
+                                    Icons.image,
+                                    color: Colors.white,
+                                  ),
+                                  kWidth10,
+                                  Text(
+                                    "Gallery",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          kHeight,
+                          Row(
+                            children: const [
+                              Expanded(
+                                  child: Divider(
+                                color: Colors.black,
+                              )),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  "OR",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                              ),
+                              Expanded(
+                                  child: Divider(
+                                color: Colors.black,
+                              )),
+                            ],
+                          ),
+                          kHeight,
+                          GestureDetector(
+                            onTap: () {
+                              _pickImage(ImageSource.camera);
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.black,
+                              ),
+                              height: 55,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(
+                                    Icons.camera_alt_outlined,
+                                    color: Colors.white,
+                                  ),
+                                  kWidth10,
+                                  Text(
+                                    "Camera",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          kHeight,
+                        ],
+                      ),
+                    );
+                  },
+                );
               },
               child: _image == null
                   ? Align(
@@ -435,9 +536,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     );
   }
 
-  Future _pickImage() async {
+  Future _pickImage(ImageSource source) async {
     try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
       File? img = File(image.path);
       setState(() {
