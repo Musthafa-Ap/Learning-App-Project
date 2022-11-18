@@ -106,9 +106,12 @@ class _FeaturedSectionState extends State<FeaturedSection> {
                       kWidth30,
                       GestureDetector(
                         child: const SeeAllWidget(),
-                        onTap: () {
+                        onTap: () async {
                           Provider.of<FeaturedProvider>(context, listen: false)
                               .sortedCourses = null;
+                          await Provider.of<RecomendationsProvider>(context,
+                                  listen: false)
+                              .getAll();
                           featuredProvider.sample();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>

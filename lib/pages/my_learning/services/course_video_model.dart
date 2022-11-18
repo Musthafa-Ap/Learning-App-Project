@@ -25,9 +25,11 @@ class Data {
   bool? isActive;
   int? course;
   int? section;
+  String? videoDuration;
 
   Data(
-      {this.id,
+      {this.videoDuration,
+      this.id,
       this.topicName,
       this.description,
       this.video,
@@ -38,6 +40,7 @@ class Data {
       this.section});
 
   Data.fromJson(Map<String, dynamic> json) {
+    videoDuration = json['video_duration'];
     id = json['id'];
     topicName = json['topic_name'];
     description = json['description'];

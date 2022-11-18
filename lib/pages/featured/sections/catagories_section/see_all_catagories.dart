@@ -39,7 +39,7 @@ class SeeAllCatagories extends StatelessWidget {
             itemBuilder: (context, index) {
               var datas = catagoriesProvider[index];
               return CatagoriesListTile(
-                icon: Icons.computer_outlined,
+                iconImage: datas.iconImage,
                 title: datas.categoryName.toString(),
                 id: datas.id!,
               );

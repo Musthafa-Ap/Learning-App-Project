@@ -16,6 +16,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import '../../widgets/course_detailes_list_tile.dart';
+import '../catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 
 class CourseDetailedPage extends StatefulWidget {
   final bool refesh;
@@ -95,6 +96,9 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                 context,
                 listen: false,
               ).getAll();
+              await Provider.of<CatagoriesDetailedProvider>(context,
+                      listen: false)
+                  .getSubCatagoriesDetailes(subCatagoriesID: widget.id);
               await Provider.of<FeaturedProvider>(context, listen: false)
                   .sample();
               await Provider.of<RecomendationsProvider>(context, listen: false)
@@ -647,6 +651,11 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                     context,
                                     listen: false,
                                   ).getAll();
+                                  await Provider.of<CatagoriesDetailedProvider>(
+                                          context,
+                                          listen: false)
+                                      .getSubCatagoriesDetailes(
+                                          subCatagoriesID: widget.id);
                                 }
                               }
                             },

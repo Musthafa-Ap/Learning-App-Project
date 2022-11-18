@@ -1,29 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
-
-// class Video {
-//   final String name;
-//   final String url;
-//   final String thumbnail;
-
-//   Video({required this.name, required this.url, required this.thumbnail});
-// }
-
-// final videos = [
-//   Video(
-//       name: "Python",
-//       thumbnail:
-//           "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg",
-//       url: "http://learningapp.e8demo.com/media/videos/1-python-basics.mp4"),
-//   Video(
-//       name: "Java",
-//       thumbnail:
-//           "http://learningapp.e8demo.com/media/thumbnail_img/5-chemistry.jpeg",
-//       url: "http://learningapp.e8demo.com/media/videos/1-python-basics.mp4")
-// ];
 
 class CourseVideosPage extends StatefulWidget {
   const CourseVideosPage({super.key});
@@ -33,6 +13,8 @@ class CourseVideosPage extends StatefulWidget {
 }
 
 class _CourseVideosPageState extends State<CourseVideosPage> {
+  bool prev = false;
+  bool forw = false;
   late MyLearningsProvider _myLearningsProvider;
   late VideoPlayerController _controller;
   int _currentIndex = 0;
@@ -106,52 +88,192 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                      height: size * .71,
+                      height: size * .58,
                       child: _controller.value.isInitialized
                           ? Column(
                               children: [
                                 GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _controller.value.isPlaying
-                                          ? _controller.pause()
-                                          : _controller.play();
-                                    });
-                                  },
-                                  child: Stack(
-                                    children: [
-                                      SizedBox(
-                                        height: size * .501,
-                                        child: VideoPlayer(_controller),
-                                      ),
-                                      // _controller.value.isPlaying
-                                      //     ? const SizedBox()
-                                      //     : Positioned(
-                                      //         left: 0,
-                                      //         right: 0,
-                                      //         bottom: 0,
-                                      //         top: 0,
-                                      //         child: IconButton(
-                                      //             onPressed: () {
-                                      //               setState(() {
-                                      //                 _controller.play();
-                                      //               });
-                                      //             },
-                                      //             icon: const CircleAvatar(
-                                      //               backgroundColor:
-                                      //                   Colors.white,
-                                      //               child: Center(
-                                      //                 child: Icon(
-                                      //                   Icons.play_arrow,
-                                      //                   color: Colors.black,
-                                      //                   size: 40,
-                                      //                 ),
-                                      //               ),
-                                      //             )),
-                                      //       ),
-                                    ],
-                                  ),
-                                ),
+                                    onTap: () {
+                                      setState(() {
+                                        _controller.value.isPlaying
+                                            ? _controller.pause()
+                                            : _controller.play();
+                                      });
+                                    },
+                                    child: _controller.value.isInitialized
+                                        ? Stack(
+                                            children: [
+                                              SizedBox(
+                                                height: size * .501,
+                                                child: VideoPlayer(_controller),
+                                              ),
+                                              // _controller.value.isPlaying
+                                              //     ? const SizedBox()
+                                              //     : Positioned(
+                                              //         left: 0,
+                                              //         right: 0,
+                                              //         bottom: 0,
+                                              //         top: 0,
+                                              //         child: IconButton(
+                                              //             onPressed: () {
+                                              //               setState(() {
+                                              //                 _controller.play();
+                                              //               });
+                                              //             },
+                                              //             icon: const CircleAvatar(
+                                              //               backgroundColor:
+                                              //                   Colors.white,
+                                              //               child: Center(
+                                              //                 child: Icon(
+                                              //                   Icons.play_arrow,
+                                              //                   color: Colors.black,
+                                              //                   size: 40,
+                                              //                 ),
+                                              //               ),
+                                              //             )),
+                                              //       ),
+                                              GestureDetector(
+                                                onDoubleTap: () async {
+                                                  setState(() {
+                                                    prev = true;
+                                                  });
+                                                  await _controller.seekTo(
+                                                      Duration(
+                                                          seconds: _controller
+                                                                  .value
+                                                                  .position
+                                                                  .inSeconds +
+                                                              10));
+                                                  await Future.delayed(
+                                                      const Duration(
+                                                          seconds: 1), () {
+                                                    setState(() {
+                                                      prev = false;
+                                                    });
+                                                  });
+                                                },
+                                                child: Container(
+                                                    color: Colors.transparent,
+                                                    width: size * .25,
+                                                    height: size * .501,
+                                                    child: prev == true
+                                                        ? const Center(
+                                                            child: CircleAvatar(
+                                                              backgroundColor:
+                                                                  Colors.black,
+                                                              radius: 20,
+                                                              child: Icon(
+                                                                Icons
+                                                                    .fast_rewind,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 30,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : const SizedBox()),
+                                              ),
+                                              Align(
+                                                alignment: Alignment.topRight,
+                                                child: GestureDetector(
+                                                  onDoubleTap: () async {
+                                                    setState(() {
+                                                      forw = true;
+                                                    });
+                                                    await _controller.seekTo(
+                                                        Duration(
+                                                            seconds: _controller
+                                                                    .value
+                                                                    .position
+                                                                    .inSeconds +
+                                                                10));
+                                                    await Future.delayed(
+                                                        const Duration(
+                                                            seconds: 1), () {
+                                                      setState(() {
+                                                        forw = false;
+                                                      });
+                                                    });
+                                                  },
+                                                  child: Container(
+                                                      color: Colors.transparent,
+                                                      width: size * .25,
+                                                      height: size * .501,
+                                                      child: forw == true
+                                                          ? const Center(
+                                                              child:
+                                                                  CircleAvatar(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .black,
+                                                                radius: 20,
+                                                                child: Icon(
+                                                                  Icons
+                                                                      .fast_forward,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: 30,
+                                                                ),
+                                                              ),
+                                                            )
+                                                          : const SizedBox()),
+                                                ),
+                                              ),
+                                              Positioned(
+                                                  right: 0,
+                                                  bottom: 0,
+                                                  child: IconButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    LandscapePlayerPage(
+                                                                        controller:
+                                                                            _controller)));
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons.fullscreen))),
+                                              Positioned(
+                                                left: 0,
+                                                right: 0,
+                                                top: 0,
+                                                bottom: 0,
+                                                child: _controller
+                                                        .value.isPlaying
+                                                    ? const SizedBox()
+                                                    : Center(
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            _controller.value
+                                                                    .isPlaying
+                                                                ? _controller
+                                                                    .pause()
+                                                                : _controller
+                                                                    .play();
+                                                          },
+                                                          child:
+                                                              const CircleAvatar(
+                                                                  radius: 25,
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  child: Center(
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .play_arrow,
+                                                                      color: Colors
+                                                                          .black,
+                                                                      size: 40,
+                                                                    ),
+                                                                  )),
+                                                        ),
+                                                      ),
+                                              )
+                                            ],
+                                          )
+                                        : const Center(
+                                            child: CircularProgressIndicator(),
+                                          )),
                                 kHeight,
                                 Padding(
                                   padding:
@@ -187,54 +309,54 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                     ],
                                   ),
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    IconButton(
-                                        onPressed: () async {
-                                          await _controller.seekTo(Duration(
-                                              seconds: _controller.value
-                                                      .position.inSeconds -
-                                                  10));
-                                        },
-                                        icon: const Icon(
-                                          Icons.skip_previous,
-                                          size: 40,
-                                          color: Colors.white,
-                                        )),
-                                    const SizedBox(
-                                      width: 30,
-                                    ),
-                                    IconButton(
-                                        onPressed: () {
-                                          _controller.value.isPlaying
-                                              ? _controller.pause()
-                                              : _controller.play();
-                                        },
-                                        icon: Icon(
-                                          _controller.value.isPlaying
-                                              ? Icons.pause
-                                              : Icons.play_arrow,
-                                          color: Colors.white,
-                                          size: 40,
-                                        )),
-                                    const SizedBox(
-                                      width: 30,
-                                    ),
-                                    IconButton(
-                                        onPressed: () async {
-                                          await _controller.seekTo(Duration(
-                                              seconds: _controller.value
-                                                      .position.inSeconds +
-                                                  10));
-                                        },
-                                        icon: const Icon(
-                                          Icons.skip_next,
-                                          size: 40,
-                                          color: Colors.white,
-                                        )),
-                                  ],
-                                )
+                                // Row(
+                                //   mainAxisAlignment: MainAxisAlignment.center,
+                                //   children: [
+                                //     IconButton(
+                                //         onPressed: () async {
+                                //           await _controller.seekTo(Duration(
+                                //               seconds: _controller.value
+                                //                       .position.inSeconds -
+                                //                   10));
+                                //         },
+                                //         icon: const Icon(
+                                //           Icons.skip_previous,
+                                //           size: 40,
+                                //           color: Colors.white,
+                                //         )),
+                                //     const SizedBox(
+                                //       width: 30,
+                                //     ),
+                                //     IconButton(
+                                //         onPressed: () {
+                                //           _controller.value.isPlaying
+                                //               ? _controller.pause()
+                                //               : _controller.play();
+                                //         },
+                                //         icon: Icon(
+                                //           _controller.value.isPlaying
+                                //               ? Icons.pause
+                                //               : Icons.play_arrow,
+                                //           color: Colors.white,
+                                //           size: 40,
+                                //         )),
+                                //     const SizedBox(
+                                //       width: 30,
+                                //     ),
+                                //     IconButton(
+                                //         onPressed: () async {
+                                //           await _controller.seekTo(Duration(
+                                //               seconds: _controller.value
+                                //                       .position.inSeconds +
+                                //                   10));
+                                //         },
+                                //         icon: const Icon(
+                                //           Icons.skip_next,
+                                //           size: 40,
+                                //           color: Colors.white,
+                                //         )),
+                                //   ],
+                                // )
                               ],
                             )
                           : const Center(
@@ -271,6 +393,9 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                     itemBuilder: (context, index) {
                       final datas =
                           myLearningsProvider.courseVideoList?.data?[index];
+                      var x = datas?.videoDuration.toString();
+                      var d = x?.split(':');
+                      var duration = "${d?[1]}:${d?[2]}";
                       return InkWell(
                         onTap: () => playVideo(index: index),
                         child: Padding(
@@ -287,15 +412,41 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                             datas!.thumbnail.toString()))),
                                 height: size * .21,
                                 width: size * .25,
-                                child: const Center(
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    child: Icon(
-                                      Icons.play_arrow,
-                                      color: Colors.black,
-                                      size: 40,
+                                child: Stack(
+                                  children: [
+                                    const Center(
+                                      child: CircleAvatar(
+                                        backgroundColor: Colors.white,
+                                        child: Icon(
+                                          Icons.play_arrow,
+                                          color: Colors.black,
+                                          size: 40,
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    Positioned(
+                                      right: 2,
+                                      bottom: 2,
+                                      child: Container(
+                                        height: 15,
+                                        decoration: BoxDecoration(
+                                            color: Colors.black,
+                                            borderRadius:
+                                                BorderRadius.circular(2)),
+                                        width: 38,
+                                        child: Center(
+                                          child: Text(
+                                            duration,
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                               const Icon(Icons.play_arrow),
@@ -319,5 +470,200 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
               ),
             ),
     );
+  }
+}
+
+class LandscapePlayerPage extends StatefulWidget {
+  final VideoPlayerController controller;
+  const LandscapePlayerPage({super.key, required this.controller});
+
+  @override
+  State<LandscapePlayerPage> createState() => _LandscapePlayerPageState();
+}
+
+class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
+  String _videoDuration(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+    return [if (duration.inHours > 0) hours, minutes, seconds].join(':');
+  }
+
+  bool prev = false;
+  bool forw = false;
+  @override
+  void initState() {
+    super.initState();
+    _landscapeMode();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _setAllOrientation();
+  }
+
+  Future _setAllOrientation() async {
+    await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
+  }
+
+  Future _landscapeMode() async {
+    await SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.width;
+    return Scaffold(
+        body: GestureDetector(
+      onTap: () {
+        setState(() {
+          widget.controller.value.isPlaying
+              ? widget.controller.pause()
+              : widget.controller.play();
+        });
+      },
+      child: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  VideoPlayer(widget.controller),
+                  widget.controller.value.isPlaying
+                      ? const SizedBox()
+                      : const Align(
+                          alignment: Alignment.center,
+                          child: CircleAvatar(
+                            backgroundColor: Colors.black,
+                            radius: 25,
+                            child: Icon(
+                              Icons.play_arrow,
+                              color: Colors.white,
+                              size: 45,
+                            ),
+                          )),
+                  GestureDetector(
+                    //highlightColor: Colors.white,
+                    onDoubleTap: () async {
+                      setState(() {
+                        prev = true;
+                      });
+                      await widget.controller.seekTo(Duration(
+                          seconds:
+                              widget.controller.value.position.inSeconds - 10));
+
+                      await Future.delayed(const Duration(seconds: 1), () {
+                        setState(() {
+                          prev = false;
+                        });
+                      });
+                      print(prev);
+                    },
+
+                    child: Container(
+                      height: double.infinity,
+                      width: size * .25,
+                      color: Colors.transparent,
+                      child: prev == true
+                          ? const Center(
+                              child: CircleAvatar(
+                                backgroundColor: Colors.black,
+                                radius: 25,
+                                child: Icon(
+                                  Icons.fast_rewind,
+                                  color: Colors.white,
+                                  size: 45,
+                                ),
+                              ),
+                            )
+                          : const SizedBox(),
+                    ),
+                  ),
+                  GestureDetector(
+                    onDoubleTap: () async {
+                      setState(() {
+                        forw = true;
+                      });
+                      await widget.controller.seekTo(Duration(
+                          seconds:
+                              widget.controller.value.position.inSeconds + 10));
+                      await Future.delayed(const Duration(seconds: 1), () {
+                        setState(() {
+                          forw = false;
+                        });
+                      });
+                    },
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: Container(
+                        height: double.infinity,
+                        width: size * .25,
+                        color: Colors.transparent,
+                        child: forw == true
+                            ? const Center(
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  radius: 25,
+                                  child: Icon(
+                                    Icons.fast_forward,
+                                    color: Colors.white,
+                                    size: 45,
+                                  ),
+                                ),
+                              )
+                            : const SizedBox(),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: IconButton(
+                          onPressed: () async {
+                            await _setAllOrientation();
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.fullscreen))),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Row(
+                children: [
+                  ValueListenableBuilder(
+                      valueListenable: widget.controller,
+                      builder: (context, VideoPlayerValue value, child) {
+                        return Text(
+                          _videoDuration(value.position),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 17),
+                        );
+                      }),
+                  Expanded(
+                    child: Container(
+                      height: 8,
+                      color: Colors.transparent,
+                      width: double.infinity,
+                      child: VideoProgressIndicator(widget.controller,
+                          allowScrubbing: true,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 5, vertical: 0)),
+                    ),
+                  ),
+                  Text(
+                    _videoDuration(widget.controller.value.duration),
+                    style: const TextStyle(color: Colors.white, fontSize: 17),
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ));
   }
 }

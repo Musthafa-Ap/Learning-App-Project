@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_model.dart';
@@ -22,7 +23,6 @@ class CatagoriesDetailedProvider with ChangeNotifier {
       response = await get(Uri.parse(
           "http://learningapp.e8demo.com/api/course_list/?cate_id=$catagoriesID"));
     } else {
-      print("--------------------");
       response = await get(Uri.parse(
           "http://learningapp.e8demo.com/api/course_list/?cate_id=$catagoriesID&auth_token=$token"));
     }
@@ -35,9 +35,16 @@ class CatagoriesDetailedProvider with ChangeNotifier {
   }
 
   Future<void> getAllSub({required catagoriesID}) async {
-    var api =
-        "http://learningapp.e8demo.com/api/subcategory_list/?cate_id=$catagoriesID";
-    Response response = await get(Uri.parse(api));
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    var token = shared.getString("access_token");
+    Response response;
+    if (token == null) {
+      response = await get(Uri.parse(
+          "http://learningapp.e8demo.com/api/subcategory_list/?cate_id=$catagoriesID"));
+    } else {
+      response = await get(Uri.parse(
+          "http://learningapp.e8demo.com/api/subcategory_list/?cate_id=$catagoriesID&auth_token=$token"));
+    }
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       subCatagories = SubCatagoriesModel.fromJson(data);
@@ -46,9 +53,17 @@ class CatagoriesDetailedProvider with ChangeNotifier {
   }
 
   Future<void> getSubCatagoriesDetailes({required subCatagoriesID}) async {
-    var api =
-        "http://learningapp.e8demo.com/api/course_list/?sub_cate_id=$subCatagoriesID";
-    Response response = await get(Uri.parse(api));
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    var token = shared.getString("access_token");
+    Response response;
+
+    if (token == null) {
+      response = await get(Uri.parse(
+          "http://learningapp.e8demo.com/api/course_list/?sub_cate_id=$subCatagoriesID"));
+    } else {
+      response = await get(Uri.parse(
+          "http://learningapp.e8demo.com/api/course_list/?sub_cate_id=$subCatagoriesID&auth_token=$token"));
+    }
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       subCatagoriesDetailes = SubCatagoriesDetailedModel.fromJson(data);

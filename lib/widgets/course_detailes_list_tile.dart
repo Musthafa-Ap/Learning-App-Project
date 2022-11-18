@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
+import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_model.dart';
+import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/course_detailed_page.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
@@ -79,6 +81,7 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
         if (widget.id != null) {
           await Provider.of<CourseDetailedProvider>(context, listen: false)
               .getAll(courseID: widget.id);
+
           // ignore: use_build_context_synchronously
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => CourseDetailedPage(
@@ -160,6 +163,12 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                                               context,
                                               listen: false)
                                           .getRecentlyViewed();
+                                      await Provider.of<
+                                                  CatagoriesDetailedProvider>(
+                                              context,
+                                              listen: false)
+                                          .getSubCatagoriesDetailes(
+                                              subCatagoriesID: widget.id);
                                     }
                                   }
                                 },

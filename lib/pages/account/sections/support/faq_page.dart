@@ -27,11 +27,15 @@ class FAQPage extends StatelessWidget {
             "Frequently Asked Questions",
             style: TextStyle(fontSize: 25, color: Colors.white),
           ),
-          kheight20,
+          const Divider(
+            color: Colors.white,
+          ),
+          kHeight,
           Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Colors.grey)),
+              borderRadius: BorderRadius.circular(5),
+              //border: Border.all(color: Colors.grey)
+            ),
             child: ListView.builder(
               physics: const BouncingScrollPhysics(),
               itemCount: accountProvider.faqList!.data!.length,
