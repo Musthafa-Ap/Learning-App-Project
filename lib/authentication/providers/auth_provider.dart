@@ -236,7 +236,7 @@ class AuthProvider with ChangeNotifier {
         login_email_error = null;
         login_pass_error = null;
         notifyListeners();
-
+        print(response.body);
         var data = jsonDecode(response.body);
 
         if (data['result'] == "success") {

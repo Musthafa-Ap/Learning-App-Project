@@ -114,8 +114,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
                               .getAll();
                           featuredProvider.sample();
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  const SeeAllPageFeatured()));
+                              builder: (context) => SeeAllPageFeatured()));
                         },
                       ),
                       kWidth30

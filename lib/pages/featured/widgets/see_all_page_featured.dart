@@ -4,8 +4,12 @@ import 'package:nuox_project/pages/featured/services/catagories_section/catagori
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/widgets/course_detailes_list_tile.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../my_home_page.dart';
+
+final RefreshController refreshController =
+    RefreshController(initialRefresh: true);
 
 class SeeAllPageFeatured extends StatelessWidget {
   final bool fromSubCatagories;
@@ -13,7 +17,7 @@ class SeeAllPageFeatured extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final featuredProvider = Provider.of<FeaturedProvider>(context).auto;
+    final featuredProvider = Provider.of<FeaturedProvider>(context);
     final featuredProviders = Provider.of<FeaturedProvider>(context);
     return Scaffold(
       appBar: AppBar(
@@ -46,24 +50,44 @@ class SeeAllPageFeatured extends StatelessWidget {
       ),
       body: featuredProviders.sortedCourses == null ||
               featuredProviders.sortedCourses!.data!.isEmpty
-          ? ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              physics: const BouncingScrollPhysics(),
-              itemCount: featuredProvider.length,
-              itemBuilder: (context, index) {
-                final data = featuredProvider[index];
-                return CourseDetailesListTile(
-                  authorName: data!.instructor!.name.toString(),
-                  courseName: data.courseName.toString(),
-                  isWishlist: data.isWishList,
-                  image: data.thumbnail!.full_size.toString(),
-                  ratingCount: data.ratingCount,
-                  coursePrice: data.price!,
-                  id: data.id!,
-                  rating: data.rating!.toDouble(),
-                  isRecomended: data.recommendedCourse,
-                );
+          ? SmartRefresher(
+              controller: refreshController,
+              enablePullUp: true,
+              onRefresh: () async {
+                final result = await featuredProvider.samples(isRefresh: true);
+                if (result) {
+                  refreshController.refreshCompleted();
+                } else {
+                  refreshController.refreshFailed();
+                }
               },
+              onLoading: () async {
+                final result = await featuredProvider.samples();
+                if (result) {
+                  refreshController.loadComplete();
+                } else {
+                  refreshController.loadFailed();
+                }
+              },
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                physics: const BouncingScrollPhysics(),
+                itemCount: featuredProvider.autos.length,
+                itemBuilder: (context, index) {
+                  final data = featuredProvider.autos[index];
+                  return CourseDetailesListTile(
+                    authorName: data!.instructor!.name.toString(),
+                    courseName: data.courseName.toString(),
+                    isWishlist: data.isWishList,
+                    image: data.thumbnail!.full_size.toString(),
+                    ratingCount: data.ratingCount,
+                    coursePrice: data.price!,
+                    id: data.id!,
+                    rating: data.rating!.toDouble(),
+                    isRecomended: data.recommendedCourse,
+                  );
+                },
+              ),
             )
           : ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 15),

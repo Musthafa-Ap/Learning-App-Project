@@ -43,6 +43,7 @@ dependencies:
   video_player:
   flutter_rating_bar:
   image_picker:
+  pull_to_refresh:
 
   
 

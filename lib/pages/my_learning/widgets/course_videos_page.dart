@@ -13,6 +13,7 @@ class CourseVideosPage extends StatefulWidget {
 }
 
 class _CourseVideosPageState extends State<CourseVideosPage> {
+  List allSpeed = <double>[0.25, 0.5, 1, 1.5, 2, 2.5, 3];
   bool prev = false;
   bool forw = false;
   late MyLearningsProvider _myLearningsProvider;
@@ -268,7 +269,36 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                                                   )),
                                                         ),
                                                       ),
-                                              )
+                                              ),
+                                              Align(
+                                                  alignment: Alignment.topRight,
+                                                  child:
+                                                      PopupMenuButton<double>(
+                                                    initialValue: _controller
+                                                        .value.playbackSpeed,
+                                                    tooltip: 'Playback speed',
+                                                    onSelected: _controller
+                                                        .setPlaybackSpeed,
+                                                    itemBuilder: (context) => allSpeed
+                                                        .map<
+                                                            PopupMenuEntry<
+                                                                double>>((speed) =>
+                                                            PopupMenuItem(
+                                                                value: speed,
+                                                                child: Text(
+                                                                    "${speed}x")))
+                                                        .toList(),
+                                                    child: Container(
+                                                      color: Colors.white38,
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        vertical: 8,
+                                                        horizontal: 10,
+                                                      ),
+                                                      child: Text(
+                                                          "${_controller.value.playbackSpeed}x"),
+                                                    ),
+                                                  ))
                                             ],
                                           )
                                         : const Center(
@@ -482,6 +512,7 @@ class LandscapePlayerPage extends StatefulWidget {
 }
 
 class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
+  List allSpeed = <double>[0.25, 0.5, 1, 1.5, 2, 2.5, 3];
   String _videoDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
     final hours = twoDigits(duration.inHours);
@@ -627,6 +658,27 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
                             Navigator.pop(context);
                           },
                           icon: const Icon(Icons.fullscreen))),
+                  Align(
+                      alignment: Alignment.topRight,
+                      child: PopupMenuButton<double>(
+                        initialValue: widget.controller.value.playbackSpeed,
+                        tooltip: 'Playback speed',
+                        onSelected: widget.controller.setPlaybackSpeed,
+                        itemBuilder: (context) => allSpeed
+                            .map<PopupMenuEntry<double>>((speed) =>
+                                PopupMenuItem(
+                                    value: speed, child: Text("${speed}x")))
+                            .toList(),
+                        child: Container(
+                          color: Colors.white38,
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 8,
+                            horizontal: 10,
+                          ),
+                          child:
+                              Text("${widget.controller.value.playbackSpeed}x"),
+                        ),
+                      ))
                 ],
               ),
             ),
@@ -661,6 +713,7 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
                 ],
               ),
             ),
+            kHeight5
           ],
         ),
       ),
