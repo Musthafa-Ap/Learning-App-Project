@@ -96,7 +96,6 @@ class CartProvider with ChangeNotifier {
       var api = "http://learningapp.e8demo.com/api/apply_offer/";
       var response = await http.post(Uri.parse(api),
           headers: {"Authorization": auth}, body: {"promo_code": coupen});
-      print(response.body);
       var data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         promo_code = data["promo_code"];
@@ -127,11 +126,14 @@ class CartProvider with ChangeNotifier {
       var token = shared.getString("access_token");
       String auth = "Bearer $token";
       var api = "http://learningapp.e8demo.com/api/confirm_purchase/";
-      var response = await http.post(Uri.parse(api), headers: {
-        "Authorization": auth
-      }, body: {
-        "payment_method": paymentMode,
-      });
+      var response = await http.post(Uri.parse(api),
+          headers: {
+            "Authorization": auth,
+            "Content-Type": 'application/json',
+          },
+          body: jsonEncode({
+            "payment_method": paymentMode,
+          }));
       Map<String, dynamic> data = jsonDecode(response.body);
 
       totalPrice = data['data']['grand_total'].toString();

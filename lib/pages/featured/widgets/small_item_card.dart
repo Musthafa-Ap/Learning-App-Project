@@ -62,6 +62,8 @@ class _SmallItemCardState extends State<SmallItemCard> {
       onTap: () async {
         await Provider.of<CourseDetailedProvider>(context, listen: false)
             .getAll(courseID: widget.id);
+        await Provider.of<RecomendationsProvider>(context, listen: false)
+            .getAll();
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => CourseDetailedPage(
                   refesh: true,

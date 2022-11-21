@@ -44,6 +44,8 @@ dependencies:
   flutter_rating_bar:
   image_picker:
   pull_to_refresh:
+  readmore:
+
 
   
 

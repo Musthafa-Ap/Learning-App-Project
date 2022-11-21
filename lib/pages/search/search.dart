@@ -110,6 +110,7 @@ class SearchCard extends StatelessWidget {
             Container(
               height: 120,
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5),
                 image: DecorationImage(
                     image: NetworkImage(
                       image!,

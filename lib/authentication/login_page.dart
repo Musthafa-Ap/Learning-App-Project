@@ -42,7 +42,8 @@ class _LoginPageState extends State<LoginPage> {
               name: _currentUser!.displayName.toString(),
               context: context,
               id: _currentUser!.id.toString(),
-              email: _currentUser!.email.toString());
+              email: _currentUser!.email.toString(),
+              image: _currentUser?.photoUrl.toString());
         }
         if (_currentUser == null) {
           return;

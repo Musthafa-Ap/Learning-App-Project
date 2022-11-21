@@ -39,6 +39,8 @@ class ListTileAccountPage extends StatelessWidget {
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (context) => ReportPage()));
           } else if (index == 7) {
+            await Provider.of<AccountProvider>(context, listen: false)
+                .getOrderDetailes();
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const OrdersPage()));
           } else if (index == 2) {

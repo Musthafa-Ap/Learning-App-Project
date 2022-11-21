@@ -51,7 +51,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
               name: _currentUser!.displayName.toString(),
               context: context,
               id: _currentUser!.id.toString(),
-              email: _currentUser!.email.toString());
+              email: _currentUser!.email.toString(),
+              image: _currentUser?.photoUrl.toString());
         }
       } catch (e) {
         print("Error signing in $e");
@@ -106,7 +107,8 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 cursorColor: Colors.black,
                 decoration: InputDecoration(
                   prefixIcon: Padding(
-                    padding: const EdgeInsets.only(right: 2, left: 8),
+                    padding:
+                        const EdgeInsets.only(right: 2, left: 8, bottom: 3),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -121,7 +123,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                         ),
                         const Text(
                           "  +91",
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 16),
                         ),
                       ],
                     ),

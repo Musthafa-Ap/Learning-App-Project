@@ -44,7 +44,8 @@ class MobileNumberverificationPage extends StatelessWidget {
               controller: _numberController,
               decoration: InputDecoration(
                   prefixIcon: Padding(
-                    padding: const EdgeInsets.only(right: 2, left: 8),
+                    padding:
+                        const EdgeInsets.only(right: 2, left: 8, bottom: 3),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -59,7 +60,7 @@ class MobileNumberverificationPage extends StatelessWidget {
                         ),
                         const Text(
                           "  +91",
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 16),
                         ),
                       ],
                     ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
-import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_model.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/course_detailed_page.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
@@ -147,6 +146,10 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                                           variant: 1,
                                           context: context,
                                           price: widget.coursePrice);
+                                      await Provider.of<FeaturedProvider>(
+                                              context,
+                                              listen: false)
+                                          .samples();
                                       await Provider.of<FeaturedProvider>(
                                               context,
                                               listen: false)

@@ -190,7 +190,7 @@ class AccountProvider with ChangeNotifier {
     }
   }
 
-  void getOrderDetailes() async {
+  Future<void> getOrderDetailes() async {
     try {
       SharedPreferences shared = await SharedPreferences.getInstance();
       String? token = shared.getString("access_token");

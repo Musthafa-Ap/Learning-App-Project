@@ -49,8 +49,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
         .getReview(courseID: 2);
     Provider.of<AccountProvider>(context, listen: false).getAboutApp();
     Provider.of<MyLearningsProvider>(context, listen: false).getMyLearnings();
-    Provider.of<SearchProvider>(context, listen: false)
-        .getSearchItems(key: "p");
+    Provider.of<SearchProvider>(context, listen: false).getSearchItems(key: "");
     Provider.of<FeaturedProvider>(context, listen: false).sortedCourses = null;
     Provider.of<CourseDetailedProvider>(context, listen: false)
         .getRecentlyViewed();

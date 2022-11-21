@@ -177,14 +177,30 @@ class BuyAllPage extends StatelessWidget {
                     children: [
                       Radio(
                         fillColor: MaterialStateProperty.all(Colors.white),
-                        value: "Cradit/Debit Card",
+                        value: "Credit Card",
                         groupValue: value,
                         onChanged: (value) {
                           _paymentNotifier.value = value;
                         },
                       ),
                       const Text(
-                        "Credit/Debit Card",
+                        "Credit Card",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio(
+                        fillColor: MaterialStateProperty.all(Colors.white),
+                        value: "Debit Card",
+                        groupValue: value,
+                        onChanged: (value) {
+                          _paymentNotifier.value = value;
+                        },
+                      ),
+                      const Text(
+                        "Debit Card",
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       )
                     ],
@@ -244,12 +260,14 @@ class BuyAllPage extends StatelessWidget {
                 var payment;
                 if (_paymentNotifier.value == "GPay") {
                   payment = "gpay";
-                } else if (_paymentNotifier.value == "Cradit/Debit Card") {
+                } else if (_paymentNotifier.value == "Credit Card") {
                   payment = "card";
                 } else if (_paymentNotifier.value == "PayPal") {
                   payment = "paypal";
                 } else if (_paymentNotifier.value == "Net Banking") {
                   payment = "netbanking";
+                } else if (_paymentNotifier.value == "Debit Card") {
+                  payment = "debit_card";
                 }
 
                 if (cartProvider.isCoupenSuccess == true) {

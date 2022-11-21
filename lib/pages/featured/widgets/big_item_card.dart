@@ -8,6 +8,7 @@ import '../../../my_home_page.dart';
 import '../../../widgets/bestseller.dart';
 import '../../../widgets/big_cart_icon_button.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
+import '../../course_detailed_page/recomendations_services/recomendations_provider.dart';
 import '../../course_detailed_page/services/course_detailed_provider.dart';
 import '../services/top_courses_section/top_courses_provider.dart';
 
@@ -62,6 +63,8 @@ class _BigItemCardState extends State<BigItemCard> {
         if (widget.id != null) {
           await Provider.of<CourseDetailedProvider>(context, listen: false)
               .getAll(courseID: widget.id);
+          await Provider.of<RecomendationsProvider>(context, listen: false)
+              .getAll();
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => CourseDetailedPage(
                     refesh: true,

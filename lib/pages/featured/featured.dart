@@ -53,7 +53,7 @@ class _FeaturedState extends State<Featured> {
   }
 
   int currentIndex = 0;
-  var username;
+  String? username;
 
   @override
   Widget build(BuildContext context) {
@@ -174,9 +174,9 @@ class _FeaturedState extends State<Featured> {
   }
 
   void preffunc() async {
-    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    SharedPreferences sharedPrefs = await SharedPreferences.getInstance();
     setState(() {
-      username = sharedPref.getString("name");
+      username = sharedPrefs.getString("name");
     });
   }
 }

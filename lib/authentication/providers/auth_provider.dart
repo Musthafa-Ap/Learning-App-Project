@@ -31,6 +31,7 @@ class AuthProvider with ChangeNotifier {
       required BuildContext context,
       required String id,
       required String email,
+      required String? image,
       bool mounted = true}) async {
     try {
       var response = await http.post(
@@ -48,6 +49,9 @@ class AuthProvider with ChangeNotifier {
           await sharedPrefs.setString("name", name);
           await sharedPrefs.setString("email", email);
           await sharedPrefs.setString("access_token", token);
+          if (image != null) {
+            await sharedPrefs.setString("image", image);
+          }
           await sharedPrefs.setBool("changepass", false);
           notifyListeners();
           if (!mounted) return;
@@ -95,8 +99,9 @@ class AuthProvider with ChangeNotifier {
             )));
       } else if (data.containsKey("token")) {
         bool instructor = data['is_instructor'];
-        log(instructor.toString());
         setLoading(false);
+        var image = data['profile_pic'];
+        String name = data["name"];
         String token = data['token']['access_token'];
         final sharedPrefs = await SharedPreferences.getInstance();
         await sharedPrefs.setBool('instructor', instructor);
@@ -105,9 +110,10 @@ class AuthProvider with ChangeNotifier {
         await sharedPrefs.setBool("isLogged", true);
         await sharedPrefs.setString("access_token", token);
         await sharedPrefs.setString("number", number);
+        await sharedPrefs.setString("image", image);
         await sharedPrefs.setBool("changepass", false);
         await sharedPrefs.setString("email", email);
-        await sharedPrefs.setString("name", '');
+        await sharedPrefs.setString("name", name);
         //  <String, dynamic> checking = data['token'];
 
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -236,22 +242,27 @@ class AuthProvider with ChangeNotifier {
         login_email_error = null;
         login_pass_error = null;
         notifyListeners();
-        print(response.body);
+
         var data = jsonDecode(response.body);
 
         if (data['result'] == "success") {
           bool instructor = data["is_instructor"];
           var mobile = data["mobile"];
+
           final sharedPrefs = await SharedPreferences.getInstance();
+          var image = data['profile_pic'];
+          String name = data["name"];
           //  await sharedPrefs!.clear();
           await sharedPrefs.setBool("isLogged", true);
+          await sharedPrefs.setString("image", image);
+          await sharedPrefs.setString("name", name);
           await sharedPrefs.setBool('instructor', instructor);
           await sharedPrefs.setString("number", mobile);
           await sharedPrefs.setString("email", email);
           var accessToken = data['token']['access_token'].toString();
           await sharedPrefs.setString("access_token", accessToken);
           await sharedPrefs.setBool("changepass", true);
-          await sharedPrefs.setString("name", '');
+          // await sharedPrefs.setString("name", '');
 
           notifyListeners();
           if (!mounted) return;
@@ -526,32 +537,37 @@ class AuthProvider with ChangeNotifier {
   }
 
   void logOut(context) async {
-    SharedPreferences shared = await SharedPreferences.getInstance();
-    var token = shared.getString("access_token");
-    String auth = "Bearer $token";
-    var api = "http://learningapp.e8demo.com/api/logout/";
-    var response = await http.get(
-      Uri.parse(api),
-      headers: {"Authorization": auth},
-    );
+    try {
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
+      String auth = "Bearer $token";
+      print("sign out ===  $auth");
+      var api = "http://learningapp.e8demo.com/api/logout/";
+      var response = await http.get(
+        Uri.parse(api),
+        headers: {"Authorization": auth},
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.green,
+            content: Text(
+              "Successfully logged out",
+              style: TextStyle(fontWeight: FontWeight.bold),
+            )));
+        shared.clear();
+        selectedIndex.value = 0;
 
-    if (response.statusCode == 200) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: Colors.green,
-          content: Text(
-            "Successfully logged out",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          )));
-      shared.clear();
-      selectedIndex.value = 0;
-
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const LoginPage(),
-          ),
-          (route) => false);
-    } else {
-      print("status code oth400");
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(
+              builder: (context) => const LoginPage(),
+            ),
+            (route) => false);
+      } else {
+        print("status code oth400");
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 

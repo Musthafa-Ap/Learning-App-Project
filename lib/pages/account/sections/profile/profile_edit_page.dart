@@ -84,6 +84,11 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text("Edit profile"),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
       ),
       body: Form(
         key: _formKey,
@@ -305,7 +310,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     decoration: InputDecoration(
                         prefixIcon: Container(
                           // alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.only(right: 2, left: 8),
+                          padding: const EdgeInsets.only(
+                              right: 2, left: 8, bottom: 3),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -321,7 +327,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                               const Text(
                                 "  +91",
                                 style: TextStyle(
-                                    fontSize: 18, color: Colors.white),
+                                    fontSize: 16, color: Colors.white),
                               ),
                             ],
                           ),

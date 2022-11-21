@@ -8,13 +8,11 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../my_home_page.dart';
 
-final RefreshController refreshController =
-    RefreshController(initialRefresh: true);
-
 class SeeAllPageFeatured extends StatelessWidget {
   final bool fromSubCatagories;
-  const SeeAllPageFeatured({super.key, this.fromSubCatagories = false});
-
+  SeeAllPageFeatured({super.key, this.fromSubCatagories = false});
+  final RefreshController refreshController =
+      RefreshController(initialRefresh: true);
   @override
   Widget build(BuildContext context) {
     final featuredProvider = Provider.of<FeaturedProvider>(context);
@@ -104,7 +102,7 @@ class SeeAllPageFeatured extends StatelessWidget {
                   id: datas.id!,
                   ratingCount: datas.ratingCount,
                   rating: datas.rating!.toDouble(),
-                  isRecomended: datas.recommendedCourse!,
+                  isRecomended: datas.recommendedCourse,
                 );
               },
             ),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:readmore/readmore.dart';
 import 'package:video_player/video_player.dart';
 
 class CourseVideosPage extends StatefulWidget {
@@ -143,7 +144,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                                           seconds: _controller
                                                                   .value
                                                                   .position
-                                                                  .inSeconds +
+                                                                  .inSeconds -
                                                               10));
                                                   await Future.delayed(
                                                       const Duration(
@@ -289,10 +290,14 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                                                     "${speed}x")))
                                                         .toList(),
                                                     child: Container(
-                                                      color: Colors.white38,
+                                                      decoration: BoxDecoration(
+                                                          color: Colors.white38,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(5)),
                                                       padding: const EdgeInsets
                                                           .symmetric(
-                                                        vertical: 8,
+                                                        vertical: 6,
                                                         horizontal: 10,
                                                       ),
                                                       child: Text(
@@ -404,7 +409,17 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                         fontWeight: FontWeight.bold),
                   ),
                   kHeight5,
-                  Text(
+                  // Text(
+                  //   myLearningsProvider
+                  //           .courseVideoList?.data?[_currentIndex].description
+                  //           .toString() ??
+                  //       "Introduction to Cloud computing on AWS for Beginners[2022])",
+                  //   style: const TextStyle(
+                  //     color: Colors.white,
+                  //     fontSize: 16,
+                  //   ),
+                  // ),
+                  ReadMoreText(
                     myLearningsProvider
                             .courseVideoList?.data?[_currentIndex].description
                             .toString() ??
@@ -413,6 +428,15 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                       color: Colors.white,
                       fontSize: 16,
                     ),
+                    trimLines: 2,
+                    colorClickableText: Colors.red,
+                    trimMode: TrimMode.Line,
+                    trimCollapsedText: 'Show more',
+                    trimExpandedText: 'Show less',
+                    moreStyle: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red),
                   ),
                   kHeight,
                   Expanded(
@@ -479,7 +503,6 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                   ],
                                 ),
                               ),
-                              const Icon(Icons.play_arrow),
                               kWidth10,
                               Expanded(
                                 child: Text(
@@ -591,7 +614,6 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
                           prev = false;
                         });
                       });
-                      print(prev);
                     },
 
                     child: Container(
@@ -653,11 +675,15 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
                       right: 0,
                       bottom: 0,
                       child: IconButton(
+                          alignment: Alignment.center,
                           onPressed: () async {
                             await _setAllOrientation();
                             Navigator.pop(context);
                           },
-                          icon: const Icon(Icons.fullscreen))),
+                          icon: const Icon(
+                            Icons.fullscreen_exit,
+                            color: Colors.black,
+                          ))),
                   Align(
                       alignment: Alignment.topRight,
                       child: PopupMenuButton<double>(
@@ -670,9 +696,11 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
                                     value: speed, child: Text("${speed}x")))
                             .toList(),
                         child: Container(
-                          color: Colors.white38,
+                          decoration: BoxDecoration(
+                              color: Colors.white38,
+                              borderRadius: BorderRadius.circular(5)),
                           padding: const EdgeInsets.symmetric(
-                            vertical: 8,
+                            vertical: 6,
                             horizontal: 10,
                           ),
                           child:

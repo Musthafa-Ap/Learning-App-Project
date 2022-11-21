@@ -1,15 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_model.dart';
-import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
-import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/widgets/big_cart_icon_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants/constants.dart';
-import '../../../my_home_page.dart';
 import '../../../widgets/bestseller.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
 import '../../course_detailed_page/services/course_detailed_provider.dart';
@@ -56,7 +50,6 @@ class _CatagoryDetailedPageItemCardState
 
   @override
   Widget build(BuildContext context) {
-    final featuredProvider = Provider.of<FeaturedProvider>(context);
     final size = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () async {
