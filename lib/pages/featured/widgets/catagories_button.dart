@@ -4,6 +4,8 @@ import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catago
 import 'package:nuox_project/pages/catagories_detailed_page.dart/widgets/sub_catagories_detailed_page.dart';
 import 'package:provider/provider.dart';
 
+import '../../course_detailed_page/recomendations_services/recomendations_provider.dart';
+
 class CatagoriesButton extends StatelessWidget {
   final int? id;
   final String? title;
@@ -32,16 +34,24 @@ class CatagoriesButton extends StatelessWidget {
             if (navigatepage == "sub_catagories_detailed") {
               await catagoiresdetailesProvider.getSubCatagoriesDetailes(
                   subCatagoriesID: id);
+              await Provider.of<RecomendationsProvider>(context, listen: false)
+                  .getAll();
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const SubCatagoriesDetailedPage()));
+                  builder: (context) => SubCatagoriesDetailedPage(
+                        subcatid: id!,
+                      )));
             }
             if (navigatepage == "catagoriesDetailedPage") {
               await catagoiresdetailesProvider.getAll(
                 catagoriesID: id,
               );
+              await Provider.of<RecomendationsProvider>(context, listen: false)
+                  .getAll();
               await catagoiresdetailesProvider.getAllSub(catagoriesID: id);
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const CatagoriesDetailedPage()));
+                  builder: (context) => CatagoriesDetailedPage(
+                        cataid: id!,
+                      )));
             }
           },
           child: Text(title ?? "Title of the course")),

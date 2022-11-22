@@ -34,7 +34,7 @@ class MyLearning extends StatelessWidget {
           : ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               physics: const BouncingScrollPhysics(),
-              itemCount: myLearningsProvider.myLearningsList!.data!.length,
+              itemCount: myLearningsProvider.myLearningsList?.data?.length,
               itemBuilder: (context, index) {
                 final datas = myLearningsProvider.myLearningsList?.data?[index];
                 return MyLearningCard(

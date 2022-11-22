@@ -13,6 +13,11 @@ class BuyAllPage extends StatelessWidget {
     final cartProvider = Provider.of<CartProvider>(context);
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         centerTitle: true,
         title: const Text("Checkout"),
       ),

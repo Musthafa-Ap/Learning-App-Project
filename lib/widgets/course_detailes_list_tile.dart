@@ -16,6 +16,7 @@ import 'big_cart_icon_button.dart';
 
 // ignore: must_be_immutable
 class CourseDetailesListTile extends StatefulWidget {
+  final int? subCatid;
   final bool? isWishlist;
   final int? ratingCount;
   final bool? isRecomended;
@@ -28,6 +29,7 @@ class CourseDetailesListTile extends StatefulWidget {
   final int? variantID;
   const CourseDetailesListTile({
     Key? key,
+    this.subCatid,
     this.isCartItem = false,
     required this.courseName,
     required this.authorName,
@@ -79,13 +81,23 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
       onTap: () async {
         if (widget.id != null) {
           await Provider.of<CourseDetailedProvider>(context, listen: false)
-              .getAll(courseID: widget.id);
+              .getAll(
+            courseID: widget.id,
+          );
 
-          // ignore: use_build_context_synchronously
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => CourseDetailedPage(
-                    id: widget.id,
-                  )));
+          if (widget.subCatid != null) {
+            // ignore: use_build_context_synchronously
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => CourseDetailedPage(
+                      id: widget.id,
+                      subcatid: widget.subCatid,
+                    )));
+          } else {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => CourseDetailedPage(
+                      id: widget.id,
+                    )));
+          }
         }
       },
       child: Container(
@@ -97,8 +109,8 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: size * .192,
-                  width: size * .192,
+                  height: size * .3,
+                  width: size * .270,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       image: DecorationImage(
@@ -166,12 +178,15 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                                               context,
                                               listen: false)
                                           .getRecentlyViewed();
-                                      await Provider.of<
-                                                  CatagoriesDetailedProvider>(
-                                              context,
-                                              listen: false)
-                                          .getSubCatagoriesDetailes(
-                                              subCatagoriesID: widget.id);
+                                      if (widget.subCatid != null) {
+                                        await Provider.of<
+                                                    CatagoriesDetailedProvider>(
+                                                context,
+                                                listen: false)
+                                            .getSubCatagoriesDetailes(
+                                                subCatagoriesID:
+                                                    widget.subCatid);
+                                      }
                                     }
                                   }
                                 },
@@ -272,7 +287,7 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            widget.isRecomended != null
+                            widget.isRecomended != false
                                 ? const BestsellerWidget()
                                 : const SizedBox(),
                             widget.isCartItem == true ||

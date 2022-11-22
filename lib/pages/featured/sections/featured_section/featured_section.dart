@@ -98,7 +98,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
                             courseName: data?.courseName.toString(),
                             coursePrice: data?.price,
                             ratingCount: data?.ratingCount,
-                            isRecomended: data?.recommendedCourse,
+                            isBestSeller: data?.bestSeller,
                           );
                         },
                       ),
@@ -111,7 +111,7 @@ class _FeaturedSectionState extends State<FeaturedSection> {
                           await Provider.of<RecomendationsProvider>(context,
                                   listen: false)
                               .getAll();
-                          featuredProvider.sample();
+                          featuredProvider.samples();
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => SeeAllPageFeatured()));
                         },

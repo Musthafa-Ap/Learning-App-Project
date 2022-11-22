@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:nuox_project/pages/course_detailed_page/sections/review_page/review_model.dart';
@@ -159,8 +158,7 @@ class CourseDetailedProvider with ChangeNotifier {
           Uri.parse(
               "http://learningapp.e8demo.com/api/recent-courses/?auth_token=$token"),
           headers: {"Authorization": auth});
-      // print(response.statusCode);
-      // print(response.body);
+
       var data = jsonDecode(response.body);
 
       notifyListeners();

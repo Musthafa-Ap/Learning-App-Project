@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/widgets/big_cart_icon_button.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,25 +9,30 @@ import '../../../constants/constants.dart';
 import '../../../widgets/bestseller.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
 import '../../course_detailed_page/services/course_detailed_provider.dart';
+import '../services/catagories_detailed_provider.dart';
 
 class CatagoryDetailedPageItemCard extends StatefulWidget {
   final bool? isWishlist;
-  final int id;
+  final int? id;
   final String? courseName;
   final int? rating;
   final int? price;
   final String? image;
   final int? ratingCount;
-  const CatagoryDetailedPageItemCard({
-    Key? key,
-    required this.courseName,
-    required this.rating,
-    required this.price,
-    required this.image,
-    required this.id,
-    required this.ratingCount,
-    required this.isWishlist,
-  }) : super(key: key);
+  final int? cataid;
+  final bool? bestSeller;
+  const CatagoryDetailedPageItemCard(
+      {required this.bestSeller,
+      Key? key,
+      required this.courseName,
+      required this.rating,
+      required this.price,
+      required this.image,
+      required this.id,
+      required this.ratingCount,
+      required this.isWishlist,
+      required this.cataid})
+      : super(key: key);
 
   @override
   State<CatagoryDetailedPageItemCard> createState() =>
@@ -50,6 +57,7 @@ class _CatagoryDetailedPageItemCardState
 
   @override
   Widget build(BuildContext context) {
+    final featuredProvider = Provider.of<FeaturedProvider>(context);
     final size = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: () async {
@@ -135,66 +143,59 @@ class _CatagoryDetailedPageItemCardState
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const BestsellerWidget(),
+                    widget.bestSeller == true
+                        ? const BestsellerWidget()
+                        : SizedBox(
+                            width: size * .15,
+                          ),
                     SizedBox(
                       width: size * .436,
                     ),
-                    BigCartIconButton(
-                      id: widget.id,
-                      price: widget.price!,
-                    )
+                    widget.id != null || widget.price != null
+                        ? BigCartIconButton(
+                            id: widget.id!,
+                            price: widget.price!,
+                          )
+                        : const SizedBox()
                   ],
                 )
               ],
             ),
           ),
           token == null
-              ? const SizedBox()
-              : const SizedBox() //favoriteIcon thalkaalam disable cheythu.i know its a udayipp
-          // : Positioned(
-          //     right: 10,
-          //     top: 8,
-          //     child: Container(
-          //       height: 35,
-          //       width: 35,
-          //       decoration: BoxDecoration(
-          //           //color: Color.fromARGB(255, 194, 193, 192),
-          //           borderRadius: BorderRadius.circular(20)),
-          //       child: Center(
-          //           child: GestureDetector(
-          //         onTap: () async {
-          //           SharedPreferences shared =
-          //               await SharedPreferences.getInstance();
-          //           var token = shared.getString("access_token");
-          //           if (token == null) {
-          //             Navigator.of(context).pushAndRemoveUntil(
-          //               MaterialPageRoute(
-          //                   builder: (context) => const Test()),
-          //               (route) => false,
-          //             );
-          //           } else {
-          //             featuredProvider.addToWhishlist(
-          //                 id: widget.id,
-          //                 variant: 1,
-          //                 context: context,
-          //                 price: widget.price);
-          //             await Provider.of<CatagoriesDetailedProvider>(context,
-          //                     listen: false)
-          //                 .getAll(catagoriesID: widget.id);
-          //             log("passed");
-          //           }
-          //         },
-          //         child: Icon(
-          //           widget.isWishlist == true
-          //               ? Icons.favorite
-          //               : Icons.favorite_border,
-          //           size: 25,
-          //           color: widget.isWishlist == true
-          //               ? Colors.red
-          //               : Colors.white,
-          //         ),
-          //       )),
-          //     )),
+              ? const SizedBox() //: const SizedBox()
+              //favoriteIcon thalkaalam disable cheythu.i know its a udayipp
+              : Positioned(
+                  right: 10,
+                  top: 8,
+                  child: Container(
+                    height: 35,
+                    width: 35,
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                    child: Center(
+                        child: GestureDetector(
+                      onTap: () async {
+                        featuredProvider.addToWhishlist(
+                            id: widget.id,
+                            variant: 1,
+                            context: context,
+                            price: widget.price);
+                        await Provider.of<CatagoriesDetailedProvider>(context,
+                                listen: false)
+                            .getAll(catagoriesID: widget.cataid);
+                      },
+                      child: Icon(
+                        widget.isWishlist == true
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        size: 25,
+                        color: widget.isWishlist == true
+                            ? Colors.red
+                            : Colors.white,
+                      ),
+                    )),
+                  )),
         ],
       ),
     );

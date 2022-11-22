@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/account/account_services/account_provider.dart';
+import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.dart';
 import 'package:provider/provider.dart';
 
 class OrdersPage extends StatelessWidget {
@@ -8,6 +9,7 @@ class OrdersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final myLearningsProvider = Provider.of<MyLearningsProvider>(context);
     final accountProvider = Provider.of<AccountProvider>(context);
     final size = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -61,79 +63,88 @@ class OrdersPage extends StatelessWidget {
                         itemBuilder: (context, indexes) {
                           final data = accountProvider.orderDetailes
                               ?.data?[index].orderedCourseOrder?[indexes];
-                          return Container(
-                            margin: const EdgeInsets.all(10),
-                            height: size * .25,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.white),
-                                // color: Colors.amber,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      image: DecorationImage(
-                                          fit: BoxFit.fill,
-                                          image: NetworkImage(data
-                                                  ?.courseThumbnail
-                                                  .toString() ??
-                                              "https://www.aakash.ac.in/blog/wp-content/uploads/2022/07/Blog-Image-612x536.jpg"))),
-                                  width: size * .3,
-                                  height: size * .25,
-                                ),
-                                kWidth10,
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      data?.courseName ?? "Course Name",
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      data?.sectionId ?? "beginner",
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 14),
-                                    ),
-                                    // Text(
-                                    //   "Order ID : ${data.order}",
-                                    //   style: TextStyle(
-                                    //       color: Colors.white,
-                                    //       fontSize: 16,
-                                    //       overflow: TextOverflow.ellipsis),
-                                    // ),
-
-                                    // Text(
-                                    //   "Payment mode : ${data.}",
-                                    //   style: const TextStyle(
-                                    //       color: Colors.white, fontSize: 16),
-                                    // ),
-                                    Text(
-                                      data?.instructorName ?? "Fahad",
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 16),
-                                    ),
-                                    Text(
-                                      "Price : ₹${data?.itemTotal ?? "5433"}",
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
+                          return InkWell(
+                            onTap: () async {
+                              if (data?.courseId != null) {
+                                await myLearningsProvider.getCourseDetailes(
+                                    courseID: data!.courseId, context: context);
+                              }
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.all(10),
+                              height: size * .25,
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.white),
+                                  // color: Colors.amber,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        image: DecorationImage(
+                                            fit: BoxFit.fill,
+                                            image: NetworkImage(data
+                                                    ?.courseThumbnail
+                                                    .toString() ??
+                                                "https://www.aakash.ac.in/blog/wp-content/uploads/2022/07/Blog-Image-612x536.jpg"))),
+                                    width: size * .3,
+                                    height: size * .25,
+                                  ),
+                                  kWidth10,
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        data?.courseName ?? "Course Name",
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                    ),
-                                    // Text(
-                                    //   "13/11/22",
-                                    //   style: TextStyle(
-                                    //       color: Colors.white, fontSize: 16),
-                                    // ),
-                                  ],
-                                )
-                              ],
+                                      Text(
+                                        data?.sectionId ?? "beginner",
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 14),
+                                      ),
+                                      // Text(
+                                      //   "Order ID : ${data.order}",
+                                      //   style: TextStyle(
+                                      //       color: Colors.white,
+                                      //       fontSize: 16,
+                                      //       overflow: TextOverflow.ellipsis),
+                                      // ),
+
+                                      // Text(
+                                      //   "Payment mode : ${data.}",
+                                      //   style: const TextStyle(
+                                      //       color: Colors.white, fontSize: 16),
+                                      // ),
+                                      Text(
+                                        data?.instructorName ?? "Fahad",
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 16),
+                                      ),
+                                      Text(
+                                        "Price : ₹${data?.itemTotal ?? "5433"}",
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      // Text(
+                                      //   "13/11/22",
+                                      //   style: TextStyle(
+                                      //       color: Colors.white, fontSize: 16),
+                                      // ),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           );
                         },

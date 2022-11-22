@@ -12,9 +12,8 @@ import '../featured/widgets/small_item_card.dart';
 import 'widgets/catagory_detailed_page_item_card.dart';
 
 class CatagoriesDetailedPage extends StatelessWidget {
-  const CatagoriesDetailedPage({
-    super.key,
-  });
+  int cataid;
+  CatagoriesDetailedPage({super.key, this.cataid = 1});
   @override
   Widget build(BuildContext context) {
     final courseDeailedProvider = Provider.of<CourseDetailedProvider>(context);
@@ -49,7 +48,7 @@ class CatagoriesDetailedPage extends StatelessWidget {
             height: size * .76,
             child: ListView.builder(
               itemCount:
-                  catagoriesDetailedProvider.catagoriesDetailes?.data!.length,
+                  catagoriesDetailedProvider.catagoriesDetailes?.data?.length,
               physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
@@ -57,13 +56,15 @@ class CatagoriesDetailedPage extends StatelessWidget {
                 final datas =
                     catagoriesDetailedProvider.catagoriesDetailes?.data?[index];
                 return CatagoryDetailedPageItemCard(
-                  image: datas!.thumbnail!.fullSize.toString(),
-                  isWishlist: datas.isWishlist,
-                  courseName: datas.courseName.toString(),
-                  price: datas.price!.toInt(),
-                  ratingCount: datas.ratingCount!.toInt(),
-                  rating: datas.rating!.toInt(),
-                  id: datas.id!,
+                  image: datas?.thumbnail?.fullSize.toString(),
+                  isWishlist: datas?.isWishlist,
+                  courseName: datas?.courseName.toString(),
+                  price: datas?.price?.toInt(),
+                  ratingCount: datas?.ratingCount!.toInt(),
+                  rating: datas?.rating?.toInt(),
+                  id: datas?.id,
+                  cataid: cataid,
+                  bestSeller: datas?.bestSeller,
                 );
               },
             ),
@@ -84,36 +85,44 @@ class CatagoriesDetailedPage extends StatelessWidget {
                 return CatagoriesButton(
                     navigatepage: "sub_catagories_detailed",
                     title: datas.subCatehoryName.toString(),
-                    id: datas.id!.toInt());
+                    id: datas.id?.toInt());
               },
             ),
           ),
           kHeight15,
-          const BoldHeading(heading: "Recently viewed"),
+          courseDeailedProvider.recentlyViewedList == null ||
+                  courseDeailedProvider.recentlyViewedList!.data!.data!.isEmpty
+              ? const SizedBox()
+              : const BoldHeading(heading: "Recently viewed"),
           kHeight5,
-          SizedBox(
-            height: size * .6,
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              itemCount:
-                  courseDeailedProvider.recentlyViewedList!.data!.data!.length,
-              itemBuilder: (context, index) {
-                final datas = courseDeailedProvider
-                    .recentlyViewedList!.data!.data![index];
-                return SmallItemCard(
-                    courseName: datas.courseName,
-                    authorName: datas.instructorName,
-                    isWishlist: datas.isWishlist,
-                    coursePrice: datas.coursePrice,
-                    image: datas.courseThumbnail.toString(),
-                    rating: datas.rating!.toDouble(),
-                    id: datas.id,
-                    ratingCount: datas.ratingCount);
-              },
-            ),
-          ),
+          courseDeailedProvider.recentlyViewedList == null ||
+                  courseDeailedProvider.recentlyViewedList!.data!.data!.isEmpty
+              ? const SizedBox()
+              : SizedBox(
+                  height: size * .6,
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: courseDeailedProvider
+                        .recentlyViewedList?.data?.data?.length,
+                    itemBuilder: (context, index) {
+                      final datas = courseDeailedProvider
+                          .recentlyViewedList?.data?.data?[index];
+                      return SmallItemCard(
+                        courseName: datas?.courseName,
+                        authorName: datas?.instructorName,
+                        isWishlist: datas?.isWishlist,
+                        coursePrice: datas?.coursePrice,
+                        image: datas?.courseThumbnail.toString(),
+                        rating: datas?.rating?.toDouble(),
+                        id: datas?.id,
+                        ratingCount: datas?.ratingCount,
+                        isBestSeller: datas?.bestSeller,
+                      );
+                    },
+                  ),
+                ),
           kHeight15,
           const BoldHeading(heading: "Recommendations"),
           ListView.builder(
@@ -133,7 +142,7 @@ class CatagoriesDetailedPage extends StatelessWidget {
                 isWishlist: datas?.isWishlist,
                 rating: datas?.rating?.toDouble(),
                 id: datas?.id?.toInt(),
-                isRecomended: datas?.recommendedCourse,
+                isRecomended: datas?.bestSeller,
               );
             },
           ),

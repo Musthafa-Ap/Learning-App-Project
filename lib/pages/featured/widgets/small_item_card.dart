@@ -12,7 +12,7 @@ import '../../course_detailed_page/course_detailed_page.dart';
 
 class SmallItemCard extends StatefulWidget {
   final bool? isWishlist;
-  final bool? isRecomended;
+  final bool? isBestSeller;
   final int? id;
   final String? courseName;
   final String? authorName;
@@ -29,7 +29,7 @@ class SmallItemCard extends StatefulWidget {
     required this.image,
     required this.rating,
     required this.id,
-    this.isRecomended = true,
+    this.isBestSeller = true,
     required this.ratingCount,
   }) : super(key: key);
 
@@ -142,7 +142,7 @@ class _SmallItemCardState extends State<SmallItemCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      widget.isRecomended == true
+                      widget.isBestSeller == true
                           ? const BestsellerWidget()
                           : const SizedBox(),
                       Container(

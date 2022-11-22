@@ -6,7 +6,9 @@ import '../../../../constants/constants.dart';
 
 class ReportPage extends StatelessWidget {
   ReportPage({super.key});
+
   final TextEditingController _reportController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final accountProvider = Provider.of<AccountProvider>(context);

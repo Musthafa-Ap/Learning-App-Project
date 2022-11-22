@@ -8,8 +8,8 @@ import '../../../../widgets/bestseller.dart';
 import '../../../course_detailed_page/course_detailed_page.dart';
 import '../../../course_detailed_page/services/course_detailed_provider.dart';
 
-class WhichlistPage extends StatelessWidget {
-  const WhichlistPage({super.key});
+class WishlistPage extends StatelessWidget {
+  const WishlistPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +62,8 @@ class WhichlistPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              height: size * .192,
-                              width: size * .192,
+                              height: size * .3,
+                              width: size * .270,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   image: DecorationImage(

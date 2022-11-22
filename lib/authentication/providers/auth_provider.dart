@@ -44,6 +44,8 @@ class AuthProvider with ChangeNotifier {
           final sharedPrefs = await SharedPreferences.getInstance();
           notifyListeners();
           var token = data['token']['access_token'];
+          var refreshToken = data['token']['refresh_token'].toString();
+          await sharedPrefs.setString("refresh_token", refreshToken);
           await sharedPrefs.setBool("isLogged", true);
           await sharedPrefs.setBool('instructor', false);
           await sharedPrefs.setString("name", name);
@@ -105,16 +107,16 @@ class AuthProvider with ChangeNotifier {
         String token = data['token']['access_token'];
         final sharedPrefs = await SharedPreferences.getInstance();
         await sharedPrefs.setBool('instructor', instructor);
-        //  await sharedPrefs!.clear();
         var email = data['email'];
         await sharedPrefs.setBool("isLogged", true);
+        var refreshToken = data['token']['refresh_token'].toString();
+        await sharedPrefs.setString("refresh_token", refreshToken);
         await sharedPrefs.setString("access_token", token);
         await sharedPrefs.setString("number", number);
         await sharedPrefs.setString("image", image);
         await sharedPrefs.setBool("changepass", false);
         await sharedPrefs.setString("email", email);
         await sharedPrefs.setString("name", name);
-        //  <String, dynamic> checking = data['token'];
 
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
@@ -237,7 +239,6 @@ class AuthProvider with ChangeNotifier {
       var response = await http.post(
           Uri.parse("http://learningapp.e8demo.com/api/user-login/"),
           body: {'email': email, 'password': password});
-
       if (response.statusCode == 200) {
         login_email_error = null;
         login_pass_error = null;
@@ -260,7 +261,10 @@ class AuthProvider with ChangeNotifier {
           await sharedPrefs.setString("number", mobile);
           await sharedPrefs.setString("email", email);
           var accessToken = data['token']['access_token'].toString();
+          var refreshToken = data['token']['refresh_token'].toString();
+          await sharedPrefs.setString("refresh_token", refreshToken);
           await sharedPrefs.setString("access_token", accessToken);
+
           await sharedPrefs.setBool("changepass", true);
           // await sharedPrefs.setString("name", '');
 
@@ -430,6 +434,8 @@ class AuthProvider with ChangeNotifier {
         await sharedPrefs.setString("number", mobile);
         await sharedPrefs.setBool("changepass", true);
         await sharedPrefs.setBool("isLogged", true);
+        var refreshToken = data['token']['refresh_token'].toString();
+        await sharedPrefs.setString("refresh_token", refreshToken);
         await sharedPrefs.setString("access_token", token);
 
         Navigator.of(context).pushAndRemoveUntil(
@@ -541,7 +547,6 @@ class AuthProvider with ChangeNotifier {
       SharedPreferences shared = await SharedPreferences.getInstance();
       var token = shared.getString("access_token");
       String auth = "Bearer $token";
-      print("sign out ===  $auth");
       var api = "http://learningapp.e8demo.com/api/logout/";
       var response = await http.get(
         Uri.parse(api),
@@ -565,6 +570,22 @@ class AuthProvider with ChangeNotifier {
             (route) => false);
       } else {
         print("status code oth400");
+      }
+      if (response.statusCode == 401) {
+        SharedPreferences shared = await SharedPreferences.getInstance();
+        var refreshToken = shared.getString("refresh_token");
+        var responses = await http.get(
+          Uri.parse(
+              "http://learningapp.e8demo.com/api/refresh-token/?refresh_token=$refreshToken"),
+        );
+        if (responses.statusCode == 200) {
+          Map<String, dynamic> datas = jsonDecode(responses.body);
+          var access = datas["token"]["access_token"].toString();
+          var refresh = datas["token"]["refresh_token"].toString();
+          shared.setString("refresh_token", refresh);
+          shared.setString("access_token", access);
+          log("expired token is updated");
+        }
       }
     } catch (e) {
       print(e.toString());

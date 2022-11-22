@@ -21,7 +21,9 @@ import '../catagories_detailed_page.dart/services/catagories_detailed_provider.d
 class CourseDetailedPage extends StatefulWidget {
   final bool refesh;
   final int? id;
-  const CourseDetailedPage({super.key, this.id, this.refesh = false});
+  final int? subcatid;
+  const CourseDetailedPage(
+      {super.key, this.id, this.refesh = false, this.subcatid});
 
   @override
   State<CourseDetailedPage> createState() => _CourseDetailedPageState();
@@ -96,6 +98,11 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                 context,
                 listen: false,
               ).getAll();
+              if (widget.subcatid != null) {
+                await Provider.of<CatagoriesDetailedProvider>(context,
+                        listen: false)
+                    .getSubCatagoriesDetailes(subCatagoriesID: widget.subcatid);
+              }
               await Provider.of<CatagoriesDetailedProvider>(context,
                       listen: false)
                   .getSubCatagoriesDetailes(subCatagoriesID: widget.id);
@@ -699,14 +706,16 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                             final datas = courseDeailedProvider
                                 .recentlyViewedList?.data?.data?[index];
                             return SmallItemCard(
-                                courseName: datas?.courseName,
-                                authorName: datas?.instructorName,
-                                coursePrice: datas?.coursePrice,
-                                isWishlist: datas?.isWishlist,
-                                image: datas?.courseThumbnail.toString(),
-                                rating: datas?.rating?.toDouble(),
-                                id: datas?.id,
-                                ratingCount: datas?.ratingCount);
+                              courseName: datas?.courseName,
+                              authorName: datas?.instructorName,
+                              coursePrice: datas?.coursePrice,
+                              isWishlist: datas?.isWishlist,
+                              image: datas?.courseThumbnail.toString(),
+                              rating: datas?.rating?.toDouble(),
+                              id: datas?.id,
+                              ratingCount: datas?.ratingCount,
+                              isBestSeller: datas?.bestSeller,
+                            );
                           },
                         ),
                       ),
@@ -729,7 +738,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                       rating: datas?.rating?.toDouble(),
                       isWishlist: datas?.isWishlist,
                       id: datas?.id?.toInt(),
-                      isRecomended: datas?.recommendedCourse,
+                      isRecomended: datas?.bestSeller,
                     );
                   },
                 ),

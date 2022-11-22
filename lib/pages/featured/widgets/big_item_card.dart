@@ -30,7 +30,7 @@ class BigItemCard extends StatefulWidget {
     required this.rating,
     required this.image,
     required this.id,
-    this.isRecomended = true,
+    this.isRecomended = false,
     required this.ratingCount,
     this.isWishList,
   }) : super(key: key);
@@ -148,8 +148,10 @@ class _BigItemCardState extends State<BigItemCard> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // isRecomended! ? BestsellerWidget() : SizedBox(),
-                      const BestsellerWidget(),
+                      widget.isRecomended == true
+                          ? const BestsellerWidget()
+                          : const SizedBox(),
+                      //const BestsellerWidget(),
                       widget.id != null
                           ? BigCartIconButton(
                               id: widget.id!.toInt(),

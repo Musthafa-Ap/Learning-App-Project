@@ -17,8 +17,8 @@ class CatagoriesListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const CatagoriesDetailedPage()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => CatagoriesDetailedPage()));
       },
       leading: Container(
         width: 30,

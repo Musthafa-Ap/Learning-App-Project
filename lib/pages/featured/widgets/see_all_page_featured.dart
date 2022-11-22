@@ -82,7 +82,7 @@ class SeeAllPageFeatured extends StatelessWidget {
                     coursePrice: data.price!,
                     id: data.id!,
                     rating: data.rating!.toDouble(),
-                    isRecomended: data.recommendedCourse,
+                    isRecomended: data.bestSeller,
                   );
                 },
               ),

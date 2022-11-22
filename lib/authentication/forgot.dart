@@ -19,6 +19,11 @@ class ForgotPassword extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios)),
         backgroundColor: Colors.black,
         title: const Text("Reset password"),
       ),

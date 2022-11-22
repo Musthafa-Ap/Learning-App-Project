@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -20,13 +19,16 @@ class AccountProvider with ChangeNotifier {
   bool isLoading = false;
   bool isChangePassLoading = false;
   FAQModel? faqList;
-  Future<void> getFAQ() async {
+  Future<bool> getFAQ() async {
     var response = await http
         .get(Uri.parse("http://learningapp.e8demo.com/api/faq_list/"));
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       faqList = FAQModel.fromJson(data);
       notifyListeners();
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -65,7 +67,6 @@ class AccountProvider with ChangeNotifier {
         // print("value == ${value.stream}");
         var data = await value.stream.toBytes();
         var body = String.fromCharCodes(data);
-        log(body);
         Map<String, dynamic> msg = jsonDecode(body);
         //  print("message = ${msg}");
         if (msg.containsKey("non_field_errors")) {
@@ -207,6 +208,9 @@ class AccountProvider with ChangeNotifier {
       if (response.statusCode == 400) {
         noOrders = true;
         notifyListeners();
+      }
+      if (response.statusCode == 401) {
+        print("authentication problem");
       }
     } catch (e) {
       print(e.toString());

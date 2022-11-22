@@ -62,6 +62,7 @@ class _CartState extends State<Cart> {
                           rating: datas.rating!.toDouble(),
                           id: datas.courseId!.toInt(),
                           isCartItem: true,
+                          isRecomended: datas.bestSeller,
                         );
                       },
                     ),

@@ -66,6 +66,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
       });
   }
 
+  bool isSelected = false;
   @override
   Widget build(BuildContext context) {
     final myLearningsProvider = Provider.of<MyLearningsProvider>(context);
@@ -109,31 +110,6 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                                 height: size * .501,
                                                 child: VideoPlayer(_controller),
                                               ),
-                                              // _controller.value.isPlaying
-                                              //     ? const SizedBox()
-                                              //     : Positioned(
-                                              //         left: 0,
-                                              //         right: 0,
-                                              //         bottom: 0,
-                                              //         top: 0,
-                                              //         child: IconButton(
-                                              //             onPressed: () {
-                                              //               setState(() {
-                                              //                 _controller.play();
-                                              //               });
-                                              //             },
-                                              //             icon: const CircleAvatar(
-                                              //               backgroundColor:
-                                              //                   Colors.white,
-                                              //               child: Center(
-                                              //                 child: Icon(
-                                              //                   Icons.play_arrow,
-                                              //                   color: Colors.black,
-                                              //                   size: 40,
-                                              //                 ),
-                                              //               ),
-                                              //             )),
-                                              //       ),
                                               GestureDetector(
                                                 onDoubleTap: () async {
                                                   setState(() {
@@ -329,11 +305,16 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                             );
                                           }),
                                       Expanded(
-                                        child: VideoProgressIndicator(
-                                            _controller,
-                                            allowScrubbing: true,
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 12, vertical: 0)),
+                                        child: SizedBox(
+                                          height: 8,
+                                          child: VideoProgressIndicator(
+                                              _controller,
+                                              allowScrubbing: true,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12,
+                                                      vertical: 0)),
+                                        ),
                                       ),
                                       Text(
                                         _videoDuration(
@@ -344,54 +325,6 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                     ],
                                   ),
                                 ),
-                                // Row(
-                                //   mainAxisAlignment: MainAxisAlignment.center,
-                                //   children: [
-                                //     IconButton(
-                                //         onPressed: () async {
-                                //           await _controller.seekTo(Duration(
-                                //               seconds: _controller.value
-                                //                       .position.inSeconds -
-                                //                   10));
-                                //         },
-                                //         icon: const Icon(
-                                //           Icons.skip_previous,
-                                //           size: 40,
-                                //           color: Colors.white,
-                                //         )),
-                                //     const SizedBox(
-                                //       width: 30,
-                                //     ),
-                                //     IconButton(
-                                //         onPressed: () {
-                                //           _controller.value.isPlaying
-                                //               ? _controller.pause()
-                                //               : _controller.play();
-                                //         },
-                                //         icon: Icon(
-                                //           _controller.value.isPlaying
-                                //               ? Icons.pause
-                                //               : Icons.play_arrow,
-                                //           color: Colors.white,
-                                //           size: 40,
-                                //         )),
-                                //     const SizedBox(
-                                //       width: 30,
-                                //     ),
-                                //     IconButton(
-                                //         onPressed: () async {
-                                //           await _controller.seekTo(Duration(
-                                //               seconds: _controller.value
-                                //                       .position.inSeconds +
-                                //                   10));
-                                //         },
-                                //         icon: const Icon(
-                                //           Icons.skip_next,
-                                //           size: 40,
-                                //           color: Colors.white,
-                                //         )),
-                                //   ],
-                                // )
                               ],
                             )
                           : const Center(
@@ -409,16 +342,6 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                         fontWeight: FontWeight.bold),
                   ),
                   kHeight5,
-                  // Text(
-                  //   myLearningsProvider
-                  //           .courseVideoList?.data?[_currentIndex].description
-                  //           .toString() ??
-                  //       "Introduction to Cloud computing on AWS for Beginners[2022])",
-                  //   style: const TextStyle(
-                  //     color: Colors.white,
-                  //     fontSize: 16,
-                  //   ),
-                  // ),
                   ReadMoreText(
                     myLearningsProvider
                             .courseVideoList?.data?[_currentIndex].description
@@ -438,7 +361,11 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                         fontWeight: FontWeight.bold,
                         color: Colors.red),
                   ),
-                  kHeight,
+                  // kHeight5,
+                  const Divider(
+                    color: Colors.white,
+                  ),
+                  kHeight5,
                   Expanded(
                       child: ListView.builder(
                     physics: const BouncingScrollPhysics(),

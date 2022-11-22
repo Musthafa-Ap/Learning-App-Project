@@ -25,6 +25,7 @@ class Data {
   String? updatedAt;
   bool? featuredCourse;
   bool? recommendedCourse;
+  bool? bestSeller;
   Thumbnail? thumbnail;
   Instructor? instructor;
   String? introVideo;
@@ -33,7 +34,8 @@ class Data {
   bool? isWishlist;
 
   Data(
-      {this.isWishlist,
+      {this.bestSeller,
+      this.isWishlist,
       this.id,
       this.courseName,
       this.price,
@@ -50,6 +52,7 @@ class Data {
       this.ratingCount});
 
   Data.fromJson(Map<String, dynamic> json) {
+    bestSeller = json['best_seller'];
     isWishlist = json['wish_list'];
     ratingCount = json['rating_count'];
     id = json['id'];

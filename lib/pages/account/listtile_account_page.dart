@@ -31,7 +31,7 @@ class ListTileAccountPage extends StatelessWidget {
           if (index == 0) {
             await Provider.of<AccountProvider>(context, listen: false).getFAQ();
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => const FAQPage()));
+                .push(MaterialPageRoute(builder: (context) => FAQPage()));
           } else if (index == 1) {
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const AboutAppPage()));
@@ -50,7 +50,7 @@ class ListTileAccountPage extends StatelessWidget {
             await Provider.of<FeaturedProvider>(context, listen: false)
                 .getWhishlist();
             Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const WhichlistPage()));
+                MaterialPageRoute(builder: (context) => const WishlistPage()));
           } else if (index == 3) {
             await Share.share(
                 "https://i.guim.co.uk/img/media/71dd7c5b208e464995de3467caf9671dc86fcfd4/1176_345_3557_2135/master/3557.jpg?width=620&quality=45&dpr=2&s=none");

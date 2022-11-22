@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_model.dart';
@@ -17,8 +16,6 @@ class CatagoriesDetailedProvider with ChangeNotifier {
     var token = shared.getString("access_token");
     isCatagoryDetailedLoading = true;
     Response response;
-    // var api =
-    //     "http://learningapp.e8demo.com/api/course_list/?cate_id=$catagoriesID";
     if (token == null) {
       response = await get(Uri.parse(
           "http://learningapp.e8demo.com/api/course_list/?cate_id=$catagoriesID"));

@@ -21,6 +21,8 @@ class _NotificationsPageState extends State<NotificationsPage> {
   void get() async {
     SharedPreferences shared = await SharedPreferences.getInstance();
     access = shared.getString("access_token");
+    String? refresh = shared.getString("refresh_token");
+    print("refresh token === $refresh");
   }
 
   @override

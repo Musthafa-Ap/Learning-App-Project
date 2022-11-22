@@ -14,6 +14,11 @@ class MobileNumberOTPSubmissionPage extends StatelessWidget {
     final size = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios)),
           centerTitle: true,
           title: const Text("OTP Submission"),
         ),

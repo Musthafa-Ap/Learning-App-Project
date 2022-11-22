@@ -5,7 +5,8 @@ import '../../../constants/constants.dart';
 import '../../../widgets/course_detailes_list_tile.dart';
 
 class SubCatagoriesDetailedPage extends StatelessWidget {
-  const SubCatagoriesDetailedPage({super.key});
+  int subcatid;
+  SubCatagoriesDetailedPage({super.key, required this.subcatid});
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +47,12 @@ class SubCatagoriesDetailedPage extends StatelessWidget {
                 courseName: datas?.courseName.toString(),
                 coursePrice: datas?.price?.toDouble(),
                 id: datas?.id?.toInt(),
+                subCatid: subcatid,
                 isWishlist: datas?.isWishlist,
                 ratingCount: datas?.ratingCount,
                 image: datas?.thumbnail?.fullSize.toString(),
                 rating: datas?.rating?.toDouble(),
-                isRecomended: datas?.recommendedCourse,
+                isRecomended: datas?.bestSeller,
               );
             },
           ),
