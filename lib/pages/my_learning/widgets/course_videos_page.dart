@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
 
 class CourseVideosPage extends StatefulWidget {
@@ -73,6 +75,20 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
     final size = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          kWidth5,
+          IconButton(
+              onPressed: () async {
+                if (_myLearningsProvider
+                        .courseVideoList!.data![_currentIndex].video !=
+                    null) {
+                  await Share.share(_myLearningsProvider
+                      .courseVideoList!.data![_currentIndex].video
+                      .toString());
+                }
+              },
+              icon: const Icon(CupertinoIcons.share))
+        ],
         leading: IconButton(
             onPressed: () {
               Navigator.pop(context);

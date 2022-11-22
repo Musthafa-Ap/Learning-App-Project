@@ -107,7 +107,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                       listen: false)
                   .getSubCatagoriesDetailes(subCatagoriesID: widget.id);
               await Provider.of<FeaturedProvider>(context, listen: false)
-                  .sample();
+                  .samples();
               await Provider.of<RecomendationsProvider>(context, listen: false)
                   .getAll();
               await Provider.of<CourseDetailedProvider>(context, listen: false)
