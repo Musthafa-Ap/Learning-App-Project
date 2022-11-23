@@ -87,7 +87,7 @@ class CartProvider with ChangeNotifier {
     }
   }
 
-  void coupenApply({required String coupen, context}) async {
+  Future<void> coupenApply({required String coupen, context}) async {
     isLoading = true;
     try {
       SharedPreferences shared = await SharedPreferences.getInstance();
@@ -134,6 +134,8 @@ class CartProvider with ChangeNotifier {
           body: jsonEncode({
             "payment_method": paymentMode,
           }));
+      print(paymentMode);
+      print(response.body);
       Map<String, dynamic> data = jsonDecode(response.body);
 
       totalPrice = data['data']['grand_total'].toString();

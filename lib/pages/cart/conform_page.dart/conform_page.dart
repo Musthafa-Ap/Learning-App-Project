@@ -70,6 +70,7 @@ class ConformPurchasePage extends StatelessWidget {
                     backgroundColor: MaterialStateProperty.all(Colors.purple)),
                 onPressed: () async {
                   await myLearningsProvider.getMyLearnings();
+                  selectedIndex.value = 2;
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => const MyHomePage()),
                     (route) => false,

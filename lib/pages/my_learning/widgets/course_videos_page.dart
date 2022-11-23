@@ -22,6 +22,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
   late MyLearningsProvider _myLearningsProvider;
   late VideoPlayerController _controller;
   int _currentIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -259,6 +260,16 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                                                           .black,
                                                                       size: 40,
                                                                     ),
+                                                                    // child:
+                                                                    //     AnimatedIcon(
+                                                                    //   icon: AnimatedIcons
+                                                                    //       .play_pause,
+                                                                    //   size: 40,
+                                                                    //   color: Colors
+                                                                    //       .black,
+                                                                    //   progress:
+                                                                    //       animatedController,
+                                                                    // ),
                                                                   )),
                                                         ),
                                                       ),

@@ -3,12 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/featured/sections/notifications_section/notifications_page.dart';
+import 'package:nuox_project/pages/featured/services/catagories_section/catagories_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../account/account_services/account_provider.dart';
+import '../cart/cart_services/cart_services.dart';
+import '../catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import '../course_detailed_page/course_detailed_page.dart';
+import '../course_detailed_page/recomendations_services/recomendations_provider.dart';
 import '../course_detailed_page/services/course_detailed_provider.dart';
+import '../my_learning/services/my_learnings_provider.dart';
+import '../search/services/search_provider.dart';
 import 'sections/featured_section/featured_section.dart';
 import 'widgets/top_text_section.dart';
 
@@ -26,6 +33,34 @@ class _FeaturedState extends State<Featured> {
   );
   @override
   void initState() {
+    Provider.of<FeaturedProvider>(context, listen: false).sample();
+    Provider.of<CatagoriesProvider>(context, listen: false).getAll();
+    Provider.of<TopCoursesProvider>(context, listen: false).getAll();
+    Provider.of<CourseDetailedProvider>(context, listen: false)
+        .getAll(courseID: 2);
+    Provider.of<CatagoriesDetailedProvider>(context, listen: false)
+        .getAll(catagoriesID: 1);
+    Provider.of<CatagoriesDetailedProvider>(context, listen: false)
+        .getAllSub(catagoriesID: 1);
+    Provider.of<RecomendationsProvider>(context, listen: false).getAll();
+    Provider.of<CatagoriesDetailedProvider>(context, listen: false)
+        .getSubCatagoriesDetailes(subCatagoriesID: 1);
+    super.initState();
+    Provider.of<CartProvider>(context, listen: false).getAllCartItems();
+    Provider.of<TopCoursesProvider>(context, listen: false).bannerList();
+    Provider.of<AccountProvider>(context, listen: false).getFAQ();
+    Provider.of<CourseDetailedProvider>(context, listen: false)
+        .getReview(courseID: 2);
+    Provider.of<AccountProvider>(context, listen: false).getAboutApp();
+    Provider.of<MyLearningsProvider>(context, listen: false).getMyLearnings();
+    Provider.of<SearchProvider>(context, listen: false).getSearchItems(key: "");
+    Provider.of<FeaturedProvider>(context, listen: false).sortedCourses = null;
+    Provider.of<CourseDetailedProvider>(context, listen: false)
+        .getRecentlyViewed();
+    Provider.of<FeaturedProvider>(context, listen: false).getNotifications();
+    Provider.of<FeaturedProvider>(context, listen: false).getWhishlist();
+    Provider.of<AccountProvider>(context, listen: false).getOrderDetailes();
+    Provider.of<AccountProvider>(context, listen: false).getDocument();
     final topCoursesProvider =
         Provider.of<TopCoursesProvider>(context, listen: false);
     preffunc();

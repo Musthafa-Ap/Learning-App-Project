@@ -489,7 +489,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 ),
               ),
             ),
-            kheight20, kHeight,
+            kheight20,
+            kHeight,
             SizedBox(
               height: 50,
               child: ElevatedButton(
@@ -533,7 +534,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     ? const Center(
                         child: CircularProgressIndicator(),
                       )
-                    : const Text("Submit"),
+                    : const Text("Save"),
               ),
             ),
           ],

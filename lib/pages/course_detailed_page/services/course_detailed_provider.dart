@@ -7,6 +7,7 @@ import 'package:nuox_project/pages/course_detailed_page/services/recently_viewed
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CourseDetailedProvider with ChangeNotifier {
+  bool noReview = false;
   bool? isRecentEmpty;
   RecentlyViewedModel? recentlyViewedList;
   bool isReviewLoading = false;
@@ -74,6 +75,7 @@ class CourseDetailedProvider with ChangeNotifier {
   }
 
   Future<void> getReview({required courseID}) async {
+    noReview = false;
     try {
       isReviewLoading = true;
       SharedPreferences shared = await SharedPreferences.getInstance();
@@ -84,9 +86,15 @@ class CourseDetailedProvider with ChangeNotifier {
       var response =
           await http.get(Uri.parse(api), headers: {"Authorization": auth});
       if (response.statusCode == 200) {
+        noReview = false;
         isReviewLoading = false;
         var data = jsonDecode(response.body);
         getReviewList = ReviewModel.fromJson(data);
+        notifyListeners();
+      }
+      if (response.statusCode == 404) {
+        isReviewLoading = false;
+        noReview = true;
         notifyListeners();
       }
       notifyListeners();

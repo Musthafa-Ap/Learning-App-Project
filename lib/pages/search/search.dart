@@ -36,7 +36,7 @@ class Search extends StatelessWidget {
               style: const TextStyle(color: Colors.white),
             ),
             kHeight,
-            const BoldHeading(heading: "Browse Catagories"),
+            const BoldHeading(heading: "Browse Courses"),
             kHeight,
             Expanded(
               child: searchProvider.notFound != null

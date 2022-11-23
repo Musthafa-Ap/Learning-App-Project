@@ -88,8 +88,14 @@ class ReviewPage extends StatelessWidget {
                 var rating = _ratingNotifier.value;
                 var review = _reviewController.text;
                 if (review.isEmpty) {
-                  courseDetailedProvider.addRatingWithoutReview(
-                      context: context, rating: rating, id: id);
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      backgroundColor: Colors.red,
+                      content: Text(
+                        'Please type a review',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )));
+                  // courseDetailedProvider.addRatingWithoutReview(
+                  //     context: context, rating: rating, id: id);
                 } else {
                   await courseDetailedProvider.addRatingWithReview(
                       rating: rating, id: id, review: review, context: context);
@@ -98,7 +104,7 @@ class ReviewPage extends StatelessWidget {
                 courseDetailedProvider.getReview(
                     courseID:
                         courseDetailedProvider.courseDetailes!.data!.first.id);
-                //Navigator.of(context).pop();
+                Navigator.of(context).pop();
               },
               child: const Text("Submit"),
             ),
@@ -106,11 +112,12 @@ class ReviewPage extends StatelessWidget {
           kheight20,
           kheight20,
           courseDetailedProvider.getReviewList == null ||
-                  courseDetailedProvider.getReviewList!.data!.isEmpty
+                  courseDetailedProvider.getReviewList!.data!.isEmpty ||
+                  courseDetailedProvider.noReview == true
               ? const Center(
                   child: Text(
                     "No review",
-                    style: TextStyle(color: Colors.black, fontSize: 18),
+                    style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 )
               : courseDetailedProvider.isReviewLoading

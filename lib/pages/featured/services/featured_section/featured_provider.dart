@@ -119,6 +119,7 @@ class FeaturedProvider with ChangeNotifier {
       var data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         sortedCourses = SortedCourseModel.fromJson(data);
+        print(sortedCourses!.data!.first.isWishlist);
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => SeeAllPageFeatured()),
         );
@@ -250,6 +251,7 @@ class FeaturedProvider with ChangeNotifier {
       Response response = await put(Uri.parse(api),
           headers: {"Authorization": auth},
           body: {"course": id.toString(), "variant": variant.toString()});
+      print(response.body);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.white,

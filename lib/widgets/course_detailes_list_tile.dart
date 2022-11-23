@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
@@ -86,7 +88,6 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
           );
 
           if (widget.subCatid != null) {
-            // ignore: use_build_context_synchronously
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => CourseDetailedPage(
                       id: widget.id,
@@ -153,11 +154,22 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                                   } else {
                                     if (widget.id != null ||
                                         widget.coursePrice != null) {
-                                      featuredProvider.addToWhishlist(
-                                          id: widget.id,
-                                          variant: 1,
-                                          context: context,
-                                          price: widget.coursePrice);
+                                      if (widget.isWishlist == false) {
+                                        featuredProvider.addToWhishlist(
+                                            id: widget.id,
+                                            variant: 1,
+                                            context: context,
+                                            price: widget.coursePrice);
+                                        // await featuredProvider.getWhishlist();
+                                      }
+                                      if (widget.isWishlist == true) {
+                                        await featuredProvider
+                                            .deleteFromWhishlist(
+                                                variant: 1,
+                                                id: widget.id.toString(),
+                                                context: context);
+                                        // await featuredProvider.getWhishlist();
+                                      }
                                       await Provider.of<FeaturedProvider>(
                                               context,
                                               listen: false)

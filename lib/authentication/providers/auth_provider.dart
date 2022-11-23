@@ -175,6 +175,7 @@ class AuthProvider with ChangeNotifier {
           Uri.parse(
               "http://learningapp.e8demo.com/api/user-forgotpassword/forgot_password_otp_verification/"),
           body: {'email': email, 'otp': otp, 'new_password': newPassword});
+      print(response.body);
       Map<String, dynamic> data = jsonDecode(response.body);
       if (data['status'] == true) {
         setLoading(false);
@@ -205,7 +206,7 @@ class AuthProvider with ChangeNotifier {
               "http://learningapp.e8demo.com/api/user-forgotpassword/forgot_password_otp/"),
           body: {'email': emailforOTP});
       Map<String, dynamic> data = jsonDecode(response.body);
-
+      print(response.body);
       if (data['status'] == 200) {
         setLoading(false);
         Navigator.of(context).push(MaterialPageRoute(
@@ -553,6 +554,7 @@ class AuthProvider with ChangeNotifier {
         headers: {"Authorization": auth},
       );
       print(response.body);
+      print(response.statusCode);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.green,
@@ -568,16 +570,23 @@ class AuthProvider with ChangeNotifier {
               builder: (context) => const LoginPage(),
             ),
             (route) => false);
-      } else {
-        print("status code oth400");
+        // } else {
+        //   print("status code oth400");
+        // }
+
       }
       if (response.statusCode == 401) {
+        log("401");
         SharedPreferences shared = await SharedPreferences.getInstance();
         var refreshToken = shared.getString("refresh_token");
         var responses = await http.get(
           Uri.parse(
               "http://learningapp.e8demo.com/api/refresh-token/?refresh_token=$refreshToken"),
         );
+        print(refreshToken);
+        print("222");
+        print(responses.body);
+        print(responses.statusCode);
         if (responses.statusCode == 200) {
           Map<String, dynamic> datas = jsonDecode(responses.body);
           var access = datas["token"]["access_token"].toString();

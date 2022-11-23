@@ -20,7 +20,7 @@ class OrdersPage extends StatelessWidget {
               },
               icon: const Icon(Icons.arrow_back_ios)),
           centerTitle: true,
-          title: const Text("Order detailes"),
+          title: const Text("Order details"),
         ),
         body: accountProvider.noOrders == true
             ? const Center(

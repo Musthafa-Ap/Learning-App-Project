@@ -176,11 +176,19 @@ class _CatagoryDetailedPageItemCardState
                     child: Center(
                         child: GestureDetector(
                       onTap: () async {
-                        featuredProvider.addToWhishlist(
-                            id: widget.id,
-                            variant: 1,
-                            context: context,
-                            price: widget.price);
+                        if (widget.isWishlist == false) {
+                          featuredProvider.addToWhishlist(
+                              id: widget.id,
+                              variant: 1,
+                              context: context,
+                              price: widget.price);
+                        }
+                        if (widget.isWishlist == true) {
+                          await featuredProvider.deleteFromWhishlist(
+                              variant: 1,
+                              id: widget.id.toString(),
+                              context: context);
+                        }
                         await Provider.of<CatagoriesDetailedProvider>(context,
                                 listen: false)
                             .getAll(catagoriesID: widget.cataid);

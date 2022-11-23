@@ -19,7 +19,7 @@ class BottomNavBar extends StatelessWidget {
             backgroundColor: Colors.black,
             unselectedItemColor: Colors.white,
             selectedItemColor: Colors.white,
-            selectedIconTheme: const IconThemeData(color: Colors.white),
+            selectedIconTheme: const IconThemeData(color: Colors.purple),
             onTap: (value) {
               selectedIndex.value = value;
             },

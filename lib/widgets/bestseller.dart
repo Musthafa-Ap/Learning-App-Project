@@ -9,7 +9,7 @@ class BestsellerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 15,
-      width: 60,
+      width: 66,
       decoration: BoxDecoration(
           color: Colors.white.withOpacity(.8),
           borderRadius: BorderRadius.circular(3)),

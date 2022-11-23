@@ -85,7 +85,7 @@ class BuyAllPage extends StatelessWidget {
                     children: [
                       const Spacer(),
                       const Text(
-                        "Coupen Applied",
+                        "Coupon Applied",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,

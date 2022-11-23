@@ -21,43 +21,51 @@ class SubCatagoriesDetailedPage extends StatelessWidget {
         title: const Text("Subcategories"),
         centerTitle: true,
       ),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-        children: [
-          kHeight5,
-          const Text(
-            "Courses to get you started",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
+      body: catagoriesProvider.subCataEmpty == true
+          ? const Center(
+              child: Text(
+                "No courses",
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            )
+          : ListView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+              children: [
+                kHeight5,
+                const Text(
+                  "Courses to get you started",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                kHeight15,
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  itemCount:
+                      catagoriesProvider.subCatagoriesDetailes!.data!.length,
+                  itemBuilder: (context, index) {
+                    final datas =
+                        catagoriesProvider.subCatagoriesDetailes?.data?[index];
+                    return CourseDetailesListTile(
+                      authorName: datas?.instructor?.name.toString(),
+                      courseName: datas?.courseName.toString(),
+                      coursePrice: datas?.price?.toDouble(),
+                      id: datas?.id?.toInt(),
+                      subCatid: subcatid,
+                      isWishlist: datas?.isWishlist,
+                      ratingCount: datas?.ratingCount,
+                      image: datas?.thumbnail?.fullSize.toString(),
+                      rating: datas?.rating?.toDouble(),
+                      isRecomended: datas?.bestSeller,
+                    );
+                  },
+                ),
+              ],
             ),
-          ),
-          kHeight15,
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount: catagoriesProvider.subCatagoriesDetailes!.data!.length,
-            itemBuilder: (context, index) {
-              final datas =
-                  catagoriesProvider.subCatagoriesDetailes?.data?[index];
-              return CourseDetailesListTile(
-                authorName: datas?.instructor?.name.toString(),
-                courseName: datas?.courseName.toString(),
-                coursePrice: datas?.price?.toDouble(),
-                id: datas?.id?.toInt(),
-                subCatid: subcatid,
-                isWishlist: datas?.isWishlist,
-                ratingCount: datas?.ratingCount,
-                image: datas?.thumbnail?.fullSize.toString(),
-                rating: datas?.rating?.toDouble(),
-                isRecomended: datas?.bestSeller,
-              );
-            },
-          ),
-        ],
-      ),
     );
   }
 }

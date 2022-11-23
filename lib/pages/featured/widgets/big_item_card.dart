@@ -185,11 +185,20 @@ class _BigItemCardState extends State<BigItemCard> {
                         (route) => false,
                       );
                     } else {
-                      featuredProvider.addToWhishlist(
-                          id: widget.id,
-                          variant: 1,
-                          context: context,
-                          price: widget.coursePrice);
+                      if (widget.isWishList == false) {
+                        featuredProvider.addToWhishlist(
+                            id: widget.id,
+                            variant: 1,
+                            context: context,
+                            price: widget.coursePrice);
+                      }
+                      if (widget.isWishList == true) {
+                        await featuredProvider.deleteFromWhishlist(
+                            variant: 1,
+                            id: widget.id.toString(),
+                            context: context);
+                        // await featuredProvider.getWhishlist();
+                      }
                       Provider.of<TopCoursesProvider>(context, listen: false)
                           .getAll();
                     }

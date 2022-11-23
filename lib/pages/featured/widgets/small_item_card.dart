@@ -205,15 +205,27 @@ class _SmallItemCardState extends State<SmallItemCard> {
                               (route) => false,
                             );
                           } else {
-                            featuredProvider.addToWhishlist(
-                              id: widget.id,
-                              variant: 1,
-                              context: context,
-                              price: widget.coursePrice!.toInt(),
-                            );
+                            if (widget.isWishlist == false) {
+                              featuredProvider.addToWhishlist(
+                                id: widget.id,
+                                variant: 1,
+                                context: context,
+                                price: widget.coursePrice!.toInt(),
+                              );
+                            }
+                            if (widget.isWishlist == true) {
+                              await featuredProvider.deleteFromWhishlist(
+                                  variant: 1,
+                                  id: widget.id.toString(),
+                                  context: context);
+                              //  await featuredProvider.getWhishlist();
+                            }
                             await Provider.of<FeaturedProvider>(context,
                                     listen: false)
                                 .sample();
+                            await Provider.of<FeaturedProvider>(context,
+                                    listen: false)
+                                .samples();
                             await Provider.of<CourseDetailedProvider>(context,
                                     listen: false)
                                 .getRecentlyViewed();

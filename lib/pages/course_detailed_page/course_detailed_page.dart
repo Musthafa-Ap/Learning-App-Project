@@ -101,11 +101,14 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
               if (widget.subcatid != null) {
                 await Provider.of<CatagoriesDetailedProvider>(context,
                         listen: false)
-                    .getSubCatagoriesDetailes(subCatagoriesID: widget.subcatid);
+                    .getAll(catagoriesID: widget.id);
               }
               await Provider.of<CatagoriesDetailedProvider>(context,
                       listen: false)
                   .getSubCatagoriesDetailes(subCatagoriesID: widget.id);
+              await Provider.of<CatagoriesDetailedProvider>(context,
+                      listen: false)
+                  .getSubCatagoriesDetailes(subCatagoriesID: widget.subcatid);
               await Provider.of<FeaturedProvider>(context, listen: false)
                   .samples();
               await Provider.of<RecomendationsProvider>(context, listen: false)
@@ -622,32 +625,47 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                   (route) => false,
                                 );
                               } else {
-                                if (variant == 1) {
-                                  featuredProvider.addToWhishlist(
+                                if (courseDeailedProvider.courseDetailes!.data!
+                                        .first.isWislist ==
+                                    false) {
+                                  if (variant == 1) {
+                                    featuredProvider.addToWhishlist(
+                                        id: courseDeailedProvider
+                                            .courseDetailes!.data!.first.id!
+                                            .toInt(),
+                                        variant: variant,
+                                        context: context,
+                                        price: courseDeailedProvider
+                                            .courseDetailes!.data!.first.price!
+                                            .toInt());
+                                  } else if (variant == 2) {
+                                    featuredProvider.addToWhishlist(
+                                        id: courseDeailedProvider
+                                            .courseDetailes!.data!.first.id!
+                                            .toInt(),
+                                        variant: variant,
+                                        context: context,
+                                        price: inter_price!.toInt());
+                                  } else {
+                                    featuredProvider.addToWhishlist(
+                                        id: courseDeailedProvider
+                                            .courseDetailes!.data!.first.id!
+                                            .toInt(),
+                                        variant: variant,
+                                        context: context,
+                                        price: expert_price!.toInt());
+                                  }
+                                }
+                                if (courseDeailedProvider.courseDetailes!.data!
+                                        .first.isWislist ==
+                                    true) {
+                                  await featuredProvider.deleteFromWhishlist(
+                                      variant: variant,
                                       id: courseDeailedProvider
                                           .courseDetailes!.data!.first.id!
-                                          .toInt(),
-                                      variant: variant,
-                                      context: context,
-                                      price: courseDeailedProvider
-                                          .courseDetailes!.data!.first.price!
-                                          .toInt());
-                                } else if (variant == 2) {
-                                  featuredProvider.addToWhishlist(
-                                      id: courseDeailedProvider
-                                          .courseDetailes!.data!.first.id!
-                                          .toInt(),
-                                      variant: variant,
-                                      context: context,
-                                      price: inter_price!.toInt());
-                                } else {
-                                  featuredProvider.addToWhishlist(
-                                      id: courseDeailedProvider
-                                          .courseDetailes!.data!.first.id!
-                                          .toInt(),
-                                      variant: variant,
-                                      context: context,
-                                      price: expert_price!.toInt());
+                                          .toString(),
+                                      context: context);
+                                  //await featuredProvider.getWhishlist();
                                 }
                                 if (widget.id != null) {
                                   print("Entered");
@@ -676,9 +694,13 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                     MaterialStateProperty.all(const BorderSide(
                                   color: Colors.white,
                                 ))),
-                            label: const Text(
-                              "Add to whishlist",
-                              style: TextStyle(color: Colors.white),
+                            label: Text(
+                              courseDeailedProvider.courseDetailes!.data!.first
+                                          .isWislist ==
+                                      false
+                                  ? "Add to wishlist"
+                                  : "Remove from wishlist",
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ),
                         ),
