@@ -68,7 +68,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
               access == null
           ? const Center(
               child: Text(
-                "No notifications",
+                "",
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             )

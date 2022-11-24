@@ -20,6 +20,7 @@ class MyLearningCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.width;
     final myLearningsProvider = Provider.of<MyLearningsProvider>(context);
     return InkWell(
       highlightColor: Colors.transparent,
@@ -32,15 +33,15 @@ class MyLearningCard extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 5),
-        height: 100,
+        height: size * .3,
+        // color: Colors.amber,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: 80,
-                width: 80,
+                width: size * .3,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
                     image: DecorationImage(
@@ -61,19 +62,19 @@ class MyLearningCard extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                            fontSize: 16,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       kHeight5,
                       Text(
                         author ?? "Erich Andreas",
-                        style: TextStyle(fontSize: 12, color: Colors.grey[300]),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[300]),
                       ),
                       kHeight5,
                       Text(
                         variant ?? "Beginner",
-                        style: TextStyle(fontSize: 12, color: Colors.grey[300]),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[300]),
                       ),
                     ],
                   ),

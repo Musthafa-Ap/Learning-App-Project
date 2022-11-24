@@ -21,6 +21,8 @@ class Data {
   String? description;
   String? video;
   String? thumbnail;
+  int? rating;
+  int? ratingCount;
   String? imagePpoi;
   bool? isActive;
   int? course;
@@ -28,7 +30,9 @@ class Data {
   String? videoDuration;
 
   Data(
-      {this.videoDuration,
+      {this.ratingCount,
+      this.rating,
+      this.videoDuration,
       this.id,
       this.topicName,
       this.description,
@@ -40,6 +44,8 @@ class Data {
       this.section});
 
   Data.fromJson(Map<String, dynamic> json) {
+    rating = json['rating'];
+    ratingCount = json['rating_count'];
     videoDuration = json['video_duration'];
     id = json['id'];
     topicName = json['topic_name'];

@@ -38,6 +38,38 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
   GoogleSignInAccount? _currentUser;
   File? documentFile;
+  RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+  double password_strength = 0;
+  bool validatePassword(String pass) {
+    String _password = pass.trim();
+    if (_password.isEmpty) {
+      setState(() {
+        password_strength = 0;
+      });
+    } else if (_password.length < 6) {
+      setState(() {
+        password_strength = 1 / 4;
+      });
+    } else if (_password.length < 8) {
+      setState(() {
+        password_strength = 2 / 4;
+      });
+    } else {
+      if (pass_valid.hasMatch(_password)) {
+        setState(() {
+          password_strength = 4 / 4;
+        });
+        return true;
+      } else {
+        setState(() {
+          password_strength = 3 / 4;
+        });
+        return false;
+      }
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width;
@@ -159,6 +191,9 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                           : null),
               kHeight,
               TextFormField(
+                onChanged: (value) {
+                  _formKey.currentState!.validate();
+                },
                 obscureText: _obscureText,
                 controller: _passwordController,
                 cursorColor: Colors.black,
@@ -178,22 +213,47 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10)),
                     hintText: "Password"),
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (password) => password != null && password.length < 8
-                    ? "Enter min. 8 characters"
-                    : null,
+                //  autovalidateMode: AutovalidateMode.onUserInteraction,
+                validator: (password) {
+                  if (password!.isEmpty) {
+                    return "Please enter password";
+                  } else {
+                    bool result = validatePassword(password);
+                    if (result) {
+                      //ceate account event
+                      return null;
+                    } else {
+                      return "Password should contain Capital,small,number & special";
+                    }
+                  }
+                },
               ),
               kHeight,
-              FlutterPwValidator(
-                controller: _passwordController,
-                minLength: 8,
-                uppercaseCharCount: 1,
-                numericCharCount: 1,
-                specialCharCount: 1,
-                width: 400,
-                height: 150,
-                onSuccess: () {},
-                // onFail: yourCallbackFunction),
+              // FlutterPwValidator(
+              //   controller: _passwordController,
+              //   minLength: 8,
+              //   uppercaseCharCount: 1,
+              //   numericCharCount: 1,
+              //   specialCharCount: 1,
+              //   width: 400,
+              //   height: 150,
+              //   onSuccess: () {},
+              //   // onFail: yourCallbackFunction),
+              // ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: LinearProgressIndicator(
+                  value: password_strength,
+                  backgroundColor: Colors.grey,
+                  minHeight: 5,
+                  color: password_strength <= 1 / 4
+                      ? Colors.red
+                      : password_strength == 2 / 4
+                          ? Colors.yellow
+                          : password_strength == 3 / 4
+                              ? Colors.blue
+                              : Colors.green,
+                ),
               ),
               kHeight,
               ValueListenableBuilder(

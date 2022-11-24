@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -199,6 +200,7 @@ class AccountProvider with ChangeNotifier {
       var response = await http.get(
           Uri.parse("http://learningapp.e8demo.com/api/order_history/"),
           headers: {"Authorization": auth});
+      log(response.body);
       if (response.statusCode == 200) {
         noOrders = false;
         var data = jsonDecode(response.body);
@@ -213,6 +215,7 @@ class AccountProvider with ChangeNotifier {
         print("authentication problem");
       }
     } catch (e) {
+      log("catchedd");
       print(e.toString());
     }
   }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_model.dart';
@@ -18,6 +19,46 @@ class RecomendationsProvider with ChangeNotifier {
       response = await get(Uri.parse(
           "http://learningapp.e8demo.com/api/recommended_courses/?auth_token=$token"));
     }
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      recomendationsCourses = RecomendationsModel.fromJson(data);
+      notifyListeners();
+    }
+  }
+
+  Future<void> getAllRecFromCourse({required int courseId}) async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    Response response;
+    String? token = shared.getString("access_token");
+
+    if (token == null) {
+      response = await get(Uri.parse(
+          "http://learningapp.e8demo.com/api/recommended_courses/?course_id=$courseId"));
+    } else {
+      response = await get(Uri.parse(
+          "http://learningapp.e8demo.com/api/recommended_courses/?course_id=$courseId&auth_token=$token"));
+    }
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      recomendationsCourses = RecomendationsModel.fromJson(data);
+      notifyListeners();
+    }
+  }
+
+  Future<void> getAllRecFromCatagory({required int cataId}) async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    Response response;
+    String? token = shared.getString("access_token");
+
+    if (token == null) {
+      response = await get(Uri.parse(
+          "http://learningapp.e8demo.com/api/recommended_courses/?course_id=$cataId"));
+    } else {
+      response = await get(Uri.parse(
+          "http://learningapp.e8demo.com/api/recommended_courses/?course_id=$cataId&auth_token=$token"));
+    }
+    log(response.statusCode.toString());
+    log(response.body);
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       recomendationsCourses = RecomendationsModel.fromJson(data);

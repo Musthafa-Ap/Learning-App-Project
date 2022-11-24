@@ -19,14 +19,27 @@ class ConformPurchasePage extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         children: [
           SizedBox(
-            height: size * .3,
+            height: size * .2,
           ),
-          CircleAvatar(
-            backgroundColor: Colors.transparent,
-            radius: size * .25,
-            backgroundImage: const NetworkImage(
-                "https://static.vecteezy.com/system/resources/previews/006/900/704/original/green-tick-checkbox-illustration-isolated-on-white-background-free-vector.jpg"),
+          // Align(
+          //   child: CircleAvatar(
+          //     backgroundColor: Colors.transparent,
+          //     radius: size * .25,
+          //     backgroundImage: const NetworkImage(
+          //       "https://cdn.pixabay.com/photo/2012/04/24/13/49/tick-40143_640.png",
+          //     ),
+          //   ),
+          // ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            height: size * .5,
+            decoration: const BoxDecoration(
+                color: Colors.transparent,
+                image: DecorationImage(
+                    image: NetworkImage(
+                        "https://cdn.pixabay.com/photo/2012/04/24/13/49/tick-40143_640.png"))),
           ),
+          kheight20,
           const Center(
             child: Text(
               "Congratulations",
@@ -64,13 +77,33 @@ class ConformPurchasePage extends StatelessWidget {
             height: size * .2,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 28,
+            ),
             child: ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.purple)),
                 onPressed: () async {
                   await myLearningsProvider.getMyLearnings();
                   selectedIndex.value = 2;
+                  Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => const MyHomePage()),
+                    (route) => false,
+                  );
+                },
+                child: const Text("Back")),
+          ),
+          SizedBox(
+            height: size * .05,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 28),
+            child: ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.purple)),
+                onPressed: () async {
+                  await myLearningsProvider.getMyLearnings();
+                  selectedIndex.value = 0;
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => const MyHomePage()),
                     (route) => false,

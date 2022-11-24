@@ -73,32 +73,65 @@ class BuyAllPage extends StatelessWidget {
           ),
           kheight20,
           cartProvider.isCoupenSuccess == true
-              ? Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 70),
-                  height: 30,
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(color: Colors.white)),
-                  child: Center(
-                      child: Row(
-                    children: [
-                      const Spacer(),
-                      const Text(
-                        "Coupon Applied",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                            color: Colors.white),
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        // width: 70,
+                        margin: const EdgeInsets.only(left: 10),
+                        height: 30,
+                        decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(5),
+                            border: Border.all(color: Colors.white)),
+                        child: Center(
+                            child: Row(
+                          children: [
+                            const Spacer(),
+                            const Text(
+                              "Coupon Applied",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.white),
+                            ),
+                            kWidth10,
+                            Image.network(
+                              "https://cdn.pixabay.com/photo/2014/04/02/11/01/tick-305245__340.png",
+                              height: 15,
+                            ),
+                            const Spacer()
+                          ],
+                        )),
                       ),
-                      kWidth10,
-                      Image.network(
-                        "https://cdn.pixabay.com/photo/2014/04/02/11/01/tick-305245__340.png",
-                        height: 15,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        print(cartProvider.isCoupenSuccess);
+                        print("Entered cancel");
+                        cartProvider.cancelCoupen(context: context);
+                        _coupenController.text = "";
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 10),
+                        width: 80,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(color: Colors.white),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "Cancel",
+                            style: TextStyle(color: Colors.purple),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                       ),
-                      const Spacer()
-                    ],
-                  )),
+                    )
+                  ],
                 )
               : Container(
                   margin: const EdgeInsets.symmetric(horizontal: 18),

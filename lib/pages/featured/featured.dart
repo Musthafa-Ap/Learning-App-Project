@@ -8,6 +8,7 @@ import 'package:nuox_project/pages/featured/services/featured_section/featured_p
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../my_home_page.dart';
 import '../account/account_services/account_provider.dart';
 import '../cart/cart_services/cart_services.dart';
 import '../catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
@@ -107,11 +108,25 @@ class _FeaturedState extends State<Featured> {
           centerTitle: true,
           actions: [
             IconButton(
-                onPressed: () {
-                  Provider.of<FeaturedProvider>(context, listen: false)
-                      .getNotifications();
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const NotificationsPage()));
+                onPressed: () async {
+                  // Provider.of<FeaturedProvider>(context, listen: false)
+                  //     .getNotifications();
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => const NotificationsPage()));
+                  SharedPreferences shared =
+                      await SharedPreferences.getInstance();
+                  var token = shared.getString("access_token");
+                  if (token != null) {
+                    Provider.of<FeaturedProvider>(context, listen: false)
+                        .getNotifications();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const NotificationsPage()));
+                  } else {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const Test()),
+                      (route) => false,
+                    );
+                  }
                 },
                 icon: const Icon(Icons.notifications_outlined))
           ],

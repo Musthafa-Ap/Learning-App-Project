@@ -208,7 +208,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         backgroundColor: Colors.transparent,
                         radius: 90,
                         backgroundImage: NetworkImage(_profileimage == null
-                            ? "https://cdn2.vectorstock.com/i/1000x1000/20/76/man-avatar-profile-vector-21372076.jpg"
+                            ? "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o="
                             : _profileimage!),
                         child: const Align(
                           alignment: Alignment.bottomRight,
@@ -396,6 +396,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         borderRadius: BorderRadius.circular(10),
                         iconEnabledColor: Colors.white,
                         dropdownColor: Colors.purple,
+                        //   hint: Text('Please choose a location'),
                         value: value,
                         items: _genders
                             .map((e) => DropdownMenuItem(
@@ -417,8 +418,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               onTap: () async {
                 final selectedDateTemp = await showDatePicker(
                     context: context,
-                    initialDate:
-                        DateTime.now().subtract(const Duration(days: 10000)),
+                    initialDate: DateTime.now(),
+                    //  DateTime.now().subtract(const Duration(days: 8000)),
                     firstDate:
                         DateTime.now().subtract(const Duration(days: 30000)),
                     lastDate: DateTime.now());
@@ -465,30 +466,60 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   )),
             ),
             kHeight15,
-            Container(
-              height: 150,
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5),
-                  color: Colors.black,
-                  border: Border.all(color: Colors.white)),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 5),
-                child: TextFormField(
-                  maxLines: 8,
-                  controller: _addressController,
-                  style: const TextStyle(color: Colors.white),
-                  decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Address",
-                      hintStyle: TextStyle(color: Colors.white)),
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: ((value) => value == null || value.isEmpty
-                      ? "Please enter your address"
-                      : null),
-                ),
-              ),
+            // Container(
+            //   height: 150,
+            //   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            //   decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(5),
+            //       color: Colors.black,
+            //       border: Border.all(color: Colors.white)),
+            //   child: Padding(
+            //     padding: const EdgeInsets.only(left: 5),
+            //     child: TextFormField(
+            //       maxLines: 8,
+            //       controller: _addressController,
+            //       style: const TextStyle(color: Colors.white),
+            //       decoration: const InputDecoration(
+            //           border: InputBorder.none,
+            //           hintText: "Address",
+            //           hintStyle: TextStyle(color: Colors.white)),
+            //       autovalidateMode: AutovalidateMode.onUserInteraction,
+            //       validator: ((value) => value == null || value.isEmpty
+            //           ? "Please enter your address"
+            //           : null),
+            //     ),
+            //   ),
+            // ),
+            // Container(
+            //   height: 150,
+            //  padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 4),
+            // decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(5),
+            //     // color: Colors.black,
+            //     border: Border.all(color: Colors.white)),
+            TextFormField(
+              maxLines: 6,
+              controller: _addressController,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide: const BorderSide(
+                      color: Colors.white,
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white),
+                      borderRadius: BorderRadius.circular(5)),
+                  //   border: InputBorder.none,
+                  hintText: "Address",
+                  hintStyle: const TextStyle(color: Colors.white)),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: ((value) => value == null || value.isEmpty
+                  ? "Please enter your address"
+                  : null),
             ),
+
             kheight20,
             kHeight,
             SizedBox(

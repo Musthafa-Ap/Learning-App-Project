@@ -46,7 +46,7 @@ class CatagoriesButton extends StatelessWidget {
                 catagoriesID: id,
               );
               await Provider.of<RecomendationsProvider>(context, listen: false)
-                  .getAll();
+                  .getAllRecFromCatagory(cataId: id!);
               await catagoiresdetailesProvider.getAllSub(catagoriesID: id);
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => CatagoriesDetailedPage(

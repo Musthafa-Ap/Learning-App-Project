@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:nuox_project/pages/cart/cart_services/cart_model.dart';
@@ -9,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../buy_all_page/buy_all_page.dart';
 
 class CartProvider with ChangeNotifier {
+  bool cancelPromoLoading = false;
   bool cartEmpty = false;
   String? totalPrice;
   String? orderID;
@@ -113,6 +115,40 @@ class CartProvider with ChangeNotifier {
       }
     } catch (e) {
       isLoading = false;
+      print(e.toString());
+    }
+  }
+
+  Future<void> cancelCoupen({context}) async {
+    cancelPromoLoading = true;
+    // isLoading = true;
+    try {
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      var token = shared.getString("access_token");
+      String auth = "Bearer $token";
+      var api = "http://learningapp.e8demo.com/api/apply_offer/";
+      var response = await http.post(
+        Uri.parse(api),
+        headers: {"Authorization": auth},
+      );
+      log(response.statusCode.toString());
+      log(response.body);
+      // var data = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        cancelPromoLoading = false;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: Colors.white,
+            content: Text(
+              "Coupen code cancelled",
+              style: TextStyle(color: Colors.black),
+            )));
+
+        isCoupenSuccess = false;
+        notifyListeners();
+      }
+    } catch (e) {
+      cancelPromoLoading = false;
+
       print(e.toString());
     }
   }

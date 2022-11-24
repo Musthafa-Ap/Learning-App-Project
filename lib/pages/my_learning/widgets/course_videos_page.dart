@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/constants/constants.dart';
+import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:video_player/video_player.dart';
+
+import '../../course_detailed_page/sections/review_page/review_page.dart';
 
 class CourseVideosPage extends StatefulWidget {
   const CourseVideosPage({super.key});
@@ -72,6 +76,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
   bool isSelected = false;
   @override
   Widget build(BuildContext context) {
+    final courseDeailedProvider = Provider.of<CourseDetailedProvider>(context);
     final myLearningsProvider = Provider.of<MyLearningsProvider>(context);
     final size = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -226,8 +231,17 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                                                         controller:
                                                                             _controller)));
                                                       },
-                                                      icon: const Icon(
-                                                          Icons.fullscreen))),
+                                                      icon: Container(
+                                                        decoration: BoxDecoration(
+                                                            color:
+                                                                Colors.white38,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5)),
+                                                        child: const Icon(
+                                                            Icons.fullscreen),
+                                                      ))),
                                               Positioned(
                                                 left: 0,
                                                 right: 0,
@@ -313,51 +327,87 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                             child: CircularProgressIndicator(),
                                           )),
                                 kHeight,
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      ValueListenableBuilder(
-                                          valueListenable: _controller,
-                                          builder: (context,
-                                              VideoPlayerValue value, child) {
-                                            return Text(
-                                              _videoDuration(value.position),
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 17),
-                                            );
-                                          }),
-                                      Expanded(
-                                        child: SizedBox(
-                                          height: 8,
-                                          child: VideoProgressIndicator(
-                                              _controller,
-                                              allowScrubbing: true,
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 12,
-                                                      vertical: 0)),
-                                        ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    ValueListenableBuilder(
+                                        valueListenable: _controller,
+                                        builder: (context,
+                                            VideoPlayerValue value, child) {
+                                          return Text(
+                                            _videoDuration(value.position),
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17),
+                                          );
+                                        }),
+                                    Expanded(
+                                      child: SizedBox(
+                                        height: 8,
+                                        child: VideoProgressIndicator(
+                                            _controller,
+                                            allowScrubbing: true,
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 0)),
                                       ),
-                                      Text(
-                                        _videoDuration(
-                                            _controller.value.duration),
-                                        style: const TextStyle(
-                                            color: Colors.white, fontSize: 17),
-                                      )
-                                    ],
-                                  ),
+                                    ),
+                                    Text(
+                                      _videoDuration(
+                                          _controller.value.duration),
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 17),
+                                    )
+                                  ],
                                 ),
                               ],
                             )
                           : const Center(
                               child: CircularProgressIndicator(),
                             )),
-                  kHeight,
+                  kHeight5,
+                  GestureDetector(
+                    onTap: () {
+                      courseDeailedProvider.getReview(
+                          courseID: myLearningsProvider
+                              .courseVideoList?.data?.first.course);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ReviewPage(
+                                isPurchased: true,
+                                id: myLearningsProvider
+                                    .courseVideoList!.data!.first.course!
+                                    .toInt(),
+                              )));
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          myLearningsProvider
+                                  .courseVideoList?.data?.first.rating
+                                  .toString() ??
+                              "4",
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.yellow),
+                        ),
+                        RatingBarIndicator(
+                          unratedColor: Colors.grey,
+                          rating: 4,
+                          itemBuilder: (context, index) => const Icon(
+                            Icons.star,
+                            color: Colors.yellow,
+                          ),
+                          itemCount: 5,
+                          itemSize: 10.0,
+                          direction: Axis.horizontal,
+                        ),
+                        Text(
+                          " (${myLearningsProvider.courseVideoList?.data?.first.ratingCount ?? "  (10)"})",
+                          style: const TextStyle(
+                              fontSize: 12, color: Colors.yellow),
+                        ),
+                      ],
+                    ),
+                  ),
+                  kHeight5,
                   Text(
                     myLearningsProvider
                             .courseVideoList?.data?[_currentIndex].topicName
@@ -379,14 +429,14 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                       fontSize: 16,
                     ),
                     trimLines: 2,
-                    colorClickableText: Colors.red,
+                    colorClickableText: Colors.purple,
                     trimMode: TrimMode.Line,
                     trimCollapsedText: 'Show more',
                     trimExpandedText: 'Show less',
                     moreStyle: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: Colors.red),
+                        color: Colors.purple),
                   ),
                   // kHeight5,
                   const Divider(
@@ -634,9 +684,14 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
                             await _setAllOrientation();
                             Navigator.pop(context);
                           },
-                          icon: const Icon(
-                            Icons.fullscreen_exit,
-                            color: Colors.black,
+                          icon: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white38,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: const Icon(
+                              Icons.fullscreen_exit,
+                              color: Colors.black,
+                            ),
                           ))),
                   Align(
                       alignment: Alignment.topRight,

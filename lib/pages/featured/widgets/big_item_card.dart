@@ -64,7 +64,7 @@ class _BigItemCardState extends State<BigItemCard> {
           await Provider.of<CourseDetailedProvider>(context, listen: false)
               .getAll(courseID: widget.id);
           await Provider.of<RecomendationsProvider>(context, listen: false)
-              .getAll();
+              .getAllRecFromCourse(courseId: widget.id!.toInt());
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => CourseDetailedPage(
                     refesh: true,

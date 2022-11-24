@@ -5,8 +5,9 @@ import 'package:nuox_project/pages/course_detailed_page/services/course_detailed
 import 'package:provider/provider.dart';
 
 class ReviewPage extends StatelessWidget {
+  bool isPurchased;
   int id;
-  ReviewPage({super.key, required this.id});
+  ReviewPage({super.key, required this.id, required this.isPurchased});
   final ValueNotifier<int> _ratingNotifier = ValueNotifier(1);
   final TextEditingController _reviewController = TextEditingController();
   @override
@@ -27,88 +28,155 @@ class ReviewPage extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(15),
         children: [
-          ValueListenableBuilder(
-            valueListenable: _ratingNotifier,
-            builder: (context, value, child) {
-              return Center(
-                child: Column(
+          isPurchased == true
+              ? Column(
                   children: [
-                    RatingBar.builder(
-                        updateOnDrag: true,
-                        unratedColor: Colors.grey,
-                        initialRating: 1,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        itemCount: 5,
-                        itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 4.0),
-                        itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                        onRatingUpdate: (rating) {
-                          _ratingNotifier.value = rating.toInt();
-                        }),
-                    Text(
-                      _ratingNotifier.value.toString(),
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    )
+                    ValueListenableBuilder(
+                      valueListenable: _ratingNotifier,
+                      builder: (context, value, child) {
+                        return Center(
+                          child: Column(
+                            children: [
+                              RatingBar.builder(
+                                  updateOnDrag: true,
+                                  unratedColor: Colors.grey,
+                                  initialRating: 1,
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  itemCount: 5,
+                                  itemPadding: const EdgeInsets.symmetric(
+                                      horizontal: 4.0),
+                                  itemBuilder: (context, _) => const Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                  onRatingUpdate: (rating) {
+                                    _ratingNotifier.value = rating.toInt();
+                                  }),
+                              Text(
+                                _ratingNotifier.value.toString(),
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              kheight20,
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.black,
+                                    border: Border.all(color: Colors.white)),
+                                child: TextField(
+                                  controller: _reviewController,
+                                  style: const TextStyle(color: Colors.white),
+                                  maxLines: 6,
+                                  decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Any suggestions...",
+                                      hintStyle:
+                                          TextStyle(color: Colors.white)),
+                                ),
+                              ),
+                              kheight20,
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ],
-                ),
-              );
-            },
-          ),
-          kheight20,
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: Colors.black,
-                border: Border.all(color: Colors.white)),
-            child: TextField(
-              controller: _reviewController,
-              style: const TextStyle(color: Colors.white),
-              maxLines: 6,
-              decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Any suggestions...",
-                  hintStyle: TextStyle(color: Colors.white)),
-            ),
-          ),
-          kheight20,
-          SizedBox(
-            height: 50,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.purple)),
-              onPressed: () async {
-                var rating = _ratingNotifier.value;
-                var review = _reviewController.text;
-                if (review.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      backgroundColor: Colors.red,
-                      content: Text(
-                        'Please type a review',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )));
-                  // courseDetailedProvider.addRatingWithoutReview(
-                  //     context: context, rating: rating, id: id);
-                } else {
-                  await courseDetailedProvider.addRatingWithReview(
-                      rating: rating, id: id, review: review, context: context);
-                  _reviewController.text = "";
-                }
-                courseDetailedProvider.getReview(
-                    courseID:
-                        courseDetailedProvider.courseDetailes!.data!.first.id);
-                Navigator.of(context).pop();
-              },
-              child: const Text("Submit"),
-            ),
-          ),
+                )
+              : const SizedBox(),
+          isPurchased == true
+              ? SizedBox(
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.purple)),
+                    onPressed: () async {
+                      var rating = _ratingNotifier.value;
+                      var review = _reviewController.text;
+                      if (review.isEmpty) {
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(const SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text(
+                                  'Please type a review',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )));
+                        // courseDetailedProvider.addRatingWithoutReview(
+                        //     context: context, rating: rating, id: id);
+                      } else {
+                        await courseDetailedProvider.addRatingWithReview(
+                            rating: rating,
+                            id: id,
+                            review: review,
+                            context: context);
+                        _reviewController.text = "";
+                        courseDetailedProvider.getReview(
+                            courseID: courseDetailedProvider
+                                .courseDetailes!.data!.first.id);
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: const Text("Submit"),
+                  ),
+                )
+              : const SizedBox(),
+          // ValueListenableBuilder(
+          //   valueListenable: _ratingNotifier,
+          //   builder: (context, value, child) {
+          //     return Center(
+          //       child: Column(
+          //         children: [
+          //           RatingBar.builder(
+          //               updateOnDrag: true,
+          //               unratedColor: Colors.grey,
+          //               initialRating: 1,
+          //               minRating: 1,
+          //               direction: Axis.horizontal,
+          //               itemCount: 5,
+          //               itemPadding:
+          //                   const EdgeInsets.symmetric(horizontal: 4.0),
+          //               itemBuilder: (context, _) => const Icon(
+          //                     Icons.star,
+          //                     color: Colors.amber,
+          //                   ),
+          //               onRatingUpdate: (rating) {
+          //                 _ratingNotifier.value = rating.toInt();
+          //               }),
+          //           Text(
+          //             _ratingNotifier.value.toString(),
+          //             style: const TextStyle(
+          //                 color: Colors.white,
+          //                 fontSize: 20,
+          //                 fontWeight: FontWeight.bold),
+          //           )
+          //         ],
+          //       ),
+          //     );
+          //   },
+          // ),
+          // kheight20,
+          // Container(
+          //   padding: const EdgeInsets.symmetric(horizontal: 10),
+          //   decoration: BoxDecoration(
+          //       borderRadius: BorderRadius.circular(5),
+          //       color: Colors.black,
+          //       border: Border.all(color: Colors.white)),
+          //   child: TextField(
+          //     controller: _reviewController,
+          //     style: const TextStyle(color: Colors.white),
+          //     maxLines: 6,
+          //     decoration: const InputDecoration(
+          //         border: InputBorder.none,
+          //         hintText: "Any suggestions...",
+          //         hintStyle: TextStyle(color: Colors.white)),
+          //   ),
+          // ),
+
           kheight20,
           kheight20,
           courseDetailedProvider.getReviewList == null ||

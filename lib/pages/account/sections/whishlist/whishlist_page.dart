@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:nuox_project/pages/cart/cart.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/widgets/big_cart_icon_button.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants/constants.dart';
-import '../../../../widgets/bestseller.dart';
 import '../../../course_detailed_page/course_detailed_page.dart';
 import '../../../course_detailed_page/services/course_detailed_provider.dart';
 
@@ -50,7 +50,9 @@ class WishlistPage extends StatelessWidget {
                               listen: false)
                           .getAll(courseID: datas.courseId);
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const CourseDetailedPage()));
+                          builder: (context) => CourseDetailedPageFromCart(
+                                variant: datas.section!.name.toString(),
+                              )));
                     }
                   },
                   child: SizedBox(
@@ -148,7 +150,13 @@ class WishlistPage extends StatelessWidget {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        const BestsellerWidget(),
+                                        // const BestsellerWidget(),
+                                        Text(
+                                          datas.section?.name.toString() ??
+                                              "Intermediate",
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(right: 8),

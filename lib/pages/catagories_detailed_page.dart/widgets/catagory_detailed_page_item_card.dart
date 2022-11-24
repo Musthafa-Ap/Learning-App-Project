@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/widgets/big_cart_icon_button.dart';
 import 'package:provider/provider.dart';
@@ -63,6 +64,8 @@ class _CatagoryDetailedPageItemCardState
       onTap: () async {
         await Provider.of<CourseDetailedProvider>(context, listen: false)
             .getAll(courseID: widget.id);
+        Provider.of<RecomendationsProvider>(context, listen: false)
+            .getAllRecFromCourse(courseId: widget.id!);
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => CourseDetailedPage(
                   id: widget.id,

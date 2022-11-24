@@ -31,10 +31,10 @@ class MyLearning extends StatelessWidget {
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
             )
-          : ListView.builder(
+          : ListView.separated(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               physics: const BouncingScrollPhysics(),
-              itemCount: myLearningsProvider.myLearningsList?.data?.length,
+              itemCount: myLearningsProvider.myLearningsList!.data!.length,
               itemBuilder: (context, index) {
                 final datas = myLearningsProvider.myLearningsList?.data?[index];
                 return MyLearningCard(
@@ -43,6 +43,15 @@ class MyLearning extends StatelessWidget {
                   id: datas?.courseId?.toInt(),
                   img: datas?.courseThumbnail.toString(),
                   variant: datas?.variant.toString(),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Divider(
+                    thickness: 1,
+                    color: Colors.grey,
+                  ),
                 );
               },
             ),

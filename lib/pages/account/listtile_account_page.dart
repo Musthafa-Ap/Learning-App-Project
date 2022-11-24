@@ -44,6 +44,10 @@ class ListTileAccountPage extends StatelessWidget {
             Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => const OrdersPage()));
           } else if (index == 2) {
+            Provider.of<AccountProvider>(context, listen: false)
+                .old_pass_error = null;
+            Provider.of<AccountProvider>(context, listen: false)
+                .new_pass_error = null;
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => const ChangePasswordPage()));
           } else if (index == 6) {

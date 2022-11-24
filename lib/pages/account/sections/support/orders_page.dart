@@ -55,6 +55,24 @@ class OrdersPage extends StatelessWidget {
                               color: Colors.white, fontSize: 16),
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(
+                          "Payment method : ${datas?.paymentMethod ?? "Gpay"}",
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 16),
+                        ),
+                      ),
+                      datas?.promoName == "null"
+                          ? const SizedBox()
+                          : Padding(
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Text(
+                                "Coupen code : ${datas!.promoName}",
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
+                            ),
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
@@ -107,7 +125,7 @@ class OrdersPage extends StatelessWidget {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        data?.sectionId ?? "beginner",
+                                        data?.sectionId ?? "Beginner",
                                         style: const TextStyle(
                                             color: Colors.white, fontSize: 14),
                                       ),
@@ -149,16 +167,88 @@ class OrdersPage extends StatelessWidget {
                           );
                         },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: Text(
-                          "Total amount = ₹${datas?.grandTotal ?? "₹21000"}",
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Total amount = ",
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                                Text(
+                                  "₹${datas?.totalAmount ?? "₹21000"}",
+                                  textAlign: TextAlign.end,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Discount amount = ",
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                                Text(
+                                  " ₹${datas?.discountAmount ?? "₹0"}",
+                                  textAlign: TextAlign.end,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Divider(
+                            thickness: 1,
+                            color: Colors.grey,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Grand Total = ",
+                                  textAlign: TextAlign.end,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  "₹${datas?.grandTotal ?? "₹21000"}",
+                                  textAlign: TextAlign.end,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                          kheight20,
+                          kheight20
+                        ],
                       )
                     ],
                   );

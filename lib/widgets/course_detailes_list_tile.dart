@@ -67,6 +67,7 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
 
   @override
   Widget build(BuildContext context) {
+    //log(widget.isWishlist.toString());
     final featuredProvider = Provider.of<FeaturedProvider>(context);
     if (widget.variantID != null) {
       if (widget.variantID == 1) {
@@ -86,7 +87,8 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
               .getAll(
             courseID: widget.id,
           );
-
+          Provider.of<RecomendationsProvider>(context, listen: false)
+              .getAllRecFromCourse(courseId: widget.id!);
           if (widget.subCatid != null) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => CourseDetailedPage(

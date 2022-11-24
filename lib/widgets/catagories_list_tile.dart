@@ -1,10 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/catagories_detailed_page.dart';
 import 'package:provider/provider.dart';
-
 import '../pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import '../pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
-import '../pages/featured/services/catagories_section/catagories_provider.dart';
 
 class CatagoriesListTile extends StatelessWidget {
   final int id;
@@ -31,8 +31,9 @@ class CatagoriesListTile extends StatelessWidget {
         await catagoiresdetailesProvider.getAll(
           catagoriesID: id,
         );
+        log("From cat");
         await Provider.of<RecomendationsProvider>(context, listen: false)
-            .getAll();
+            .getAllRecFromCatagory(cataId: id);
         await catagoiresdetailesProvider.getAllSub(catagoriesID: id);
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => CatagoriesDetailedPage(

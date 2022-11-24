@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/my_learning/services/course_video_model.dart';
 import 'package:nuox_project/pages/my_learning/services/my_learnings_model.dart';
@@ -25,7 +26,6 @@ class MyLearningsProvider with ChangeNotifier {
       Map<String, dynamic> data = jsonDecode(response.body);
       myLearningsList = MyLearningsModel.fromJson(data);
       isLoading = false;
-      notifyListeners();
     } catch (e) {
       isLoading = false;
     }
@@ -45,7 +45,6 @@ class MyLearningsProvider with ChangeNotifier {
       );
       Map<String, dynamic> data = jsonDecode(response.body);
       courseVideoList = CourseVideoModel.fromJson(data);
-
       if (response.statusCode == 200) {
         isCourseLoading = false;
         Navigator.of(context).push(

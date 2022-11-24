@@ -23,6 +23,37 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
   final _newPasswordController = TextEditingController();
 
   final _retypeNewPasswordController = TextEditingController();
+  RegExp pass_valid = RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)");
+  double password_strength = 0;
+  bool validatePassword(String pass) {
+    String _password = pass.trim();
+    if (_password.isEmpty) {
+      setState(() {
+        password_strength = 0;
+      });
+    } else if (_password.length < 6) {
+      setState(() {
+        password_strength = 1 / 4;
+      });
+    } else if (_password.length < 8) {
+      setState(() {
+        password_strength = 2 / 4;
+      });
+    } else {
+      if (pass_valid.hasMatch(_password)) {
+        setState(() {
+          password_strength = 4 / 4;
+        });
+        return true;
+      } else {
+        setState(() {
+          password_strength = 3 / 4;
+        });
+        return false;
+      }
+    }
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,11 +100,24 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
             ),
             kHeight,
             TextFormField(
+              onChanged: (value) {
+                _globalKey.currentState!.validate();
+              },
               style: const TextStyle(color: Colors.black),
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (password) => password != null && password.length < 8
-                  ? "Enter min. 8 characters"
-                  : null,
+              // autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: (password) {
+                if (password!.isEmpty) {
+                  return "Please enter password";
+                } else {
+                  bool result = validatePassword(password);
+                  if (result) {
+                    //ceate account event
+                    return null;
+                  } else {
+                    return "Password should contain Capital,small,number & special";
+                  }
+                }
+              },
               controller: _newPasswordController,
               obscureText: _obscureText,
               decoration: InputDecoration(
@@ -93,6 +137,22 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 hintText: "New Password",
+              ),
+            ),
+            kHeight,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              child: LinearProgressIndicator(
+                value: password_strength,
+                backgroundColor: Colors.grey,
+                minHeight: 5,
+                color: password_strength <= 1 / 4
+                    ? Colors.red
+                    : password_strength == 2 / 4
+                        ? Colors.yellow
+                        : password_strength == 3 / 4
+                            ? Colors.blue
+                            : Colors.green,
               ),
             ),
             kHeight,
@@ -117,23 +177,26 @@ class _OTPVerificationPageState extends State<OTPVerificationPage> {
                     OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                 hintText: "Re-type New Password",
               ),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               validator: ((value) => value == _newPasswordController.text
                   ? null
                   : "Password mismatch"),
             ),
-            kHeight,
-            FlutterPwValidator(
-              controller: _newPasswordController,
-              minLength: 8,
-              uppercaseCharCount: 1,
-              numericCharCount: 1,
-              specialCharCount: 1,
-              width: 400,
-              height: 150,
-              onSuccess: () {},
-              // onFail: yourCallbackFunction),
+            const SizedBox(
+              height: 50,
             ),
-            kHeight15,
+            // FlutterPwValidator(
+            //   controller: _newPasswordController,
+            //   minLength: 8,
+            //   uppercaseCharCount: 1,
+            //   numericCharCount: 1,
+            //   specialCharCount: 1,
+            //   width: 400,
+            //   height: 150,
+            //   onSuccess: () {},
+            //   // onFail: yourCallbackFunction),
+            // ),
+            // kHeight15,
             ElevatedButton(
                 style: ButtonStyle(
                     padding: MaterialStateProperty.all(

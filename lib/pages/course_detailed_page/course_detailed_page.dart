@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/my_home_page.dart';
@@ -12,11 +13,13 @@ import 'package:nuox_project/pages/featured/widgets/small_item_card.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
 import 'package:provider/provider.dart';
+import 'package:readmore/readmore.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
 import '../../widgets/course_detailes_list_tile.dart';
 import '../catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
+import '../my_learning/widgets/course_videos_page.dart';
 
 class CourseDetailedPage extends StatefulWidget {
   final bool refesh;
@@ -191,11 +194,15 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                                       )),
                                                 ),
                                           Positioned(
-                                            right: 10,
-                                            bottom: 5,
+                                            left: 2,
+                                            bottom: 7,
                                             child: CircleAvatar(
                                               backgroundColor: Colors.grey,
                                               child: IconButton(
+                                                  splashColor:
+                                                      Colors.transparent,
+                                                  highlightColor:
+                                                      Colors.transparent,
                                                   onPressed: () {
                                                     setState(() {
                                                       _controller.setVolume(
@@ -209,6 +216,33 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                                     color: Colors.black,
                                                   )),
                                             ),
+                                          ),
+                                          Positioned(
+                                            right: 0,
+                                            bottom: 0,
+                                            child: IconButton(
+                                                splashColor: Colors.transparent,
+                                                highlightColor:
+                                                    Colors.transparent,
+                                                onPressed: () {
+                                                  Navigator.of(context).push(
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              LandscapePlayerPage(
+                                                                  controller:
+                                                                      _controller)));
+                                                },
+                                                icon: Container(
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white38,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5)),
+                                                  child: const Icon(
+                                                    Icons.fullscreen,
+                                                    color: Colors.black,
+                                                  ),
+                                                )),
                                           ),
                                           Align(
                                               alignment: Alignment.bottomCenter,
@@ -286,6 +320,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                       value: e,
                                       child: Text(e,
                                           style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
                                               color: Colors.black,
                                               fontSize: 14))))
                                   .toList(),
@@ -298,11 +333,28 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                   },
                 ),
                 kHeight5,
-                Text(
+                // Text(
+                //   courseDeailedProvider.courseDetailes?.data?.first.description
+                //           .toString() ??
+                //       "Course description",
+                //   style: const TextStyle(color: Colors.white),
+                // ),
+                ReadMoreText(
                   courseDeailedProvider.courseDetailes?.data?.first.description
                           .toString() ??
                       "Course description",
-                  style: const TextStyle(color: Colors.white),
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
+                  trimLines: 2,
+                  colorClickableText: Colors.purple,
+                  trimMode: TrimMode.Line,
+                  trimCollapsedText: 'Show more',
+                  trimExpandedText: 'Show less',
+                  moreStyle: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.purple),
                 ),
                 kHeight,
                 const Align(
@@ -325,6 +377,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                   id: courseDeailedProvider
                                       .courseDetailes!.data!.first.id!
                                       .toInt(),
+                                  isPurchased: false,
                                 )));
                       }
                     } else {
@@ -359,7 +412,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                   .courseDetailes?.data?.first.ratingCount ==
                               null
                           ? const Text(
-                              " (36,500)",
+                              " (500)",
                               style:
                                   TextStyle(fontSize: 12, color: Colors.yellow),
                             )
