@@ -5,6 +5,7 @@ import 'package:nuox_project/pages/search/services/search_provider.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
 import 'package:provider/provider.dart';
 import '../course_detailed_page/course_detailed_page.dart';
+import '../course_detailed_page/recomendations_services/recomendations_provider.dart';
 import '../course_detailed_page/services/course_detailed_provider.dart';
 
 class Search extends StatelessWidget {
@@ -98,8 +99,12 @@ class SearchCard extends StatelessWidget {
       onTap: () async {
         await Provider.of<CourseDetailedProvider>(context, listen: false)
             .getAll(courseID: id);
+        await Provider.of<RecomendationsProvider>(context, listen: false)
+            .getAllRecFromCourse(courseId: id.toInt());
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => const CourseDetailedPage()));
+            builder: (context) => CourseDetailedPage(
+                  refesh: false,
+                )));
       },
       child: Container(
         decoration: BoxDecoration(

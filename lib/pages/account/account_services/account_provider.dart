@@ -75,6 +75,7 @@ class AccountProvider with ChangeNotifier {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               backgroundColor: Colors.red,
               content: Text(msg["non_field_errors"][0])));
+          notifyListeners();
         }
         if (msg["status_code"] == 200) {
           isLoading = false;
@@ -85,6 +86,7 @@ class AccountProvider with ChangeNotifier {
           shared.setString("dob", dob);
           shared.setString("address", address);
           shared.setString("gender", gender);
+          notifyListeners();
           if (image != null) {
             shared.setString("image", msg['data']['profile_pic'].toString());
           }
@@ -103,10 +105,13 @@ class AccountProvider with ChangeNotifier {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               backgroundColor: Colors.red,
               content: Text("Please select a image below 2 MB")));
+          notifyListeners();
         }
       });
+      notifyListeners();
     } catch (e) {
       isLoading = false;
+      notifyListeners();
     }
   }
 
@@ -200,7 +205,6 @@ class AccountProvider with ChangeNotifier {
       var response = await http.get(
           Uri.parse("http://learningapp.e8demo.com/api/order_history/"),
           headers: {"Authorization": auth});
-      log(response.body);
       if (response.statusCode == 200) {
         noOrders = false;
         var data = jsonDecode(response.body);

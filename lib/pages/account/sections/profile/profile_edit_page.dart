@@ -1,7 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/account/account_services/account_provider.dart';
@@ -19,10 +21,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   ValueNotifier<String> selectedDateNotifier =
       ValueNotifier("Select Date of Birth");
   final _formKey = GlobalKey<FormState>();
-  ValueNotifier<String> selectedGenderNotifier = ValueNotifier("Male");
+  ValueNotifier<String> selectedGenderNotifier = ValueNotifier("Select");
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final _genders = ["Male", "Female", "Others"];
+  final _genders = ["Male", "Female"];
   String? name;
   File? _image;
   String? _email;
@@ -31,6 +33,9 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   String? _dob;
   String? _gender;
   String? _profileimage;
+  String? _imageformale;
+  String? _imageforfemale;
+  late SharedPreferences sharedPref;
   @override
   void initState() {
     getdata();
@@ -38,7 +43,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   }
 
   void getdata() async {
-    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    sharedPref = await SharedPreferences.getInstance();
     name = sharedPref.getString("name");
     String? email = sharedPref.getString("email");
     String? _nmbr = sharedPref.getString("number");
@@ -46,6 +51,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     _dob = sharedPref.getString("dob");
     _gender = sharedPref.getString("gender");
     _profileimage = sharedPref.getString("image");
+    _imageformale = sharedPref.getString("imageformale");
+    _imageforfemale = sharedPref.getString("imageforfemale");
     if (name != null) {
       setState(() {
         _nameController.text = name!;
@@ -207,9 +214,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                       child: CircleAvatar(
                         backgroundColor: Colors.transparent,
                         radius: 90,
-                        backgroundImage: NetworkImage(_profileimage == null
-                            ? "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o="
-                            : _profileimage!),
+                        backgroundImage: NetworkImage(_profileimage ??
+                            _imageformale ??
+                            _imageforfemale ??
+                            "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o="),
                         child: const Align(
                           alignment: Alignment.bottomRight,
                           child: Padding(
@@ -396,8 +404,11 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                         borderRadius: BorderRadius.circular(10),
                         iconEnabledColor: Colors.white,
                         dropdownColor: Colors.purple,
-                        //   hint: Text('Please choose a location'),
-                        value: value,
+                        hint: const Text(
+                          'Select your gender',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        value: value == "Select" ? null : value,
                         items: _genders
                             .map((e) => DropdownMenuItem(
                                 value: e,
@@ -550,6 +561,24 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           content: Text('Please select date of birth')));
                       return;
                     } ////////////
+                    if (selectedGenderNotifier.value == "Select") {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text('Please select your gender')));
+                      return;
+                    }
+                    if (_profileimage == null && _image == null) {
+                      if (gender == "Male") {
+                        sharedPref.remove("imageforfemale");
+                        sharedPref.setString("imageformale",
+                            "https://static.vecteezy.com/system/resources/previews/004/819/327/original/male-avatar-profile-icon-of-smiling-caucasian-man-vector.jpg");
+                      }
+                      if (gender == "Female") {
+                        sharedPref.remove("imageformale");
+                        sharedPref.setString("imageforfemale",
+                            "https://t4.ftcdn.net/jpg/02/43/87/41/360_F_243874126_YLSIGaDgoNzS91Xdbg1IVpiwXeeZSXdr.jpg");
+                      }
+                    }
                     accountProvider.editProfile(
                         name: name,
                         email: email,
@@ -579,6 +608,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       final image = await ImagePicker().pickImage(source: source);
       if (image == null) return;
       File? img = File(image.path);
+      img = await _cropImage(imageFile: img);
       setState(() {
         _image = img;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -588,5 +618,14 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<File?> _cropImage({required File imageFile}) async {
+    CroppedFile? croppedImage =
+        await ImageCropper().cropImage(sourcePath: imageFile.path);
+    if (croppedImage == null) {
+      return null;
+    }
+    return File(croppedImage.path);
   }
 }

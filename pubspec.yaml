@@ -45,6 +45,7 @@ dependencies:
   image_picker:
   pull_to_refresh:
   readmore:
+  image_cropper: ^3.0.1
 
 
   

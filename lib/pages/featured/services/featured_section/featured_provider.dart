@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nuox_project/pages/account/sections/whishlist/whishlist_model.dart';
@@ -252,7 +253,10 @@ class FeaturedProvider with ChangeNotifier {
       Response response = await put(Uri.parse(api),
           headers: {"Authorization": auth},
           body: {"course": id.toString(), "variant": variant.toString()});
-      print(response.body);
+
+      log(response.statusCode.toString());
+      log(response.body);
+      log(id.toString());
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: Colors.white,

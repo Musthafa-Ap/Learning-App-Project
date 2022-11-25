@@ -19,12 +19,12 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool isGuest = false;
-  List<Widget> _pages = const [
-    Featured(),
-    Search(),
-    MyLearning(),
+  List<Widget> _pages = [
+    const Featured(),
+    const Search(),
+    const MyLearning(),
     Cart(),
-    Account()
+    const Account()
   ];
   @override
   void initState() {

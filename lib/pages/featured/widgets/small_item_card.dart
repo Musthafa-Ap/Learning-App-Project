@@ -11,6 +11,7 @@ import '../../../constants/constants.dart';
 import '../../course_detailed_page/course_detailed_page.dart';
 
 class SmallItemCard extends StatefulWidget {
+  final bool refresh;
   final bool? isWishlist;
   final bool? isBestSeller;
   final int? id;
@@ -22,6 +23,7 @@ class SmallItemCard extends StatefulWidget {
   final int? ratingCount;
   const SmallItemCard({
     Key? key,
+    required this.refresh,
     this.isWishlist,
     required this.courseName,
     required this.authorName,
@@ -68,7 +70,7 @@ class _SmallItemCardState extends State<SmallItemCard> {
             .getAllRecFromCourse(courseId: widget.id!.toInt());
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => CourseDetailedPage(
-                  refesh: true,
+                  refesh: widget.refresh,
                   id: widget.id,
                 )));
       },
@@ -103,6 +105,8 @@ class _SmallItemCardState extends State<SmallItemCard> {
                   kHeight5,
                   Text(
                     widget.authorName ?? "Author name",
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
                     style: TextStyle(fontSize: 12, color: Colors.grey[300]),
                   ),
                   kHeight5,

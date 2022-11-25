@@ -100,6 +100,7 @@ class CatagoriesDetailedPage extends StatelessWidget {
                       final datas = catagoriesDetailedProvider
                           .subCatagories!.data![index];
                       return CatagoriesButton(
+                          cateid: cataid,
                           navigatepage: "sub_catagories_detailed",
                           title: datas.subCatehoryName.toString(),
                           id: datas.id?.toInt());
@@ -129,6 +130,7 @@ class CatagoriesDetailedPage extends StatelessWidget {
                             final datas = courseDeailedProvider
                                 .recentlyViewedList?.data?.data?[index];
                             return SmallItemCard(
+                              refresh: false,
                               courseName: datas?.courseName,
                               authorName: datas?.instructorName,
                               isWishlist: datas?.isWishlist,

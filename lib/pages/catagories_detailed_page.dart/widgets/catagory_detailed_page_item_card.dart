@@ -64,10 +64,11 @@ class _CatagoryDetailedPageItemCardState
       onTap: () async {
         await Provider.of<CourseDetailedProvider>(context, listen: false)
             .getAll(courseID: widget.id);
-        Provider.of<RecomendationsProvider>(context, listen: false)
+        await Provider.of<RecomendationsProvider>(context, listen: false)
             .getAllRecFromCourse(courseId: widget.id!);
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => CourseDetailedPage(
+                  catid: widget.cataid,
                   id: widget.id,
                 )));
       },

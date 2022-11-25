@@ -24,6 +24,8 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
   String? name;
   String? email;
   String? image;
+  String? _imageformale;
+  String? _imageforfemale;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -32,6 +34,8 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
           alignment: Alignment.topRight,
           child: IconButton(
               onPressed: () {
+                Provider.of<AccountProvider>(context, listen: false).isLoading =
+                    false;
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => const ProfileEditPage()));
               },
@@ -44,15 +48,18 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
           children: [
             GestureDetector(
                 onTap: () {
+                  Provider.of<AccountProvider>(context, listen: false)
+                      .isLoading = false;
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (ctx) => const ProfileEditPage()));
                 },
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
                   radius: 50,
-                  backgroundImage: NetworkImage(image == null
-                      ? "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o="
-                      : image!),
+                  backgroundImage: NetworkImage(image ??
+                      _imageformale ??
+                      _imageforfemale ??
+                      "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o="),
                 )),
           ],
         ),
@@ -117,6 +124,8 @@ class _UserDetailesSectionState extends State<UserDetailesSection> {
       email = sharedPref.getString("email");
       image = sharedPref.getString("image");
       instructor = sharedPref.getBool("instructor");
+      _imageformale = sharedPref.getString("imageformale");
+      _imageforfemale = sharedPref.getString("imageforfemale");
     });
   }
 }

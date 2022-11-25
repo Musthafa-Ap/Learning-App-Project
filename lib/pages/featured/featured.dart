@@ -9,6 +9,8 @@ import 'package:nuox_project/pages/featured/services/top_courses_section/top_cou
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../my_home_page.dart';
+import '../../widgets/bold_heading.dart';
+import '../../widgets/course_detailes_list_tile.dart';
 import '../account/account_services/account_provider.dart';
 import '../cart/cart_services/cart_services.dart';
 import '../catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
@@ -178,7 +180,7 @@ class _FeaturedState extends State<Featured> {
                                     .getAll(courseID: datas.actionId);
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
-                                        const CourseDetailedPage()));
+                                        CourseDetailedPage()));
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -218,7 +220,30 @@ class _FeaturedState extends State<Featured> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: const [TopTextSection(), FeaturedSection()],
-            )
+            ),
+            kHeight15,
+            // const BoldHeading(heading: "Recommendations"),
+            // ListView.builder(
+            //   shrinkWrap: true,
+            //   physics: const BouncingScrollPhysics(),
+            //   itemCount:
+            //       recomendationProvider.recomendationsCourses?.data?.length,
+            //   itemBuilder: (context, index) {
+            //     final datas =
+            //         recomendationProvider.recomendationsCourses?.data?[index];
+            //     return CourseDetailesListTile(
+            //       courseName: datas?.courseName.toString(),
+            //       authorName: datas?.instructor?.name.toString(),
+            //       coursePrice: datas?.price?.toDouble(),
+            //       image: datas?.thumbnail?.fullSize.toString(),
+            //       ratingCount: datas?.ratingCount,
+            //       isWishlist: datas?.isWishlist,
+            //       rating: datas?.rating?.toDouble(),
+            //       id: datas?.id?.toInt(),
+            //       isRecomended: datas?.bestSeller,
+            //     );
+            //   },
+            // ),
           ],
         ));
   }

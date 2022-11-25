@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
 import 'package:provider/provider.dart';
@@ -5,8 +7,9 @@ import '../../../constants/constants.dart';
 import '../../../widgets/course_detailes_list_tile.dart';
 
 class SubCatagoriesDetailedPage extends StatelessWidget {
+  int? cateid;
   int subcatid;
-  SubCatagoriesDetailedPage({super.key, required this.subcatid});
+  SubCatagoriesDetailedPage({super.key, required this.subcatid, this.cateid});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,12 @@ class SubCatagoriesDetailedPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {
+            onPressed: () async {
+              if (cateid != null) {
+                await Provider.of<CatagoriesDetailedProvider>(context,
+                        listen: false)
+                    .getAll(catagoriesID: cateid);
+              }
               Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back_ios)),

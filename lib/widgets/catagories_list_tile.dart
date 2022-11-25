@@ -38,11 +38,12 @@ class CatagoriesListTile extends StatelessWidget {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => CatagoriesDetailedPage(
                   cataid: id,
-                )));
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CatagoriesDetailedPage(
                   fromSeeAll: true,
                 )));
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => CatagoriesDetailedPage(
+        //           fromSeeAll: true,
+        //         )));
       },
       leading: Container(
         width: 30,

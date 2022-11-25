@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/catagories_detailed_page.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
@@ -10,11 +12,13 @@ class CatagoriesButton extends StatelessWidget {
   final int? id;
   final String? title;
   final String? navigatepage;
+  final int? cateid;
   const CatagoriesButton(
       {super.key,
       required this.navigatepage,
       required this.title,
-      required this.id});
+      required this.id,
+      this.cateid});
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +43,7 @@ class CatagoriesButton extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => SubCatagoriesDetailedPage(
                         subcatid: id!,
+                        cateid: cateid,
                       )));
             }
             if (navigatepage == "catagoriesDetailedPage") {

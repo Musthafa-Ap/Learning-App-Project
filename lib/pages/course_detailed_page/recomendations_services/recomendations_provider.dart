@@ -52,13 +52,12 @@ class RecomendationsProvider with ChangeNotifier {
 
     if (token == null) {
       response = await get(Uri.parse(
-          "http://learningapp.e8demo.com/api/recommended_courses/?course_id=$cataId"));
+          "http://learningapp.e8demo.com/api/recommended_courses/?cate_id=$cataId"));
     } else {
       response = await get(Uri.parse(
-          "http://learningapp.e8demo.com/api/recommended_courses/?course_id=$cataId&auth_token=$token"));
+          "http://learningapp.e8demo.com/api/recommended_courses/?cate_id=$cataId&auth_token=$token"));
     }
-    log(response.statusCode.toString());
-    log(response.body);
+
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       recomendationsCourses = RecomendationsModel.fromJson(data);

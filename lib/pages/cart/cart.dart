@@ -41,7 +41,8 @@ import '../catagories_detailed_page.dart/services/catagories_detailed_provider.d
 import '../my_learning/widgets/course_videos_page.dart';
 
 class Cart extends StatefulWidget {
-  const Cart({super.key});
+  bool? fromdetail;
+  Cart({super.key, this.fromdetail = false});
 
   @override
   State<Cart> createState() => _CartState();
@@ -64,7 +65,16 @@ class _CartState extends State<Cart> {
     cartProvider.getAllCartItems();
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: widget.fromdetail == true ? Colors.white : Colors.black,
+          ),
+        ),
         centerTitle: true,
         title: const Text("Course cart"),
       ),
@@ -205,14 +215,17 @@ class _CourseListTileState extends State<CourseListTile> {
     }
     final cartProvider = Provider.of<CartProvider>(context);
     final size = MediaQuery.of(context).size.width;
-    return GestureDetector(
+    return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       onTap: () async {
         if (widget.id != null) {
           await Provider.of<CourseDetailedProvider>(context, listen: false)
               .getAll(
             courseID: widget.id,
           );
-
+          await Provider.of<RecomendationsProvider>(context, listen: false)
+              .getAllRecFromCourse(courseId: widget.id!.toInt());
           if (widget.subCatid != null) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => CourseDetailedPageFromCart(
@@ -544,6 +557,7 @@ class _CourseDetailedPageFromCartState
     int variant = 1;
     int? expert_price;
     int? inter_price;
+    int? beginning_price;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -924,18 +938,23 @@ class _CourseDetailedPageFromCartState
                         .courseDetailes!.data!.first.price!
                         .toInt();
                     int exdiscount = ((courseDeailedProvider
-                                    .courseDetailes!.variant![0].amountPerc! /
+                                    .courseDetailes!.variant![2].amountPerc! /
                                 100) *
                             actual_price)
                         .toInt();
                     expert_price = actual_price - exdiscount;
                     int interdiscount = ((courseDeailedProvider
-                                    .courseDetailes!.variant![1].amountPerc! /
+                                    .courseDetailes!.variant![0].amountPerc! /
                                 100) *
                             actual_price)
                         .toInt();
                     inter_price = actual_price - interdiscount;
-
+                    int begdiscount = ((courseDeailedProvider
+                                    .courseDetailes!.variant![1].amountPerc! /
+                                100) *
+                            actual_price)
+                        .toInt();
+                    beginning_price = actual_price - begdiscount;
                     return Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -1021,9 +1040,7 @@ class _CourseDetailedPageFromCartState
                                     .courseDetailes!.data!.first.id!
                                     .toInt(),
                                 variantID: variant,
-                                price: courseDeailedProvider
-                                    .courseDetailes!.data!.first.price!
-                                    .toInt(),
+                                price: beginning_price!.toInt(),
                                 token: token);
                           } else if (variant == 2) {
                             courseDeailedProvider.addToCart(
@@ -1117,9 +1134,7 @@ class _CourseDetailedPageFromCartState
                                             .toInt(),
                                         variant: variant,
                                         context: context,
-                                        price: courseDeailedProvider
-                                            .courseDetailes!.data!.first.price!
-                                            .toInt());
+                                        price: beginning_price!.toInt());
                                   } else if (variant == 2) {
                                     featuredProvider.addToWhishlist(
                                         id: courseDeailedProvider
@@ -1210,6 +1225,7 @@ class _CourseDetailedPageFromCartState
                             final datas = courseDeailedProvider
                                 .recentlyViewedList?.data?.data?[index];
                             return SmallItemCard(
+                              refresh: false,
                               courseName: datas?.courseName,
                               authorName: datas?.instructorName,
                               coursePrice: datas?.coursePrice,

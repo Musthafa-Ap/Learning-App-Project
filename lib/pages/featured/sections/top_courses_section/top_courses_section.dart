@@ -5,7 +5,9 @@ import 'package:nuox_project/pages/featured/widgets/big_item_card.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants/constants.dart';
 import '../../../../widgets/bold_heading.dart';
+import '../../../../widgets/course_detailes_list_tile.dart';
 import '../../../../widgets/see_all_widget.dart';
+import '../../../course_detailed_page/recomendations_services/recomendations_provider.dart';
 import '../../services/featured_section/featured_provider.dart';
 
 class TopCoursesSection extends StatelessWidget {
@@ -13,6 +15,7 @@ class TopCoursesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final recomendationProvider = Provider.of<RecomendationsProvider>(context);
     final size = MediaQuery.of(context).size.width;
     final topCoursesProvider = Provider.of<TopCoursesProvider>(context);
     return Column(
@@ -67,7 +70,28 @@ class TopCoursesSection extends StatelessWidget {
               ],
             ),
           ),
-        )
+        ),
+        // const BoldHeading(heading: "Recommendations"),
+        // ListView.builder(
+        //   shrinkWrap: true,
+        //   physics: const BouncingScrollPhysics(),
+        //   itemCount: recomendationProvider.recomendationsCourses?.data?.length,
+        //   itemBuilder: (context, index) {
+        //     final datas =
+        //         recomendationProvider.recomendationsCourses?.data?[index];
+        //     return CourseDetailesListTile(
+        //       courseName: datas?.courseName.toString(),
+        //       authorName: datas?.instructor?.name.toString(),
+        //       coursePrice: datas?.price?.toDouble(),
+        //       image: datas?.thumbnail?.fullSize.toString(),
+        //       ratingCount: datas?.ratingCount,
+        //       isWishlist: datas?.isWishlist,
+        //       rating: datas?.rating?.toDouble(),
+        //       id: datas?.id?.toInt(),
+        //       isRecomended: datas?.bestSeller,
+        //     );
+        //   },
+        // )
       ],
     );
   }

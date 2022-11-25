@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +25,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
   List allSpeed = <double>[0.25, 0.5, 1, 1.5, 2, 2.5, 3];
   bool prev = false;
   bool forw = false;
+  bool pause = true;
   late MyLearningsProvider _myLearningsProvider;
   late VideoPlayerController _controller;
   int _currentIndex = 0;
@@ -119,11 +122,30 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                               children: [
                                 GestureDetector(
                                     onTap: () {
-                                      setState(() {
-                                        _controller.value.isPlaying
-                                            ? _controller.pause()
-                                            : _controller.play();
-                                      });
+                                      _controller.value.isPlaying
+                                          ? _controller.pause()
+                                          : _controller.play();
+                                      if (_controller.value.isPlaying) {
+                                        setState(() {
+                                          pause = true;
+                                        });
+                                        Future.delayed(
+                                            const Duration(milliseconds: 300),
+                                            () {
+                                          setState(() {
+                                            pause = false;
+                                          });
+                                        });
+                                      } else {
+                                        setState(() {
+                                          pause = true;
+                                        });
+                                      }
+                                      // setState(() {
+                                      //   _controller.value.isPlaying
+                                      //       ? _controller.pause()
+                                      //       : _controller.play();
+                                      // });
                                     },
                                     child: _controller.value.isInitialized
                                         ? Stack(
@@ -249,7 +271,23 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                                 bottom: 0,
                                                 child: _controller
                                                         .value.isPlaying
-                                                    ? const SizedBox()
+                                                    ? pause == true
+                                                        ? const Center(
+                                                            child: CircleAvatar(
+                                                                radius: 25,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                child: Center(
+                                                                  child: Icon(
+                                                                    Icons.pause,
+                                                                    color: Colors
+                                                                        .black,
+                                                                    size: 40,
+                                                                  ),
+                                                                )),
+                                                          )
+                                                        : const SizedBox()
                                                     : Center(
                                                         child: GestureDetector(
                                                           onTap: () {
@@ -259,6 +297,26 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                                                     .pause()
                                                                 : _controller
                                                                     .play();
+                                                            if (_controller
+                                                                .value
+                                                                .isPlaying) {
+                                                              setState(() {
+                                                                pause = true;
+                                                              });
+                                                              Future.delayed(
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          300),
+                                                                  () {
+                                                                setState(() {
+                                                                  pause = false;
+                                                                });
+                                                              });
+                                                            } else {
+                                                              setState(() {
+                                                                pause = true;
+                                                              });
+                                                            }
                                                           },
                                                           child:
                                                               const CircleAvatar(
@@ -455,7 +513,10 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                       var d = x?.split(':');
                       var duration = "${d?[1]}:${d?[2]}";
                       return InkWell(
-                        onTap: () => playVideo(index: index),
+                        onTap: () {
+                          log(_videoDuration(_controller.value.position));
+                          playVideo(index: index);
+                        },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 5, vertical: 8),
@@ -571,6 +632,7 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
         [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]);
   }
 
+  bool pause = false;
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size.width;
@@ -581,6 +643,20 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
           widget.controller.value.isPlaying
               ? widget.controller.pause()
               : widget.controller.play();
+          if (widget.controller.value.isPlaying) {
+            setState(() {
+              pause = true;
+            });
+            Future.delayed(const Duration(milliseconds: 300), () {
+              setState(() {
+                pause = false;
+              });
+            });
+          } else {
+            setState(() {
+              pause = true;
+            });
+          }
         });
       },
       child: SafeArea(
@@ -591,7 +667,20 @@ class _LandscapePlayerPageState extends State<LandscapePlayerPage> {
                 children: [
                   VideoPlayer(widget.controller),
                   widget.controller.value.isPlaying
-                      ? const SizedBox()
+                      ? pause == true
+                          ? const Center(
+                              child: CircleAvatar(
+                                  radius: 25,
+                                  backgroundColor: Colors.black,
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.pause,
+                                      color: Colors.white,
+                                      size: 40,
+                                    ),
+                                  )),
+                            )
+                          : const SizedBox()
                       : const Align(
                           alignment: Alignment.center,
                           child: CircleAvatar(

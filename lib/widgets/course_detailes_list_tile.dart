@@ -80,7 +80,9 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
     }
     final cartProvider = Provider.of<CartProvider>(context);
     final size = MediaQuery.of(context).size.width;
-    return GestureDetector(
+    return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       onTap: () async {
         if (widget.id != null) {
           await Provider.of<CourseDetailedProvider>(context, listen: false)
@@ -204,8 +206,7 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                                     }
                                   }
                                 },
-                                child: token == null ||
-                                        widget.isCartItem == true ||
+                                child: widget.isCartItem == true ||
                                         widget.isWishlist == null
                                     ? const SizedBox()
                                     : Icon(

@@ -122,12 +122,14 @@ class BuyAllPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(5),
                           border: Border.all(color: Colors.white),
                         ),
-                        child: const Center(
-                          child: Text(
-                            "Cancel",
-                            style: TextStyle(color: Colors.purple),
-                            textAlign: TextAlign.center,
-                          ),
+                        child: Center(
+                          child: cartProvider.cancelPromoLoading == true
+                              ? const CircularProgressIndicator()
+                              : const Text(
+                                  "Cancel",
+                                  style: TextStyle(color: Colors.purple),
+                                  textAlign: TextAlign.center,
+                                ),
                         ),
                       ),
                     )

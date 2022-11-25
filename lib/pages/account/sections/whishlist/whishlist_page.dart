@@ -5,7 +5,7 @@ import 'package:nuox_project/pages/featured/services/featured_section/featured_p
 import 'package:nuox_project/widgets/big_cart_icon_button.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants/constants.dart';
-import '../../../course_detailed_page/course_detailed_page.dart';
+import '../../../course_detailed_page/recomendations_services/recomendations_provider.dart';
 import '../../../course_detailed_page/services/course_detailed_provider.dart';
 
 class WishlistPage extends StatelessWidget {
@@ -49,6 +49,10 @@ class WishlistPage extends StatelessWidget {
                       await Provider.of<CourseDetailedProvider>(context,
                               listen: false)
                           .getAll(courseID: datas.courseId);
+                      await Provider.of<RecomendationsProvider>(context,
+                              listen: false)
+                          .getAllRecFromCourse(
+                              courseId: datas.courseId!.toInt());
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => CourseDetailedPageFromCart(
                                 variant: datas.section!.name.toString(),
@@ -92,7 +96,7 @@ class WishlistPage extends StatelessWidget {
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
-                                              fontSize: 16,
+                                              fontSize: 18,
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white),
                                         ),
@@ -108,7 +112,7 @@ class WishlistPage extends StatelessWidget {
                                     Text(
                                       datas.autherName.toString(),
                                       style: TextStyle(
-                                          fontSize: 12,
+                                          fontSize: 14,
                                           color: Colors.grey[300]),
                                     ),
                                     kHeight5,

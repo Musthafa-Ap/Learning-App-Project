@@ -91,7 +91,7 @@ class ConformPurchasePage extends StatelessWidget {
                     (route) => false,
                   );
                 },
-                child: const Text("Back")),
+                child: const Text("Go to My Learnings")),
           ),
           SizedBox(
             height: size * .05,
