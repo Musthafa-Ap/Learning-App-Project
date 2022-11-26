@@ -58,6 +58,7 @@ class AuthProvider with ChangeNotifier {
           notifyListeners();
           if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              duration: Duration(milliseconds: 600),
               backgroundColor: Colors.green,
               content: Text(
                 'Successfully logged in',
@@ -71,6 +72,7 @@ class AuthProvider with ChangeNotifier {
       if (data["result"] == "failure") {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.red,
             content: Text(
               "Your account blocked, please send enquiry to support",
@@ -94,6 +96,7 @@ class AuthProvider with ChangeNotifier {
       if (data['status'] == false) {
         setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            duration: const Duration(milliseconds: 600),
             backgroundColor: Colors.red,
             content: Text(
               data['message'].toString(),
@@ -119,6 +122,7 @@ class AuthProvider with ChangeNotifier {
         await sharedPrefs.setString("name", name);
 
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.green,
             content: Text('OTP submitted successfully')));
         Navigator.of(context).pushAndRemoveUntil(
@@ -145,7 +149,9 @@ class AuthProvider with ChangeNotifier {
       if (data['status'] == 200) {
         setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.green, content: Text(data['message'])));
+            duration: const Duration(milliseconds: 600),
+            backgroundColor: Colors.green,
+            content: Text(data['message'])));
         Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) => MobileNumberOTPSubmissionPage(
                   number: num,
@@ -155,6 +161,7 @@ class AuthProvider with ChangeNotifier {
         number_error = data['message'];
         notifyListeners();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            duration: const Duration(milliseconds: 600),
             backgroundColor: Colors.red,
             content: Text(
               data['message'],
@@ -180,12 +187,15 @@ class AuthProvider with ChangeNotifier {
       if (data['status'] == true) {
         setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.green, content: Text(data['message'])));
+            duration: const Duration(milliseconds: 600),
+            backgroundColor: Colors.green,
+            content: Text(data['message'])));
         Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => const LoginPage()));
       } else if (data['status'] == false) {
         setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            duration: const Duration(milliseconds: 600),
             backgroundColor: Colors.red,
             content: Text(
               data['message'],
@@ -216,6 +226,7 @@ class AuthProvider with ChangeNotifier {
       } else if (data['status'] == false) {
         setLoading(false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            duration: const Duration(milliseconds: 600),
             backgroundColor: Colors.red,
             content: Text(
               data['message'],
@@ -276,6 +287,7 @@ class AuthProvider with ChangeNotifier {
             (route) => false,
           );
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              duration: Duration(milliseconds: 600),
               backgroundColor: Colors.green,
               content: Text(
                 "Successfully logged in",
@@ -294,6 +306,7 @@ class AuthProvider with ChangeNotifier {
           if (error.containsKey("message")) {
             if (!mounted) return;
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                duration: const Duration(milliseconds: 600),
                 backgroundColor: Colors.red,
                 content: Text(
                   error["message"],
@@ -314,6 +327,7 @@ class AuthProvider with ChangeNotifier {
       } else {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.red,
             content: Text(
               "check your password",
@@ -413,6 +427,7 @@ class AuthProvider with ChangeNotifier {
       if (data["status"] == "failure") {
         emailotpLoading = false;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            duration: const Duration(milliseconds: 600),
             backgroundColor: Colors.red,
             content: Text(
               data["message"],
@@ -443,6 +458,7 @@ class AuthProvider with ChangeNotifier {
             MaterialPageRoute(builder: (context) => const MyHomePage()),
             (route) => false);
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.green,
             content: Text(
               "Successfully registered",
@@ -517,6 +533,7 @@ class AuthProvider with ChangeNotifier {
           }
           if (error_message.containsKey("non_field_errors")) {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                duration: Duration(milliseconds: 600),
                 backgroundColor: Colors.red,
                 content: Text(
                   "Only images and PDF files allowed",
@@ -557,6 +574,7 @@ class AuthProvider with ChangeNotifier {
       print(response.statusCode);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.green,
             content: Text(
               "Successfully logged out",
@@ -583,7 +601,7 @@ class AuthProvider with ChangeNotifier {
           Uri.parse(
               "http://learningapp.e8demo.com/api/refresh-token/?refresh_token=$refreshToken"),
         );
-        print(refreshToken);
+        print("refresh ====== $refreshToken");
         print("222");
         print(responses.body);
         print(responses.statusCode);
@@ -610,11 +628,13 @@ class AuthProvider with ChangeNotifier {
         headers: {"Authorization": auth});
     if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          duration: Duration(milliseconds: 600),
           backgroundColor: Colors.green,
           content: Text(
             "Account deleted",
             style: TextStyle(fontWeight: FontWeight.bold),
           )));
+      shared.clear();
       selectedIndex.value = 0;
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const LoginPage()),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -69,10 +68,11 @@ class AccountProvider with ChangeNotifier {
         var data = await value.stream.toBytes();
         var body = String.fromCharCodes(data);
         Map<String, dynamic> msg = jsonDecode(body);
-        //  print("message = ${msg}");
+
         if (msg.containsKey("non_field_errors")) {
           isLoading = false;
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              duration: const Duration(milliseconds: 600),
               backgroundColor: Colors.red,
               content: Text(msg["non_field_errors"][0])));
           notifyListeners();
@@ -91,7 +91,9 @@ class AccountProvider with ChangeNotifier {
             shared.setString("image", msg['data']['profile_pic'].toString());
           }
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              backgroundColor: Colors.green, content: Text(msg["status"])));
+              duration: const Duration(milliseconds: 600),
+              backgroundColor: Colors.green,
+              content: Text(msg["status"])));
 
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(
@@ -103,6 +105,7 @@ class AccountProvider with ChangeNotifier {
         } else {
           isLoading = false;
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              duration: Duration(milliseconds: 600),
               backgroundColor: Colors.red,
               content: Text("Please select a image below 2 MB")));
           notifyListeners();
@@ -142,7 +145,9 @@ class AccountProvider with ChangeNotifier {
       if (data['result'] == "success") {
         isChangePassLoading = false;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            backgroundColor: Colors.green, content: Text(data["message"])));
+            duration: const Duration(milliseconds: 600),
+            backgroundColor: Colors.green,
+            content: Text(data["message"])));
         Navigator.of(context).pop();
       }
       if (data['result'] == 'failure') {
@@ -188,6 +193,7 @@ class AccountProvider with ChangeNotifier {
           body: {"email": email, "report_issue": problem});
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.green,
             content: Text("Successfully submitted")));
         Navigator.of(context).pop();
@@ -219,7 +225,6 @@ class AccountProvider with ChangeNotifier {
         print("authentication problem");
       }
     } catch (e) {
-      log("catchedd");
       print(e.toString());
     }
   }
@@ -267,6 +272,7 @@ class AccountProvider with ChangeNotifier {
           isDocumentUploadLoading = false;
           notifyListeners();
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              duration: Duration(milliseconds: 600),
               backgroundColor: Colors.green,
               content: Text(
                 'Document replaced successfully',
@@ -278,6 +284,7 @@ class AccountProvider with ChangeNotifier {
           isDocumentUploadLoading = false;
           notifyListeners();
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              duration: Duration(milliseconds: 600),
               backgroundColor: Colors.green,
               content: Text(
                 '"Only images files allowed"',

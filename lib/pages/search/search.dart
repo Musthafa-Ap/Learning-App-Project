@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nuox_project/constants/constants.dart';
@@ -95,6 +97,7 @@ class SearchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size.height;
     return GestureDetector(
       onTap: () async {
         await Provider.of<CourseDetailedProvider>(context, listen: false)
@@ -113,7 +116,7 @@ class SearchCard extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              height: 120,
+              height: size * .153,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
                 image: DecorationImage(

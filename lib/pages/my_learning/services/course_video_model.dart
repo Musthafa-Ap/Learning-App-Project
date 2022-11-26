@@ -28,9 +28,11 @@ class Data {
   int? course;
   int? section;
   String? videoDuration;
+  String? watchDuration;
 
   Data(
-      {this.ratingCount,
+      {this.watchDuration,
+      this.ratingCount,
       this.rating,
       this.videoDuration,
       this.id,
@@ -44,6 +46,7 @@ class Data {
       this.section});
 
   Data.fromJson(Map<String, dynamic> json) {
+    watchDuration = json['watch_duration'];
     rating = json['rating'];
     ratingCount = json['rating_count'];
     videoDuration = json['video_duration'];

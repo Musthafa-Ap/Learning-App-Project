@@ -3,7 +3,6 @@ import 'package:email_validator/email_validator.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nuox_project/authentication/login_page.dart';
 import 'package:nuox_project/authentication/mobile_number_verification_page.dart';

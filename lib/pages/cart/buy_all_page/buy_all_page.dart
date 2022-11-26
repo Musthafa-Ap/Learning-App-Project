@@ -108,8 +108,6 @@ class BuyAllPage extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        print(cartProvider.isCoupenSuccess);
-                        print("Entered cancel");
                         cartProvider.cancelCoupen(context: context);
                         _coupenController.text = "";
                       },
@@ -158,9 +156,10 @@ class BuyAllPage extends StatelessWidget {
                           if (_coupenController.text.isEmpty) {
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
+                                    duration: Duration(milliseconds: 600),
                                     backgroundColor: Colors.white,
                                     content: Text(
-                                      "Invalid coupen code",
+                                      "Invalid coupon code",
                                       style: TextStyle(color: Colors.black),
                                     )));
                           } else {

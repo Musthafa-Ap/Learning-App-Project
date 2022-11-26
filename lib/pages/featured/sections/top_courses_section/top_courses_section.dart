@@ -5,9 +5,7 @@ import 'package:nuox_project/pages/featured/widgets/big_item_card.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants/constants.dart';
 import '../../../../widgets/bold_heading.dart';
-import '../../../../widgets/course_detailes_list_tile.dart';
 import '../../../../widgets/see_all_widget.dart';
-import '../../../course_detailed_page/recomendations_services/recomendations_provider.dart';
 import '../../services/featured_section/featured_provider.dart';
 
 class TopCoursesSection extends StatelessWidget {
@@ -15,13 +13,29 @@ class TopCoursesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recomendationProvider = Provider.of<RecomendationsProvider>(context);
     final size = MediaQuery.of(context).size.width;
     final topCoursesProvider = Provider.of<TopCoursesProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const BoldHeading(heading: "Top Courses in Mobile\nDevelopment"),
+        kHeight15,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const BoldHeading(heading: "Top Courses"),
+            GestureDetector(
+              child: const SeeAllWidget(),
+              onTap: () {
+                Provider.of<FeaturedProvider>(context, listen: false)
+                    .sortedCourses = null;
+                Provider.of<TopCoursesProvider>(context, listen: false)
+                    .getAll();
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SeeAllPageTopCourses()));
+              },
+            ),
+          ],
+        ),
         SizedBox(
           height: size * .8,
           child: SingleChildScrollView(
@@ -54,19 +68,19 @@ class TopCoursesSection extends StatelessWidget {
                             isRecomended: datas?.bestSeller,
                           );
                         }),
-                kWidth30,
-                GestureDetector(
-                  child: const SeeAllWidget(),
-                  onTap: () {
-                    Provider.of<FeaturedProvider>(context, listen: false)
-                        .sortedCourses = null;
-                    Provider.of<TopCoursesProvider>(context, listen: false)
-                        .getAll();
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const SeeAllPageTopCourses()));
-                  },
-                ),
-                kWidth30
+                // kWidth30,
+                // GestureDetector(
+                //   child: const SeeAllWidget(),
+                //   onTap: () {
+                //     Provider.of<FeaturedProvider>(context, listen: false)
+                //         .sortedCourses = null;
+                //     Provider.of<TopCoursesProvider>(context, listen: false)
+                //         .getAll();
+                //     Navigator.of(context).push(MaterialPageRoute(
+                //         builder: (context) => const SeeAllPageTopCourses()));
+                //   },
+                // ),
+                // kWidth30
               ],
             ),
           ),

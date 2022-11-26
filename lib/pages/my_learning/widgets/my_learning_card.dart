@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../constants/constants.dart';
 
 class MyLearningCard extends StatelessWidget {
+  final int? rating;
+  final int? ratingCount;
   final String? variant;
   final int? id;
   final String? courseName;
@@ -16,6 +19,8 @@ class MyLearningCard extends StatelessWidget {
     required this.author,
     required this.img,
     required this.variant,
+    required this.rating,
+    required this.ratingCount,
   }) : super(key: key);
 
   @override
@@ -53,7 +58,7 @@ class MyLearningCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -62,19 +67,45 @@ class MyLearningCard extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                            fontSize: 18,
+                            fontSize: 17,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
-                      kHeight5,
+                      // kHeight5,
                       Text(
                         author ?? "Erich Andreas",
-                        style: TextStyle(fontSize: 14, color: Colors.grey[300]),
+                        style: TextStyle(fontSize: 13, color: Colors.grey[300]),
                       ),
-                      kHeight5,
+                      // kHeight5,
                       Text(
                         variant ?? "Beginner",
-                        style: TextStyle(fontSize: 14, color: Colors.grey[300]),
+                        style: TextStyle(fontSize: 13, color: Colors.grey[300]),
+                      ),
+                      // kHeight5,
+                      Row(
+                        children: [
+                          Text(
+                            rating.toString(),
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.yellow),
+                          ),
+                          RatingBarIndicator(
+                            unratedColor: Colors.grey,
+                            rating: rating?.toDouble() ?? 4,
+                            itemBuilder: (context, index) => const Icon(
+                              Icons.star,
+                              color: Colors.yellow,
+                            ),
+                            itemCount: 5,
+                            itemSize: 10.0,
+                            direction: Axis.horizontal,
+                          ),
+                          Text(
+                            ratingCount != null ? " ($ratingCount)" : " (7)",
+                            style: const TextStyle(
+                                fontSize: 12, color: Colors.yellow),
+                          ),
+                        ],
                       ),
                     ],
                   ),

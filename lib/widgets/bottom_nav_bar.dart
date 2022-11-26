@@ -28,7 +28,7 @@ class BottomNavBar extends StatelessWidget {
               BottomNavigationBarItem(
                 icon:
                     Icon(value == 0 ? Icons.star : Icons.star_outline_outlined),
-                label: "Featured",
+                label: "Home",
               ),
               BottomNavigationBarItem(
                   icon: Icon(value == 1

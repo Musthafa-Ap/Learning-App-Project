@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/pages/cart/cart.dart';
@@ -15,6 +17,7 @@ class WishlistPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final featuerdProvider = Provider.of<FeaturedProvider>(context);
     final size = MediaQuery.of(context).size.width;
+    final sizeh = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -61,14 +64,14 @@ class WishlistPage extends StatelessWidget {
                   },
                   child: SizedBox(
                       //padding: const EdgeInsets.symmetric(vertical: 5),
-                      height: size * .425,
+                      height: sizeh * .21,
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              height: size * .3,
+                              height: sizeh * .15,
                               width: size * .270,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),

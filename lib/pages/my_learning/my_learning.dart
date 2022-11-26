@@ -41,6 +41,8 @@ class MyLearning extends StatelessWidget {
                   author: datas?.instructorName.toString(),
                   courseName: datas?.courseName.toString(),
                   id: datas?.courseId?.toInt(),
+                  rating: datas?.rating,
+                  ratingCount: datas?.ratingCount,
                   img: datas?.courseThumbnail.toString(),
                   variant: datas?.variant.toString(),
                 );

@@ -23,9 +23,13 @@ class Data {
   String? courseName;
   String? courseThumbnail;
   String? variant;
+  int? rating;
+  int? ratingCount;
 
   Data(
-      {this.courseId,
+      {this.rating,
+      this.ratingCount,
+      this.courseId,
       this.itemTotal,
       this.order,
       this.instructorName,
@@ -34,7 +38,9 @@ class Data {
       this.variant});
 
   Data.fromJson(Map<String, dynamic> json) {
-    variant = json["section_id"];
+    rating = json['rating'];
+    ratingCount = json['rating_count'];
+    variant = json['section_id'];
     courseId = json['course_id'];
     itemTotal = json['item_total'];
     order = json['order'];

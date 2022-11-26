@@ -557,12 +557,14 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                     // }
                     if (date == "Select Date of Birth") {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          duration: Duration(milliseconds: 600),
                           backgroundColor: Colors.red,
                           content: Text('Please select date of birth')));
                       return;
                     } ////////////
                     if (selectedGenderNotifier.value == "Select") {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          duration: Duration(milliseconds: 600),
                           backgroundColor: Colors.red,
                           content: Text('Please select your gender')));
                       return;
@@ -612,6 +614,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
       setState(() {
         _image = img;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.green,
             content: Text('Image updoaded successfully')));
       });

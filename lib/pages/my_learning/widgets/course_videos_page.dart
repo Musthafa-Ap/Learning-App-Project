@@ -7,6 +7,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/my_learning/services/my_learnings_provider.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:share_plus/share_plus.dart';
@@ -82,6 +83,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
     final courseDeailedProvider = Provider.of<CourseDetailedProvider>(context);
     final myLearningsProvider = Provider.of<MyLearningsProvider>(context);
     final size = MediaQuery.of(context).size.width;
+    final sizeh = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -99,7 +101,20 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
               icon: const Icon(CupertinoIcons.share))
         ],
         leading: IconButton(
-            onPressed: () {
+            onPressed: () async {
+              final data =
+                  myLearningsProvider.courseVideoList?.data?[_currentIndex];
+              // final data = myLearningsProvider
+              //     .courseVideoList?.data?[index - 1];
+
+              String duration = _controller.value.position.toString();
+              var q = duration.split(':');
+              var watchedDuration = "${q[1]}:${q[2]}";
+
+              await myLearningsProvider.addWatchedDuration(
+                  courseId: data!.course,
+                  topicId: data.id,
+                  watchedDuration: watchedDuration);
               Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back_ios)),
@@ -116,7 +131,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                      height: size * .58,
+                      height: sizeh * .29,
                       child: _controller.value.isInitialized
                           ? Column(
                               children: [
@@ -151,7 +166,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                         ? Stack(
                                             children: [
                                               SizedBox(
-                                                height: size * .501,
+                                                height: sizeh * .251,
                                                 child: VideoPlayer(_controller),
                                               ),
                                               GestureDetector(
@@ -177,7 +192,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                                 child: Container(
                                                     color: Colors.transparent,
                                                     width: size * .25,
-                                                    height: size * .501,
+                                                    height: sizeh * .251,
                                                     child: prev == true
                                                         ? const Center(
                                                             child: CircleAvatar(
@@ -220,7 +235,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                                   child: Container(
                                                       color: Colors.transparent,
                                                       width: size * .25,
-                                                      height: size * .501,
+                                                      height: size * .251,
                                                       child: forw == true
                                                           ? const Center(
                                                               child:
@@ -490,7 +505,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                     colorClickableText: Colors.purple,
                     trimMode: TrimMode.Line,
                     trimCollapsedText: 'Show more',
-                    trimExpandedText: 'Show less',
+                    trimExpandedText: ' Show less',
                     moreStyle: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -509,12 +524,40 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                     itemBuilder: (context, index) {
                       final datas =
                           myLearningsProvider.courseVideoList?.data?[index];
-                      var x = datas?.videoDuration.toString();
+                      String? x = datas?.videoDuration.toString();
+                      String? y = datas?.watchDuration.toString();
                       var d = x?.split(':');
+
+                      int? totalWatchsec;
+                      if (y != "null") {
+                        var e = y?.split(':');
+
+                        var w = e?[1].split('.');
+                        totalWatchsec =
+                            (int.parse(e![0]) * 60) + (int.parse(w![0]));
+                      } else {
+                        totalWatchsec = 0;
+                      }
                       var duration = "${d?[1]}:${d?[2]}";
+                      int totalsec =
+                          (int.parse(d![1]) * 60) + (int.parse(d[2]));
+
+                      int perc = ((totalWatchsec / totalsec) * 100).round();
                       return InkWell(
-                        onTap: () {
-                          log(_videoDuration(_controller.value.position));
+                        onTap: () async {
+                          final data = myLearningsProvider
+                              .courseVideoList?.data?[_currentIndex];
+                          String duration =
+                              _controller.value.position.toString();
+                          var q = duration.split(':');
+                          var watchedDuration = "${q[1]}:${q[2]}";
+
+                          await myLearningsProvider.addWatchedDuration(
+                              courseId: data!.course,
+                              topicId: data.id,
+                              watchedDuration: watchedDuration);
+                          await myLearningsProvider.getCourseDetailes(
+                              courseID: data.course);
                           playVideo(index: index);
                         },
                         child: Padding(
@@ -522,51 +565,73 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                               horizontal: 5, vertical: 8),
                           child: Row(
                             children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    image: DecorationImage(
-                                        fit: BoxFit.fill,
-                                        image: NetworkImage(
-                                            datas!.thumbnail.toString()))),
-                                height: size * .21,
-                                width: size * .25,
-                                child: Stack(
-                                  children: [
-                                    const Center(
-                                      child: CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        child: Icon(
-                                          Icons.play_arrow,
-                                          color: Colors.black,
-                                          size: 40,
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      right: 2,
-                                      bottom: 2,
-                                      child: Container(
-                                        height: 15,
+                              Column(
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Container(
                                         decoration: BoxDecoration(
-                                            color: Colors.black,
                                             borderRadius:
-                                                BorderRadius.circular(2)),
-                                        width: 38,
-                                        child: Center(
-                                          child: Text(
-                                            duration,
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                                const BorderRadius.only(
+                                                    topLeft: Radius.circular(5),
+                                                    topRight:
+                                                        Radius.circular(5)),
+                                            image: DecorationImage(
+                                                fit: BoxFit.fill,
+                                                image: NetworkImage(datas!
+                                                    .thumbnail
+                                                    .toString()))),
+                                        height: size * .21,
+                                        width: size * .25,
+                                        child: Stack(
+                                          children: [
+                                            const Center(
+                                              child: CircleAvatar(
+                                                backgroundColor: Colors.white,
+                                                child: Icon(
+                                                  Icons.play_arrow,
+                                                  color: Colors.black,
+                                                  size: 40,
+                                                ),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              right: 2,
+                                              bottom: 2,
+                                              child: Container(
+                                                height: 15,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.black,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            2)),
+                                                width: 38,
+                                                child: Center(
+                                                  child: Text(
+                                                    duration,
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
+                                    ],
+                                  ),
+                                  LinearPercentIndicator(
+                                    width: size * .30,
+                                    lineHeight: 4,
+                                    percent: perc / 100,
+                                    backgroundColor: Colors.grey,
+                                    progressColor: Colors.red,
+                                  ),
+                                ],
                               ),
                               kWidth10,
                               Expanded(

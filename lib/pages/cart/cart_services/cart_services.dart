@@ -58,6 +58,7 @@ class CartProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.green,
             content: Text(
               "Item removed from Bag",
@@ -98,6 +99,7 @@ class CartProvider with ChangeNotifier {
       var api = "http://learningapp.e8demo.com/api/apply_offer/";
       var response = await http.post(Uri.parse(api),
           headers: {"Authorization": auth}, body: {"promo_code": coupen});
+      print(response.body);
       var data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         promo_code = data["promo_code"];
@@ -106,11 +108,12 @@ class CartProvider with ChangeNotifier {
         isCoupenSuccess = true;
       } else {
         isLoading = false;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            duration: const Duration(milliseconds: 600),
             backgroundColor: Colors.white,
             content: Text(
-              "Invalid coupen code",
-              style: TextStyle(color: Colors.black),
+              data["message"],
+              style: const TextStyle(color: Colors.black),
             )));
       }
     } catch (e) {
@@ -131,15 +134,15 @@ class CartProvider with ChangeNotifier {
         Uri.parse(api),
         headers: {"Authorization": auth},
       );
-      log(response.statusCode.toString());
-      log(response.body);
+
       // var data = jsonDecode(response.body);
       if (response.statusCode == 200) {
         cancelPromoLoading = false;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.white,
             content: Text(
-              "Coupen code cancelled",
+              "Coupon code cancelled",
               style: TextStyle(color: Colors.black),
             )));
 
@@ -179,6 +182,7 @@ class CartProvider with ChangeNotifier {
       notifyListeners();
       if (data['message'] == "success") {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.green,
             content: Text(
               "Course ordered",
@@ -216,6 +220,7 @@ class CartProvider with ChangeNotifier {
       orderID = data['data']['order_id'];
       if (data["message"] == "success") {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.green,
             content: Text(
               "Course ordered",

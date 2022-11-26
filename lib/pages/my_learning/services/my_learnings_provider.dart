@@ -31,7 +31,7 @@ class MyLearningsProvider with ChangeNotifier {
     }
   }
 
-  Future<void> getCourseDetailes({required courseID, required context}) async {
+  Future<void> getCourseDetailes({required courseID, context}) async {
     try {
       isCourseLoading = true;
       SharedPreferences shared = await SharedPreferences.getInstance();
@@ -47,11 +47,14 @@ class MyLearningsProvider with ChangeNotifier {
       courseVideoList = CourseVideoModel.fromJson(data);
       if (response.statusCode == 200) {
         isCourseLoading = false;
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const CourseVideosPage()));
+        if (context != null) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const CourseVideosPage()));
+        }
       } else {
         isCourseLoading = false;
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            duration: const Duration(milliseconds: 600),
             backgroundColor: Colors.red,
             content: Text(
               courseVideoList!.status.toString(),
@@ -61,6 +64,29 @@ class MyLearningsProvider with ChangeNotifier {
       }
     } catch (e) {
       isCourseLoading = false;
+    }
+  }
+
+  Future<void> addWatchedDuration(
+      {required courseId,
+      required topicId,
+      required String watchedDuration}) async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    var token = shared.getString("access_token");
+    String auth = "Bearer $token";
+    try {
+      var response = await http.post(
+          Uri.parse("http://learningapp.e8demo.com/api/topic_list/"),
+          headers: {
+            "Authorization": auth
+          },
+          body: {
+            "courseid": courseId.toString(),
+            "topicid": topicId.toString(),
+            "watch_duration": watchedDuration
+          });
+    } catch (e) {
+      print(e.toString());
     }
   }
 }

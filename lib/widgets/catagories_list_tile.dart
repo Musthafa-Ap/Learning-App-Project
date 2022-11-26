@@ -31,7 +31,7 @@ class CatagoriesListTile extends StatelessWidget {
         await catagoiresdetailesProvider.getAll(
           catagoriesID: id,
         );
-        log("From cat");
+
         await Provider.of<RecomendationsProvider>(context, listen: false)
             .getAllRecFromCatagory(cataId: id);
         await catagoiresdetailesProvider.getAllSub(catagoriesID: id);

@@ -9,6 +9,7 @@ import 'package:nuox_project/pages/account/sections/support/report_page.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../my_home_page.dart';
 import 'account_services/account_provider.dart';
 import 'sections/whishlist/whishlist_page.dart';
@@ -81,8 +82,11 @@ class ListTileAccountPage extends StatelessWidget {
                         child: const Text("No"),
                       ),
                       ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             authProvider.deleteAccount(context);
+                            SharedPreferences shared =
+                                await SharedPreferences.getInstance();
+                            shared.clear();
                             selectedIndex.value = 0;
                             Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(

@@ -143,7 +143,7 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                                   color: Colors.white),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(right: 26),
+                              padding: const EdgeInsets.only(right: 20),
                               child: GestureDetector(
                                 onTap: () async {
                                   SharedPreferences shared =
@@ -177,7 +177,7 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                                       await Provider.of<FeaturedProvider>(
                                               context,
                                               listen: false)
-                                          .samples();
+                                          .samples(isRefresh: true);
                                       await Provider.of<FeaturedProvider>(
                                               context,
                                               listen: false)
@@ -213,7 +213,7 @@ class _CourseDetailesListTileState extends State<CourseDetailesListTile> {
                                         widget.isWishlist == true
                                             ? Icons.favorite
                                             : Icons.favorite_border,
-                                        size: 20,
+                                        size: 30,
                                         color: widget.isWishlist == true
                                             ? Colors.red
                                             : Colors.white,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:nuox_project/authentication/providers/widgets/top_image.dart';
 import 'package:nuox_project/constants/constants.dart';
 import 'package:nuox_project/authentication/providers/auth_provider.dart';

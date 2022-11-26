@@ -1,43 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
+import 'package:nuox_project/pages/course_detailed_page/sections/review_page/review_page.dart';
 import 'package:provider/provider.dart';
 import '../../constants/constants.dart';
 import '../../my_home_page.dart';
 import '../../widgets/big_cart_icon_button.dart';
 import '../../widgets/course_detailes_list_tile.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:nuox_project/pages/cart/cart_services/cart_services.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
-import 'package:nuox_project/pages/course_detailed_page/course_detailed_page.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
 import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
 import 'package:nuox_project/widgets/bestseller.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:nuox_project/constants/constants.dart';
-import 'package:nuox_project/my_home_page.dart';
-import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
-import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
-import 'package:nuox_project/pages/course_detailed_page/sections/review_page/review_page.dart';
-import 'package:nuox_project/pages/featured/services/featured_section/featured_provider.dart';
-import 'package:nuox_project/pages/featured/services/top_courses_section/top_courses_provider.dart';
-import 'package:nuox_project/pages/featured/widgets/small_item_card.dart';
-import 'package:nuox_project/widgets/bestseller.dart';
 import 'package:nuox_project/widgets/bold_heading.dart';
-import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
-import '../../widgets/course_detailes_list_tile.dart';
-import '../catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
+import '../featured/widgets/small_item_card.dart';
 import '../my_learning/widgets/course_videos_page.dart';
 
 class Cart extends StatefulWidget {
@@ -76,7 +58,7 @@ class _CartState extends State<Cart> {
           ),
         ),
         centerTitle: true,
-        title: const Text("Course cart"),
+        title: const Text("Course Cart"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -215,6 +197,7 @@ class _CourseListTileState extends State<CourseListTile> {
     }
     final cartProvider = Provider.of<CartProvider>(context);
     final size = MediaQuery.of(context).size.width;
+    final sizeh = MediaQuery.of(context).size.height;
     return InkWell(
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
@@ -244,14 +227,14 @@ class _CourseListTileState extends State<CourseListTile> {
       },
       child: Container(
           padding: const EdgeInsets.symmetric(vertical: 5),
-          height: size * .425,
+          height: sizeh * .21,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  height: size * .3,
+                  height: sizeh * .17,
                   width: size * .270,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),

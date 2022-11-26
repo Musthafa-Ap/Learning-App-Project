@@ -64,7 +64,7 @@ class SeeAllPageFeatured extends StatelessWidget {
                 if (result) {
                   refreshController.loadComplete();
                 } else {
-                  refreshController.loadFailed();
+                  refreshController.loadNoData();
                 }
               },
               child: ListView.builder(

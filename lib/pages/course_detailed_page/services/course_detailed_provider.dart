@@ -55,6 +55,7 @@ class CourseDetailedProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.green,
             content: Text(
               "Item added to the bag",
@@ -63,6 +64,7 @@ class CourseDetailedProvider with ChangeNotifier {
       } else if (data["message"] == "Course is Already Purchased") {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.white,
             content: Text(
               "Course is already purchased",
@@ -118,6 +120,7 @@ class CourseDetailedProvider with ChangeNotifier {
       Map<String, dynamic> data = jsonDecode(response.body);
       if (data["status_code"] == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.green,
             content: Text(
               "Rating added successfully",
@@ -146,6 +149,7 @@ class CourseDetailedProvider with ChangeNotifier {
       Map<String, dynamic> data = jsonDecode(response.body);
       if (data["status_code"] == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.green,
             content: Text(
               "Review added successfully",

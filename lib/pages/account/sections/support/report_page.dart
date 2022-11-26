@@ -55,6 +55,7 @@ class ReportPage extends StatelessWidget {
               var report = _reportController.text;
               if (email == null || email.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    duration: Duration(milliseconds: 600),
                     backgroundColor: Colors.red,
                     content: Text(
                         "Email id is not available.Please update your profile")));
@@ -62,6 +63,7 @@ class ReportPage extends StatelessWidget {
               }
               if (report.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    duration: Duration(milliseconds: 600),
                     backgroundColor: Colors.red,
                     content: Text("Please type your problem")));
                 return;

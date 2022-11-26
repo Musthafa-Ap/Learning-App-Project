@@ -9,8 +9,6 @@ import 'package:nuox_project/pages/featured/services/top_courses_section/top_cou
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../my_home_page.dart';
-import '../../widgets/bold_heading.dart';
-import '../../widgets/course_detailes_list_tile.dart';
 import '../account/account_services/account_provider.dart';
 import '../cart/cart_services/cart_services.dart';
 import '../catagories_detailed_page.dart/services/catagories_detailed_provider.dart';
@@ -19,7 +17,7 @@ import '../course_detailed_page/recomendations_services/recomendations_provider.
 import '../course_detailed_page/services/course_detailed_provider.dart';
 import '../my_learning/services/my_learnings_provider.dart';
 import '../search/services/search_provider.dart';
-import 'sections/featured_section/featured_section.dart';
+import 'sections/featured_section/home.dart';
 import 'widgets/top_text_section.dart';
 
 class Featured extends StatefulWidget {
@@ -219,7 +217,7 @@ class _FeaturedState extends State<Featured> {
                   ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [TopTextSection(), FeaturedSection()],
+              children: const [TopTextSection(), Home()],
             ),
             kHeight15,
             // const BoldHeading(heading: "Recommendations"),

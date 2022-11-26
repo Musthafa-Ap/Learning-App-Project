@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/catagories_detailed_page.dart';
 import 'package:nuox_project/pages/catagories_detailed_page.dart/services/catagories_detailed_provider.dart';

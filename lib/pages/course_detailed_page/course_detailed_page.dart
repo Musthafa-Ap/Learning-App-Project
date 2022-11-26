@@ -477,7 +477,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                     colorClickableText: Colors.purple,
                     trimMode: TrimMode.Line,
                     trimCollapsedText: 'Show more',
-                    trimExpandedText: 'Show less',
+                    trimExpandedText: ' Show less',
                     moreStyle: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -849,6 +849,7 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                         context: context);
                                     //await featuredProvider.getWhishlist();
                                   }
+
                                   if (widget.id != null) {
                                     Provider.of<CourseDetailedProvider>(context,
                                             listen: false)

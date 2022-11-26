@@ -167,6 +167,7 @@ class FeaturedProvider with ChangeNotifier {
         if (data["status"] == "true") {
           toggleNotifier.value = true;
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              duration: const Duration(milliseconds: 600),
               backgroundColor: Colors.green,
               content: Text(
                 data["data"],
@@ -176,6 +177,7 @@ class FeaturedProvider with ChangeNotifier {
         } else {
           toggleNotifier.value = false;
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              duration: const Duration(milliseconds: 600),
               backgroundColor: Colors.red,
               content: Text(
                 data["data"],
@@ -205,6 +207,7 @@ class FeaturedProvider with ChangeNotifier {
       });
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.green,
             content: Text(
               "Course added to the whishlist",
@@ -253,12 +256,9 @@ class FeaturedProvider with ChangeNotifier {
       Response response = await put(Uri.parse(api),
           headers: {"Authorization": auth},
           body: {"course": id.toString(), "variant": variant.toString()});
-
-      log(response.statusCode.toString());
-      log(response.body);
-      log(id.toString());
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            duration: Duration(milliseconds: 600),
             backgroundColor: Colors.white,
             content: Text(
               "Course removed from wishlist",
