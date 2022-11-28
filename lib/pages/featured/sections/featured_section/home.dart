@@ -27,34 +27,34 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   void initState() {
-    Provider.of<FeaturedProvider>(context, listen: false).sample();
-    Provider.of<CatagoriesProvider>(context, listen: false).getAll();
-    Provider.of<TopCoursesProvider>(context, listen: false).getAll();
-    Provider.of<CourseDetailedProvider>(context, listen: false)
-        .getAll(courseID: 2);
-    Provider.of<CatagoriesDetailedProvider>(context, listen: false)
-        .getAll(catagoriesID: 1);
-    Provider.of<CatagoriesDetailedProvider>(context, listen: false)
-        .getAllSub(catagoriesID: 1);
-    Provider.of<RecomendationsProvider>(context, listen: false).getAll();
-    Provider.of<CatagoriesDetailedProvider>(context, listen: false)
-        .getSubCatagoriesDetailes(subCatagoriesID: 1);
-    super.initState();
-    Provider.of<CartProvider>(context, listen: false).getAllCartItems();
-    Provider.of<TopCoursesProvider>(context, listen: false).bannerList();
-    Provider.of<AccountProvider>(context, listen: false).getFAQ();
-    Provider.of<CourseDetailedProvider>(context, listen: false)
-        .getReview(courseID: 2);
-    Provider.of<AccountProvider>(context, listen: false).getAboutApp();
-    Provider.of<MyLearningsProvider>(context, listen: false).getMyLearnings();
-    Provider.of<SearchProvider>(context, listen: false).getSearchItems(key: "");
-    Provider.of<FeaturedProvider>(context, listen: false).sortedCourses = null;
-    Provider.of<CourseDetailedProvider>(context, listen: false)
-        .getRecentlyViewed();
-    Provider.of<FeaturedProvider>(context, listen: false).getNotifications();
-    Provider.of<FeaturedProvider>(context, listen: false).getWhishlist();
-    Provider.of<AccountProvider>(context, listen: false).getOrderDetailes();
-    Provider.of<AccountProvider>(context, listen: false).getDocument();
+    // Provider.of<FeaturedProvider>(context, listen: false).sample();
+    // Provider.of<CatagoriesProvider>(context, listen: false).getAll();
+    // Provider.of<TopCoursesProvider>(context, listen: false).getAll();
+    // Provider.of<CourseDetailedProvider>(context, listen: false)
+    //     .getAll(courseID: 2);
+    // Provider.of<CatagoriesDetailedProvider>(context, listen: false)
+    //     .getAll(catagoriesID: 1);
+    // Provider.of<CatagoriesDetailedProvider>(context, listen: false)
+    //     .getAllSub(catagoriesID: 1);
+    // Provider.of<RecomendationsProvider>(context, listen: false).getAll();
+    // Provider.of<CatagoriesDetailedProvider>(context, listen: false)
+    //     .getSubCatagoriesDetailes(subCatagoriesID: 1);
+    // super.initState();
+    // Provider.of<CartProvider>(context, listen: false).getAllCartItems();
+    // Provider.of<TopCoursesProvider>(context, listen: false).bannerList();
+    // Provider.of<AccountProvider>(context, listen: false).getFAQ();
+    // Provider.of<CourseDetailedProvider>(context, listen: false)
+    //     .getReview(courseID: 2);
+    // Provider.of<AccountProvider>(context, listen: false).getAboutApp();
+    // Provider.of<MyLearningsProvider>(context, listen: false).getMyLearnings();
+    // Provider.of<SearchProvider>(context, listen: false).getSearchItems(key: "");
+    // Provider.of<FeaturedProvider>(context, listen: false).sortedCourses = null;
+    // Provider.of<CourseDetailedProvider>(context, listen: false)
+    //     .getRecentlyViewed();
+    // Provider.of<FeaturedProvider>(context, listen: false).getNotifications();
+    // Provider.of<FeaturedProvider>(context, listen: false).getWhishlist();
+    // Provider.of<AccountProvider>(context, listen: false).getOrderDetailes();
+    // Provider.of<AccountProvider>(context, listen: false).getDocument();
   }
 
   @override

@@ -220,28 +220,6 @@ class _FeaturedState extends State<Featured> {
               children: const [TopTextSection(), Home()],
             ),
             kHeight15,
-            // const BoldHeading(heading: "Recommendations"),
-            // ListView.builder(
-            //   shrinkWrap: true,
-            //   physics: const BouncingScrollPhysics(),
-            //   itemCount:
-            //       recomendationProvider.recomendationsCourses?.data?.length,
-            //   itemBuilder: (context, index) {
-            //     final datas =
-            //         recomendationProvider.recomendationsCourses?.data?[index];
-            //     return CourseDetailesListTile(
-            //       courseName: datas?.courseName.toString(),
-            //       authorName: datas?.instructor?.name.toString(),
-            //       coursePrice: datas?.price?.toDouble(),
-            //       image: datas?.thumbnail?.fullSize.toString(),
-            //       ratingCount: datas?.ratingCount,
-            //       isWishlist: datas?.isWishlist,
-            //       rating: datas?.rating?.toDouble(),
-            //       id: datas?.id?.toInt(),
-            //       isRecomended: datas?.bestSeller,
-            //     );
-            //   },
-            // ),
           ],
         ));
   }

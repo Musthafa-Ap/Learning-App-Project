@@ -854,6 +854,9 @@ class _CourseDetailedPageState extends State<CourseDetailedPage> {
                                     Provider.of<CourseDetailedProvider>(context,
                                             listen: false)
                                         .getAll(courseID: widget.id);
+                                    Provider.of<FeaturedProvider>(context,
+                                            listen: false)
+                                        .sample();
                                     Provider.of<TopCoursesProvider>(
                                       context,
                                       listen: false,

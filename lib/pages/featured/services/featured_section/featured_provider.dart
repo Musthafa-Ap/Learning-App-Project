@@ -256,6 +256,7 @@ class FeaturedProvider with ChangeNotifier {
       Response response = await put(Uri.parse(api),
           headers: {"Authorization": auth},
           body: {"course": id.toString(), "variant": variant.toString()});
+      log(response.body);
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             duration: Duration(milliseconds: 600),

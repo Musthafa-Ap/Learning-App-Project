@@ -62,6 +62,21 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
     setState(() {
       _currentIndex = index;
     });
+    final data = _myLearningsProvider.courseVideoList!.data![_currentIndex];
+    String? y = data.watchDuration;
+    int min;
+    int sec;
+    //log(y.toString());
+    if (y != "null") {
+      var e = y?.split(':');
+      var w = e?[1].split('.');
+      min = int.parse(e![0]);
+      sec = int.parse(w![0]);
+    } else {
+      min = 0;
+      sec = 0;
+    }
+
     _controller = VideoPlayerController.network(_myLearningsProvider
         .courseVideoList!.data![_currentIndex].video
         .toString()
@@ -71,6 +86,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
       })
       ..setLooping(true)
       ..initialize().then((value) {
+        _controller.seekTo(Duration(minutes: min, seconds: sec));
         _controller.play();
         _controller.setVolume(1);
         _controller.setLooping(false);
@@ -211,7 +227,8 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                                         : const SizedBox()),
                                               ),
                                               Align(
-                                                alignment: Alignment.topRight,
+                                                alignment:
+                                                    Alignment.centerRight,
                                                 child: GestureDetector(
                                                   onDoubleTap: () async {
                                                     setState(() {
@@ -235,7 +252,7 @@ class _CourseVideosPageState extends State<CourseVideosPage> {
                                                   child: Container(
                                                       color: Colors.transparent,
                                                       width: size * .25,
-                                                      height: size * .251,
+                                                      height: sizeh * .251,
                                                       child: forw == true
                                                           ? const Center(
                                                               child:
