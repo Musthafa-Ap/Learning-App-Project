@@ -17,7 +17,7 @@ class SeeAllPageTopCourses extends StatelessWidget {
         Provider.of<TopCoursesProvider>(context).topCoursesList;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Top courses in mobile development"),
+        title: const Text("Top courses"),
         leading: IconButton(
             onPressed: () {
               Navigator.of(context).pushAndRemoveUntil(
