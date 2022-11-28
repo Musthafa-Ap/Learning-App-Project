@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_model.dart';

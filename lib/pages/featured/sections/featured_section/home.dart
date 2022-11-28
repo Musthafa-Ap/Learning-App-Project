@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:nuox_project/pages/course_detailed_page/recomendations_services/recomendations_provider.dart';
 import 'package:nuox_project/pages/course_detailed_page/services/course_detailed_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../../constants/constants.dart';
